@@ -14,7 +14,8 @@ router.get('', async (req, res) => {
     shops = shops.map( (shop) => {
         return {
             self: '/api/v1/shops/' + shop.id,
-            name: shop.name
+            name: shop.name,
+            category: shop.category
         };
     });
     res.status(200).json(shops);
@@ -25,7 +26,8 @@ router.get('/:id', async (req, res) => {
     let shop = await Shop.findById(req.params.id);
     res.status(200).json({
         self: '/api/v1/shops/' + shop.id,
-        name: shop.name
+        name: shop.name,
+        category: shop.category
     });
 });
 

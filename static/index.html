@@ -9,30 +9,13 @@
 
 <h1>TNcopy</h1>
 
-<form action="api/v1/shops" method="get" name="loginform" id="loginform">
-  <span>Logged User:</span>
-  <span id="loggedUser"></span>
-  <input name="email" value="mario.rossi@unitn.com" id="loginEmail"/>
-  <input name="email" value="123" id="loginPassword"/>
-  <button type="button" onclick="loadShops()">LoadShops</button>
-</form>
-
-<h2>shops:</h2>
-<ul id="shops"></ul>
-
-<h2>Insert new shopName:</h2>
-
-<form action="api/v1/shops" method="post" name="bookform" id="bookform">
-  <input name="title" value="title" id="bookTitle"/>
-  <button type="button" onclick="loadShops()">Insert new shopName</button> <!--funzione in script.js-->
-</form>
-
-<form action="api/v1/shops" method="get" name="shopSearch" id="shopSearch">
-  <input name="name" value="name" id="shopName"/>
+<form action="api/v1/shops" method="get" name="getShops" id="getShops">
   <button type="button" onclick="loadShops()">See shops</button>
+  <button type="button" onclick="loadCategory()">See categories</button>
 </form>
-<h2>Lendings:</h2>
-<ul id="bookLendings"></ul>
+
+<h2>Shops:</h2>
+<ul id="shops"></ul>
 
 <script src="script.js"></script> 
     
