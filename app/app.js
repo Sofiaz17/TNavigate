@@ -5,6 +5,9 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 
+const shops = require('./shopsRouter.js');
+const categs = require('./categoriesRouter.js');
+
 var corsOptions = {
   origin: "http://localhost:8081"
 };
@@ -18,7 +21,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-const shops = require('./shops.js');
 
 /**
  * Configure Express.js parsing middleware
@@ -45,6 +47,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/v1/shops', shops);
+app.use('/api/v1/shopCategories', categs);
 
 /* Default 404 handler */
 app.use((req, res) => {
