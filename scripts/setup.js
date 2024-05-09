@@ -46,4 +46,11 @@ Shop.deleteMany().then( () => {
 		category: 'supermercato'
 	});
 	return aldi.save();
-});
+}).then( () => {
+	var coop = new Shop({ 
+		name: 'Coop',
+		address: 'Via Brigata Acqui',
+		category: 'supermercato'
+	});
+	return coop.save();
+});;

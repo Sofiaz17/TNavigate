@@ -131,9 +131,65 @@ function searchShopfromCat(category) {
             li.appendChild(span);
             ul.appendChild(li);
     })
-})
+})}
+
+function triggerOnEnter(){
+    var input = document.getElementById("shopName");
+    console.log("trigger on enter key");
+
+// Execute a function when the user presses a key on the keyboard
+    input.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+    // Cancel the default action, if needed
+        event.preventDefault();
+    // Trigger the button element with a click
+        document.getElementById("searchBtn").click();
+  }});
+}
+
+function searchShopByName() {           //called 4 times before fetching
+    console.log("searchShopByName called");
+
+    const ul = document.getElementById('inputSearch'); 
+
+    ul.textContent = '';
+    const userInput = document.getElementById('shopName').value;
+    console.log('userInput: ' + userInput);
+
+    fetch('../api/v1/shops?name=' + userInput)
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // Here you get the data to modify as you please
+        console.log('enter func data');
+        // console.log(data);
+        // Sort the data array alphabetically based on the category names
+        data.sort((a, b) => a.name.localeCompare(b.name));
+        
+        return data.map(function(shop) { // Map through the results and for each run the code below
+            console.log('enter return');
+            // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
+            
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+            // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+            a.href = shop.self
+            a.textContent = shop.name+ ', ' + shop.address;
+            // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+             //let button = document.createElement('button');
+            // button.type = 'button'
+            // button.onclick = ()=>takeShop(category.self)
+            // button.textContent = 'Take the category';
+            
+            // Append all our elements
+            span.appendChild(a);
+          //  span.appendChild(button);
+            li.appendChild(span);
+            ul.appendChild(li);
+        })
+    })
+    .catch( error => console.error(error) );// If there is any error you will catch them here
     
-   // return shopOfCateg;
 }
   
 //console.log('enumValues: ');
