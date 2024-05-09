@@ -1,14 +1,14 @@
 const express = require('express');
-const router = express.Router();
+const routerShop = express.Router();
 const Shop = require('./models/shop'); // get our mongoose model
 
-
+var itemrouterShop = express.Router({mergeParams: true});
 
 /**
  * Resource representation based on the following the pattern: 
  * https://cloud.google.com/blog/products/application-development/api-design-why-you-should-use-links-not-keys-to-represent-relationships-in-apis
  */
-router.get('', async (req, res) => {
+routerShop.get('', async (req, res) => {
     // https://mongoosejs.com/docs/api.html#model_Model.find
     let shops = await Shop.find({});
     shops = shops.map( (shop) => {
@@ -21,7 +21,7 @@ router.get('', async (req, res) => {
     res.status(200).json(shops);
 });
 
-router.get('/:id', async (req, res) => {
+routerShop.get('/:id', async (req, res) => {
     // https://mongoosejs.com/docs/api.html#model_Model.findById
     let shop = await Shop.findById(req.params.id);
     res.status(200).json({
@@ -30,8 +30,19 @@ router.get('/:id', async (req, res) => {
         category: shop.category
     });
 });
+// routerShop.get('/categories', async (req, res) => {
+//     // https://mongoosejs.com/docs/api.html#model_Model.findById
+//     let shop = await Shop.findById(req.params.id);
+//     res.status(200).json({
+//         self: '/api/v1/shops/' + shop.id,
+//         name: shop.name,
+//         category: shop.category
+//     });
+// });
+// Define an endpoint to get enum values
 
-router.delete('/:id', async (req, res) => {
+
+routerShop.delete('/:id', async (req, res) => {
     let shop = await Shop.findById(req.params.id).exec();
     if (!shop) {
         res.status(404).send()
@@ -43,15 +54,17 @@ router.delete('/:id', async (req, res) => {
     res.status(204).send()
 });
 
-router.post('', async (req, res) => {
+routerShop.post('', async (req, res) => {
 
 	let shop = new Shop({
-        address: req.body.address
+        address: req.body.address,
+        category: req.body.category
     });
     
 	shop = await shop.save();
     
     let shopId = shop.id;
+    let shopCat = shop.cat;
 
     console.log('Shop saved successfully');
 
@@ -60,7 +73,8 @@ router.post('', async (req, res) => {
      * https://www.restapitutorial.com/lessons/httpmethods.html
      */
     res.location("/api/v1/shops/" + shopId).status(201).send();
+    //res.location("/api/v1/shops/categories" + shopCat).status(201).send();
 });
 
 
-module.exports = router;
+module.exports = routerShop;

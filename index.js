@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 //const db = require('./app/models');
 const uri = "mongodb+srv://sofiazandona:MongoDB17@cluster0.6a7o7gj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
+var Shop   = require('./app/models/shop');
 //const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 mongoose
   .connect(uri/*,{useNewUrlParser: true, useUnifiedTopology: true}*/)
@@ -17,6 +18,8 @@ mongoose
       error
     );
   });
+
+  //console.log("index mongoose: ", Shop.schema.path('category').enumValues);
 
 /**
  * https://devcenter.heroku.com/articles/preparing-a-codebase-for-heroku-deployment#4-listen-on-the-correct-port

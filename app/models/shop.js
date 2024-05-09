@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-// set up a mongoose model
-module.exports = mongoose.model('Shop', new Schema({ 
-	name: String,
+// const categoryEnumSchema = ['supermercato', 
+// 					  'farmacia', 
+// 					  'abbigliamento', 
+// 					  'ferramenta', 
+// 					  'elettronica', 
+// 					  'ristorazione', 
+// 					  'alimentari', 
+// 					  'sport'];
+const shopSchema = new mongoose.Schema({
+    name: String,
 	owner: String,
 	address: String,
 	coordinates: Number,
@@ -16,8 +22,15 @@ module.exports = mongoose.model('Shop', new Schema({
 				'elettronica',
 				'ristorazione',
 				'alimentari',
-				'sport']
+				'sport',
+			    'cartoleria']
+		//enum: categoryEnumSchema
 	},
 	information: String,
 	dataModified: Boolean
-}));
+});
+
+const Shop = mongoose.model('Shop', shopSchema);
+//const categEnum = mongoose.model("Category", categoryEnumSchema)
+//.exports = Shop;
+module.exports = Shop;
