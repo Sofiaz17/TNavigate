@@ -39,4 +39,11 @@ Shop.deleteMany().then( () => {
 }).then( () => {
 	console.log('shop Conad saved successfully');
 	//process.exit();
+}).then( () => {
+	var aldi = new Shop({ 
+		name: 'Aldi',
+		address: 'Corso 3 novembre',
+		category: 'supermercato'
+	});
+	return aldi.save();
 });

@@ -9,16 +9,25 @@ var itemrouterShop = express.Router({mergeParams: true});
  * https://cloud.google.com/blog/products/application-development/api-design-why-you-should-use-links-not-keys-to-represent-relationships-in-apis
  */
 routerShop.get('', async (req, res) => {
+    let shop;
+    console.log("req query category: " + req.query.category);
+    if(req.query.category){
+        shop = await Shop.find({category: req.query.category}).exec();
+    } else if(req.query.name){
+        shop = await Shop.find({name: req.query.name}).exec();
+    } else{
     // https://mongoosejs.com/docs/api.html#model_Model.find
-    let shops = await Shop.find({});
-    shops = shops.map( (shop) => {
+        shop = await Shop.find({}).exec();
+    }
+    shop = shop.map( (shop) => {
         return {
             self: '/api/v1/shops/' + shop.id,
             name: shop.name,
-            category: shop.category
+            category: shop.category,
+            address: shop.address
         };
     });
-    res.status(200).json(shops);
+    res.status(200).json(shop);
 });
 
 routerShop.get('/:id', async (req, res) => {

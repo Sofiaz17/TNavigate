@@ -53,6 +53,4 @@ routerCateg.get('', async (req, res) => {
     res.status(200).json(categ);
 });
 
-
-
 module.exports = routerCateg;
