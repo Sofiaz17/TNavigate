@@ -145,7 +145,7 @@ function triggerOnEnter(){
         event.preventDefault();
     // Trigger the button element with a click
         document.getElementById("searchBtn").click();
-  }});
+  }}, {once: true});
 }
 
 function searchShopByName() {           //called 4 times before fetching
