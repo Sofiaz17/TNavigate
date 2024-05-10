@@ -154,13 +154,22 @@ function searchShopByName() {           //called 4 times before fetching
     const ul = document.getElementById('inputSearch'); 
 
     ul.textContent = '';
-    const userInput = document.getElementById('shopName').value;
+    let fetchUrl;
+    const userInput = document.getElementById('shopName').value.toLowerCase();
     console.log('userInput: ' + userInput);
+    console.log('iscateg value:'+ isCategory(userInput));
+    if(isCategory(userInput)){
+        console.log('fetch category url');
+        fetchUrl = '../api/v1/shops?category=' + userInput;
+    } else {
+        console.log('fetch name url');
+        fetchUrl = '../api/v1/shops?name=' + userInput;
+    }
 
-    fetch('../api/v1/shops?name=' + userInput)
+    fetch(fetchUrl)
     .then((resp) => resp.json()) // Transform the data into json
     .then(function(data) { // Here you get the data to modify as you please
-        console.log('enter func data');
+        console.log('enter func data Searchbyname');
         // console.log(data);
         // Sort the data array alphabetically based on the category names
         data.sort((a, b) => a.name.localeCompare(b.name));
@@ -192,6 +201,20 @@ function searchShopByName() {           //called 4 times before fetching
     
 }
   
+
+async function isCategory(input) {
+    console.log('isCategory entered');
+
+    await fetch('../api/v1/shopCategories')
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { 
+       // console.log('isCategory data: ' + data.name);
+    //const categories = ['supermercato', 'farmacia', 'abbigliamento', 'ferramenta', 'elettronica', 'ristorazione', 'alimentari', 'sport', 'cartoleria'];
+        const category = data.find(categ => categ.name.toLowerCase() === input.toLowerCase());
+        console.log('CATEGORY EXISTING: ', category.name);
+        return category.name !== undefined; // Return true if category exists, false otherwise
+    })
+}
 //console.log('enumValues: ');
    // console.log(Shop.schema.path('category'));
 
