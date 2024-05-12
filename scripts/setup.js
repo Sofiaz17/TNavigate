@@ -1,5 +1,6 @@
 require('dotenv').config()
 var Shop   = require('../app/models/shop'); // get our mongoose model
+var Product = require('../app/models/product');
 
 var mongoose = require('mongoose');
 // connect to database
@@ -53,4 +54,29 @@ Shop.deleteMany().then( () => {
 		category: 'supermercato'
 	});
 	return coop.save();
-});;
+}).then( () => {
+	var laRomana = new Shop({ 
+		name: 'La Romana',
+		category: 'gelateria',
+		address: 'Via Rosmini'
+	});
+	return laRomana.save();
+});
+
+Product.deleteMany().then( () => {
+	var fruttaFresca = new Product({ 
+		name: 'frutta fresca',
+		category: ['supermercato','ortofrutta'],
+		keywords: ['frutta', 'ortofrutta']
+	});
+	return fruttaFresca.save();
+}).then( () => {
+	console.log('frutta fresca saved successfully');
+}).then( () => {
+	var carnePollo = new Product({ 
+		name: 'carne di pollo',
+		category: ['supermercato'],
+		keywords: ['carne', 'pollo', 'carne bianca', 'carne di pollo']
+	});
+	return carnePollo.save();
+});

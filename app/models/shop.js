@@ -23,7 +23,9 @@ const shopSchema = new mongoose.Schema({
 				'ristorazione',
 				'alimentari',
 				'sport',
-			    'cartoleria']
+			    'cartoleria',
+			    'ortofrutta',
+				'gelateria']
 		//enum: categoryEnumSchema
 	},
 	information: String,

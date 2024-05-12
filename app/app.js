@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const shops = require('./shopsRouter.js');
 const categs = require('./categoriesRouter.js');
+const prods = require('./productsRouter.js');
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/shopCategories', categs);
+app.use('/api/v1/products', prods);
 
 /* Default 404 handler */
 app.use((req, res) => {

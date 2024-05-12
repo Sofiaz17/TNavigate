@@ -12,8 +12,10 @@ routerShop.get('', async (req, res) => {
     let shop;
     console.log("req query category: " + req.query.category);
     if(req.query.category){
+        console.log('router, cat');
         shop = await Shop.find({category: req.query.category}).exec();
     } else if(req.query.name){
+        console.log('router, name');
         shop = await Shop.find({name: req.query.name}).exec();
     } else{
     // https://mongoosejs.com/docs/api.html#model_Model.find
