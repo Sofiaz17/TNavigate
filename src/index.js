@@ -25,7 +25,7 @@ app.get('/signup', (req, res) => {
     res.render('signup')  //signup.hbs
 })
 app.get('/', (req, res) => {
-    res.render('login')  //login.hbs
+    res.render('login')  //si riferisce a login.hbs 
 })
 
 
