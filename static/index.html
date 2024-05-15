@@ -9,29 +9,46 @@
 
   <body>
     <h1>TNavigate</h1>
-    <div id="map"></div>
-
-    <form action="api/v1/shops" method="get" name="getShops" id="getShops">
-      <button type="button" onclick="seeShops()">Search</button>
-      <button type="button" onclick="loadShops()">See shops</button>
-    </form>
+   
+    <script type="text/javascript" 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwMXy4aFNldadM-ONrQO1SwUY7ibVmQk&callback=initMap&v=weekly"
+        async defer
+      ></script> 
+   
+    <div class="containerwhite">
+      <div class="left-column">
     
-    <!-- 
-      The `defer` attribute causes the callback to execute after the full HTML
-      document has been parsed. For non-blocking uses, avoiding race conditions,
-      and consistent behavior across browsers, consider loading using Promises.
-      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
-      for more information.
-      -->
-     <script type="text/javascript" 
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwMXy4aFNldadM-ONrQO1SwUY7ibVmQk&callback=initMap&v=weekly"
-      async defer
-    ></script> 
-    <h2>Shops:</h2>
-    <ul id="shops"></ul>
+          <form action="api/v1/shops" method="get" name="getShops" id="getShops">
+            <button type="button" onclick="loadShops()">Elenco negozi</button>
+            <button type="button" onclick="loadCategory()">Elenco categorie</button>
+            <label for="shopName">Shop or category:</label>
+           <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
+            <input type="search" id="shopName" onkeypress=triggerOnEnter()>
+            <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
+            <input type="search" id="productName" >
+            <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
+          </form>
+          
+          <h2>Negozi:</h2>
+          <ul id="shops"></ul>
+          <h2>Categorie:</h2>
+          <ul id="categories"></ul>
+          <h2>Negozi in una specifica categoria:</h2>
+          <ul id="Shops in categories"></ul>
+          <h2>Input search:</h2>
+          <ul id="inputSearch"></ul>
+          <h2>Input product search:</h2>
+          <ul id="inputProductSearch"></ul>
+         
+      </div>
+      <div class="right-column">
+        <div id="map" style="height:450px; width:450px;"></div>
+
+      </div>
       
   </body>
 </html>
+
 <!--
 <!DOCTYPE html>
 <html>
