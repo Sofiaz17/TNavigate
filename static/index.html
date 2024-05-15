@@ -10,21 +10,21 @@
 <h1>TNcopy</h1>
 
 <form action="api/v1/shops" method="get" name="getShops" id="getShops">
-  <button type="button" onclick="loadShops()">See shops</button>
-  <button type="button" onclick="loadCategory()">See categories</button>
+  <button type="button" onclick="loadShops()">Elenco negozi</button>
+  <button type="button" onclick="loadCategory()">Elenco categorie</button>
   <label for="shopName">Shop or category:</label>
  <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
   <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-  <button type="button" id='searchBtn' onclick="searchShopByName()">Search</button>
+  <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
   <input type="search" id="productName" >
-  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Search product</button>
+  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
 </form>
 
-<h2>Shops:</h2>
+<h2>Negozi:</h2>
 <ul id="shops"></ul>
-<h2>Categories:</h2>
+<h2>Categorie:</h2>
 <ul id="categories"></ul>
-<h2>Shops in categories:</h2>
+<h2>Negozi in una specifica categoria:</h2>
 <ul id="Shops in categories"></ul>
 <h2>Input search:</h2>
 <ul id="inputSearch"></ul>
