@@ -12,7 +12,7 @@ const shopSchema = new mongoose.Schema({
     name: String,
 	owner: String,
 	address: String,
-	coordinates: Number,
+	coordinates: [Number],
 	category: { 
 		type: String,
 		enum : ['supermercato', 

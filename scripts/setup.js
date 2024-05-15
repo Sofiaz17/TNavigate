@@ -14,8 +14,9 @@ var mongoose = require('mongoose');
 Shop.deleteMany().then( () => {
 	var coop = new Shop({ 
 		name: 'Coop',
-		address: 'Via Salè',
-		category: 'supermercato'
+		address: 'Piazza Giannantonio Manci, 8, 38123 Povo TN',
+		category: 'supermercato',
+		coordinates: [46.059392,11.1330611]
 	});
 	return coop.save();
 }).then( () => {
@@ -23,8 +24,9 @@ Shop.deleteMany().then( () => {
 }).then( () => {
 	var farmacia = new Shop({ 
 		name: 'Farmacia Igea',
-		address: 'Via Milano',
-		category: 'farmacia'
+		address: 'Via Milano, 66/68, 38122 Trento TN',
+		category: 'farmacia',
+		coordinates: [46.0609025,11.1255008]
 	});
 	return farmacia.save();
 }).then( () => {
@@ -33,7 +35,7 @@ Shop.deleteMany().then( () => {
 }).then( () => {
 	var conad = new Shop({ 
 		name: 'Conad',
-		address: 'Via Buc',
+		address: 'Via Roberto da Sanseverino, 97, 38122 Trento TN',
 		category: 'supermercato'
 	});
 	return conad.save();
@@ -43,14 +45,14 @@ Shop.deleteMany().then( () => {
 }).then( () => {
 	var aldi = new Shop({ 
 		name: 'Aldi',
-		address: 'Corso 3 novembre',
+		address: 'Corso 3 Novembre 1918, 59, 38122 Trento TN',
 		category: 'supermercato'
 	});
 	return aldi.save();
 }).then( () => {
 	var coop = new Shop({ 
 		name: 'Coop',
-		address: 'Via Brigata Acqui',
+		address: 'Via Brigata Acqui, 2, 38122 Trento TN',
 		category: 'supermercato'
 	});
 	return coop.save();
@@ -58,7 +60,7 @@ Shop.deleteMany().then( () => {
 	var laRomana = new Shop({ 
 		name: 'La Romana',
 		category: 'gelateria',
-		address: 'Via Rosmini'
+		address: 'Via Antonio Rosmini, 5, 38122 Trento TN'
 	});
 	return laRomana.save();
 });

@@ -26,7 +26,8 @@ routerShop.get('', async (req, res) => {
             self: '/api/v1/shops/' + shop.id,
             name: shop.name,
             category: shop.category,
-            address: shop.address
+            address: shop.address,
+            coordinates: shop.coordinates
         };
     });
     res.status(200).json(shop);
@@ -38,7 +39,9 @@ routerShop.get('/:id', async (req, res) => {
     res.status(200).json({
         self: '/api/v1/shops/' + shop.id,
         name: shop.name,
-        category: shop.category
+        category: shop.category,
+        address: shop.address,
+        coordinates: shop.coordinates
     });
 });
 // routerShop.get('/categories', async (req, res) => {
@@ -68,6 +71,10 @@ routerShop.delete('/:id', async (req, res) => {
 routerShop.post('', async (req, res) => {
 
 	let shop = new Shop({
+        name: req.body.name,
+        category: req.body.category,
+        address: req.body.address,
+        coordinates: req.body.coordinates,
         address: req.body.address,
         category: req.body.category
     });
@@ -75,7 +82,6 @@ routerShop.post('', async (req, res) => {
 	shop = await shop.save();
     
     let shopId = shop.id;
-    let shopCat = shop.cat;
 
     console.log('Shop saved successfully');
 
