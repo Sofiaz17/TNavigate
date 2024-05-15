@@ -10,7 +10,7 @@ const shop = require('./models/shop');
  * https://cloud.google.com/blog/products/application-development/api-design-why-you-should-use-links-not-keys-to-represent-relationships-in-apis
  */
 router.get('', async (req, res) => {
-    // https://mongoosejs.com/docs/api.html#model_Model.find
+     // https://mongoosejs.com/docs/api.html#model_Model.find
     let shops = await Shop.find({});
     shops = shops.map( (shop) => {
         return {

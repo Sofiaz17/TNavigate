@@ -8,7 +8,7 @@ const authentication = require('./authentication.js');
 const tokenChecker = require('./tokenChecker.js');
 
 const students = require('./utentiBase.js');
-const books = require('./shops.js');
+const shops = require('./shops.js');
 //const booklendings = require('./booklendings.js');
 
 

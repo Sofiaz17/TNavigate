@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+
+<h1>EasyLib</h1>
+
+<form action="api/v1/utentiBase" method="post" name="loginform" id="loginform">
+  <span>Logged User:</span>
+  <span id="loggedUser"></span>
+  <input name="email" value="mario.rossi@unitn.com" id="loginEmail"/>
+  <input name="email" value="123" id="loginPassword"/>
+  <button type="button" onclick="login()">LogIn</button>
+</form>
+
+<h2>Shops:</h2>
+<ul id="shops"></ul>
+
+<h2>Insert new shop:</h2>
+
+<form action="api/v1/shops" method="post" name="shoporm" id="shopform">
+  <input name="name" value="name" id="shopName"/>
+  <button type="button" onclick="insertShop()">Insert new shop</button>
+</form>
+
+<script src="script.js"></script> 
+    
+</body>
+
+</html>
