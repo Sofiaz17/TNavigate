@@ -1,0 +1,189 @@
+:root {
+    --yellow: #F4B860;
+    --grey: #F4D6CC;
+    --black:#32373B;
+    --grey2:#4A5859;
+    --red:#C83E4D;
+    --rad:8px;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Poppy;
+    color: var(--black);
+  }
+  
+  h1 {
+      color: var(--black);
+      font-size: 30px;
+      text-align: center;
+    font-family: Poppy;
+    font-weight: bolder;
+  }
+  .containerblack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em;
+    padding-left: 20%;
+    padding-right: 20%;
+    background-color: var(--black);
+  }
+  
+  .left-column {
+    width: 60%;
+    padding-right: 20px;
+  }
+  
+  .right-column {
+    width: 35%;
+  }
+
+  .topnav {
+    overflow: hidden;
+    margin:auto;
+    text-align: center;
+    border-radius: 10px;
+    width: 60%;
+    background-color: whitesmoke;
+    box-shadow: rgba(51, 53, 54, 0.7) 0px 8px 30px;
+  }
+  
+  .topnav a {
+    display: inline-block;
+    text-align: center;
+    padding: 0.8em 2em;
+    color: white;
+    color: var(--black);
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  .topnav a:hover {
+    background-color: var(--yellow);
+    color: var(--black);
+    border-radius: 5px;
+  }
+  
+  .topnav a.active {
+    background-color: var(--red);
+    color: white;
+    border-radius: 5px;
+    margin: 4px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  
+  .headertext{
+      font-family: Montserrat;
+      font-size: larger;
+      text-align: center;
+      color: white;
+  }
+  .headerhome{
+    padding-top:2em;
+    padding-bottom:3em;
+  }
+  
+  .button{
+    align-items: center;
+    background-clip: padding-box;
+    background-color: var(--yellow);
+    border: 1px solid transparent;
+    border-radius: var(--rad);
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: Poppy;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+  }
+  .button:hover,
+  .button:focus {
+    background-color: var(--yellow);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  }
+  .button:hover {
+    transform: translateY(-1px);
+  }
+  .button:active {
+    background-color: var(--red);
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
+  }
+  
+  .button2{
+    align-items: center;
+    background-clip: padding-box;
+    background-color: var(--red);
+    border: 1px solid transparent;
+    border-radius: var(--rad);
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: Poppy;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
+  }
+  .button2:hover,
+  .button2:focus {
+    background-color: var(--red);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  }
+  
+  .login-container{
+    background-color: var(--yellow);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      margin: 100px auto;
+      max-width: 400px;
+      padding: 2em;
+  }
+
+  label {
+	display: block;
+	font-size: 20px;
+	margin-bottom: 10px;
+  border-radius: var(--rad);
+}
+
+input[type="text"], input[type="date"] {
+	background-color: white;
+	border: none;
+	border-radius: var(--rad);
+	box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	font-size: 16px;
+	margin-bottom: 20px;
+	padding: 10px;
+	width: 80%;
+}

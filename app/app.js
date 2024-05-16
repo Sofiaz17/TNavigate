@@ -25,28 +25,6 @@ app.use(express.urlencoded({ extended: true }));
  */
 app.use(cors())
 
-// // Add headers before the routes are defined
-// app.use(function (req, res, next) {
-
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-
-//     // Pass to next layer of middleware
-//     next();
-// });
-
-
-
 /**
  * Serve front-end static files
  */
@@ -56,14 +34,29 @@ app.use(cors())
 // If process.env.FRONTEND folder does not contain index.html then use the one from static
 app.use('/', express.static('static')); // expose also this folder
 
+/**
+app.use('./tokenChecker.js', function (req, res, next) {
+    console.log("Authenticate and Redirect")
+    res.redirect('../static/login.html');
+    next();
+});
+*/
 
+app.get('/login.html', function (req, res) {
+    res.sendFile(path.join(__dirname, '../static/login.html'));
+});
+
+/** 
+app.listen(PORT, function (err) {
+    if (err) console.log(err);
+    console.log("Server listening on PORT", PORT);
+});
+*/
 
 app.use((req,res,next) => {
     console.log(req.method + ' ' + req.url)
     next()
 })
-
-
 
 /**
  * Authentication routing and middleware
@@ -75,18 +68,13 @@ app.use('/api/v1/authentications', authentication);
 // a valid token must be provided in the request
 //app.use('/api/v1/booklendings', tokenChecker);
 app.use('/api/v1/utentiBase/me', tokenChecker);
-
-
-
+ 
 /**
  * Resource routing
  */
 
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/utentiBase', students);
-//app.use('/api/v1/booklendings', booklendings);
-
-
 
 /* Default 404 handler */
 app.use((req, res) => {
