@@ -86,7 +86,7 @@ loadShops();
 */
 
 /**
- * This function is called by the Take button beside each book.
+ * This function is called by the Take button beside each shop.
  * It create a new booklendings resource,
  * given the book and the logged in student
  */
@@ -151,7 +151,7 @@ function loadShopOwner() {
  */
 
 /**
- * This function is called by clicking on the "insert book" button.
+ * This function is called by clicking on the "insert shop" button.
  * It creates a new book given the specified title,
  * and force the refresh of the whole list of shops.
  */
@@ -177,122 +177,194 @@ function insertShop()
 };
 
 //registrazione 
-function register(clickId){
+function register(clickId)
+{
     console.log('clickId: ', clickId);
     let hideUB = document.getElementById('utenteBase'); 
     let hideNeg = document.getElementById('negoziante'); 
 
-if(clickId=="utenteBase"){
-    hideUB.style.display= 'none'; 
-    hideNeg.style.display= 'none'; 
-
-    // Creazione dell'elemento form
-    const form = document.getElementById('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('name', 'modulo');
-
-    // Creazione dell'elemento h1 per il titolo
-    const title = document.createElement('h1');
-    title.textContent = 'Registrati:';
-    form.appendChild(title);
-
-    // Creazione dell'elemento label e input per il campo Nome
-    const labelNome = document.createElement('label');
-    labelNome.setAttribute('for', 'nome');
-    labelNome.textContent = 'Nome:';
-    form.appendChild(labelNome);
-
-    const inputNome = document.createElement('input');
-    inputNome.setAttribute('type', 'text');
-    inputNome.setAttribute('name', 'nome');
-    inputNome.setAttribute('id', 'nome');
-    form.appendChild(inputNome);
-    form.appendChild(document.createElement('br'));
-
-    // Creazione dell'elemento label e input per il campo Cognome
-    const labelCognome = document.createElement('label');
-    labelCognome.setAttribute('for', 'cognome');
-    labelCognome.textContent = 'Cognome:';
-    form.appendChild(labelCognome);
-
-    const inputCognome = document.createElement('input');
-    inputCognome.setAttribute('type', 'text');
-    inputCognome.setAttribute('name', 'cognome');
-    inputCognome.setAttribute('id', 'cognome');
-    form.appendChild(inputCognome);
-    form.appendChild(document.createElement('br'));
-
-    // Creazione dell'elemento label e input per il campo Email
-    const labelEmail = document.createElement('label');
-    labelEmail.setAttribute('for', 'email');
-    labelEmail.textContent = 'Email:';
-    form.appendChild(labelEmail);
-
-    const inputEmail = document.createElement('input');
-    inputEmail.setAttribute('type', 'text');
-    inputEmail.setAttribute('name', 'email');
-    inputEmail.setAttribute('id', 'email');
-    form.appendChild(inputEmail);
-
-// Inserimento del form nella pagina HTML
-document.body.appendChild(form);
-
-} else{
-    if(clickId=="negoziante"){
+    if(clickId=="utenteBase"){
         hideUB.style.display= 'none'; 
         hideNeg.style.display= 'none'; 
 
-    // Creazione dell'elemento form
-    const form = document.getElementById('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('name', 'modulo');
+        // Creazione dell'elemento form
+        const form = document.getElementById('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('name', 'modulo');
 
-    // Creazione dell'elemento h1 per il titolo
-    const title = document.createElement('h1');
-    title.textContent = 'Registrati:';
-    form.appendChild(title);
+        // Creazione dell'elemento h1 per il titolo
+        const title = document.createElement('h1');
+        title.textContent = 'Registrati:';
+        form.appendChild(title);
 
-    // Creazione dell'elemento label e input per il campo Nome
-    const labelNome = document.createElement('label');
-    labelNome.setAttribute('for', 'nome');
-    labelNome.textContent = 'Nome:';
-    form.appendChild(labelNome);
+        // Creazione dell'elemento label e input per il campo Nome
+        const labelNome = document.createElement('label');
+        labelNome.setAttribute('for', 'nome');
+        labelNome.textContent = 'Nome:';
+        form.appendChild(labelNome);
 
-    const inputNome = document.createElement('input');
-    inputNome.setAttribute('type', 'text');
-    inputNome.setAttribute('name', 'nome');
-    inputNome.setAttribute('id', 'nome');
-    form.appendChild(inputNome);
-    form.appendChild(document.createElement('br'));
+        const inputNome = document.createElement('input');
+        inputNome.setAttribute('type', 'text');
+        inputNome.setAttribute('name', 'nome');
+        inputNome.setAttribute('id', 'nome');
+        form.appendChild(inputNome);
+        form.appendChild(document.createElement('br'));
 
-    // Creazione dell'elemento label e input per il campo Cognome
-    const labelCognome = document.createElement('label');
-    labelCognome.setAttribute('for', 'cognome');
-    labelCognome.textContent = 'Cognome:';
-    form.appendChild(labelCognome);
+        // Creazione dell'elemento label e input per il campo Cognome
+        const labelCognome = document.createElement('label');
+        labelCognome.setAttribute('for', 'cognome');
+        labelCognome.textContent = 'Cognome:';
+        form.appendChild(labelCognome);
 
-    const inputCognome = document.createElement('input');
-    inputCognome.setAttribute('type', 'text');
-    inputCognome.setAttribute('name', 'cognome');
-    inputCognome.setAttribute('id', 'cognome');
-    form.appendChild(inputCognome);
-    form.appendChild(document.createElement('br'));
+        const inputCognome = document.createElement('input');
+        inputCognome.setAttribute('type', 'text');
+        inputCognome.setAttribute('name', 'cognome');
+        inputCognome.setAttribute('id', 'cognome');
+        form.appendChild(inputCognome);
+        form.appendChild(document.createElement('br'));
 
-    // Creazione dell'elemento label e input per il campo Email
-    const labelEmail = document.createElement('label');
-    labelEmail.setAttribute('for', 'email');
-    labelEmail.textContent = 'Email:';
-    form.appendChild(labelEmail);
+        // Creazione dell'elemento label e input per il campo Email
+        const labelEmail = document.createElement('label');
+        labelEmail.setAttribute('for', 'email');
+        labelEmail.textContent = 'Email:';
+        form.appendChild(labelEmail);
 
-    const inputEmail = document.createElement('input');
-    inputEmail.setAttribute('type', 'text');
-    inputEmail.setAttribute('name', 'email');
-    inputEmail.setAttribute('id', 'email');
-    form.appendChild(inputEmail);
+        const inputEmail = document.createElement('input');
+        inputEmail.setAttribute('type', 'text');
+        inputEmail.setAttribute('name', 'email');
+        inputEmail.setAttribute('id', 'email');
+        form.appendChild(inputEmail);
 
-// Inserimento del form nella pagina HTML
-document.body.appendChild(form);
+        // Inserimento del form nella pagina HTML
+        document.body.appendChild(form);
+
+    } else{
+        if(clickId=="negoziante"){
+            hideUB.style.display= 'none'; 
+            hideNeg.style.display= 'none'; 
+
+            // Creazione dell'elemento form
+            const form = document.getElementById('form');
+            form.setAttribute('method', 'post');
+            form.setAttribute('name', 'modulo');
+
+            // Creazione dell'elemento h1 per il titolo
+            const title = document.createElement('h1');
+            title.textContent = 'Registrati:';
+            form.appendChild(title);
+
+            // Creazione dell'elemento label e input per il campo Nome
+            const labelNome = document.createElement('label');
+            labelNome.setAttribute('for', 'nome');
+            labelNome.textContent = 'Nome:';
+            form.appendChild(labelNome);
+
+            const inputNome = document.createElement('input');
+            inputNome.setAttribute('type', 'text');
+            inputNome.setAttribute('name', 'nome');
+            inputNome.setAttribute('id', 'nome');
+            form.appendChild(inputNome);
+            form.appendChild(document.createElement('br'));
+
+            // Creazione dell'elemento label e input per il campo Cognome
+            const labelCognome = document.createElement('label');
+            labelCognome.setAttribute('for', 'cognome');
+            labelCognome.textContent = 'Cognome:';
+            form.appendChild(labelCognome);
+
+            const inputCognome = document.createElement('input');
+            inputCognome.setAttribute('type', 'text');
+            inputCognome.setAttribute('name', 'cognome');
+            inputCognome.setAttribute('id', 'cognome');
+            form.appendChild(inputCognome);
+            form.appendChild(document.createElement('br'));
+
+            // Creazione dell'elemento label e input per il campo Email
+            const labelEmail = document.createElement('label');
+            labelEmail.setAttribute('for', 'email');
+            labelEmail.textContent = 'Email:';
+            form.appendChild(labelEmail);
+
+            const inputEmail = document.createElement('input');
+            inputEmail.setAttribute('type', 'text');
+            inputEmail.setAttribute('name', 'email');
+            inputEmail.setAttribute('id', 'email');
+            form.appendChild(inputEmail);
+
+            // Array di oggetti contenenti informazioni sui campi del form
+            const campi = [
+                { label: 'Username', id: 'username', type: 'text' },
+                { label: 'Password', id: 'password', type: 'password' },
+                { label: 'Conferma Password', id: 'confermaPassword', type: 'password' }
+            ];
+
+            // Creazione dei campi del form
+            campi.forEach(campo => {
+                
+                // Creazione dell'elemento label
+                const label = document.createElement('label');
+                label.setAttribute('for', campo.id);
+                label.textContent = campo.label + ':';
+                form.appendChild(label);
+
+                // Creazione dell'elemento input
+                const input = document.createElement('input');
+                input.setAttribute('type', campo.type);
+                input.setAttribute('name', campo.id);
+                input.setAttribute('id', campo.id);
+                form.appendChild(input);
+
+                // Aggiunta di un salto di riga dopo ogni campo
+                form.appendChild(document.createElement('br'));
+                
+            });
+
+            /** 
+            // Creazione degli elementi per mostrare/nascondere la password
+            const showPasswordCheckbox = createShowPasswordCheckbox('password', 'Mostra Password', 'showPassword()');
+            const showConfPasswordCheckbox = createShowPasswordCheckbox('confermaPassword', 'Mostra Password', 'showConfPassword()');
+
+            // Aggiunta degli elementi al form
+            form.appendChild(showPasswordCheckbox);
+            form.appendChild(document.createElement('br'));
+            form.appendChild(showConfPasswordCheckbox);
+            form.appendChild(document.createElement('br'));
+            form.appendChild(document.createElement('br'));
+
+            // Funzione per creare il checkbox per mostrare/nascondere la password
+            function createShowPasswordCheckbox(inputId, labelValue, onclickFunction) {
+                const checkbox = document.createElement('input');
+                checkbox.setAttribute('type', 'checkbox');
+                checkbox.setAttribute('value', labelValue);
+                checkbox.setAttribute('onclick', onclickFunction);
+                const label = document.createElement('label');
+                label.textContent = labelValue;
+                const lineBreak = document.createElement('br');
+                return [checkbox, label, lineBreak];
+            }
+            */
+
+            // Creazione degli elementi per il reset e l'invio del form
+            const resetButton = createButton('reset', 'Reset', 'button2');
+            const submitButton = createButton('submit', 'Registra', 'button2');
+
+            // Aggiunta degli elementi al form
+            form.appendChild(resetButton);
+            form.appendChild(submitButton);
+
+            // Funzione per creare un bottone
+            function createButton(type, value, className) {
+                const button = document.createElement('input');
+                button.setAttribute('type', type);
+                button.setAttribute('value', value);
+                button.setAttribute('class', className);
+                return button;
+            }
+
+            // Inserimento del form nella pagina HTML
+            document.body.appendChild(form);
+
+        }
     }
-}
 };
 
