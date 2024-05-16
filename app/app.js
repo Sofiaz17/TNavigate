@@ -41,10 +41,13 @@ const swaggerDefinition = {
     description:
     'This is a REST API application made with Express.',
   },
+  externalDocs: {                // <<< this will add the link to your swagger page
+    description: "swagger.json", // <<< link title
+    url: "/swagger.json"         // <<< and the file added below in app.get(...)
+  },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server',
+        url: 'http://localhost:3000/api/v1'
       },
     ],
 };
@@ -58,6 +61,8 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+ 
+console.log('swagger: ', swaggerSpec);
 /**
  * Serve front-end static files
  */
@@ -74,6 +79,11 @@ app.use((req,res,next) => {
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Helloooo" });
+});
+
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
 });
 
 app.use('/api/v1/shops', shops);

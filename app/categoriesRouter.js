@@ -41,19 +41,17 @@ const Shop = require('./models/shop'); // get our mongoose model
 * @swagger
 * /shopCategories:
 *   get:
-*       description: Get the list of categories with a certain name.
-*       summary: View categories according to request parameters
+*       description: Get the list of categories.
+*       summary: View all the possible categories a shop can belong to
 *   responses:
 *       '200':
-*           description: 'Collection of categories'
+*           description: 'Enum of categories'
 *           content:
 *               application/json:
 *                   schema:
 *                       type: array
 *                   items:
-*                       name:
-*                           type: string
-*                           description: 'Name of the category'
+*                       type: string
  */
 routerCateg.get('', async (req, res) => {
     let categ = await Shop.schema.path('category').enumValues;
