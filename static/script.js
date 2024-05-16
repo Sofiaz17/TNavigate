@@ -97,12 +97,12 @@ function loadCategory() {
             let button = document.createElement('button');
             button.type = 'button'
             button.onclick = ()=>searchShopfromCat(category.name);
-            button.textContent = 'Search shops';
+            button.textContent = 'Visualizza negozi';
 
             let button2 = document.createElement('button');
             button2.type = 'button'
             button2.onclick = ()=>searchProdfromCat(category.name);
-            button2.textContent = 'Search proucts';
+            button2.textContent = 'Visualizza prodotti';
             
             // Append all our elements
             span.appendChild(a);
