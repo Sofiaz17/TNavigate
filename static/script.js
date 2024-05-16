@@ -25,12 +25,16 @@ function login()
     .then(function(data) { // Here you get the data to modify as you please
         //console.log(data);
         loggedUser.token = data.token;
+        console.log('token: ', loggedUser.token, ' ', data.token);
         loggedUser.email = data.email;
+        console.log('email: ', loggedUser.email, ' ', data.email);
         loggedUser.id = data.id;
+        console.log('id: ', loggedUser.id, ' ', data.id);
         loggedUser.self = data.self;
+        console.log('self: ', loggedUser.self, ' ', data.self);
         // loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
         document.getElementById("loggedUser").textContent = loggedUser.email;
-        loadLendings();
+       // loadLendings();
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here
@@ -98,7 +102,7 @@ function takeShop(shopUrl)
     })
     .then((resp) => {
         console.log(resp);
-        loadLendings();
+      ///  loadLendings();
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here
@@ -149,7 +153,7 @@ function loadShopOwner() {
 /**
  * This function is called by clicking on the "insert book" button.
  * It creates a new book given the specified title,
- * and force the refresh of the whole list of books.
+ * and force the refresh of the whole list of shops.
  */
 function insertShop()
 {
@@ -165,7 +169,7 @@ function insertShop()
     })
     .then((resp) => {
         console.log(resp);
-        loadShop();
+        loadShops();
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here

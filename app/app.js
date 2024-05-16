@@ -82,7 +82,7 @@ app.use('/api/v1/utentiBase/me', tokenChecker);
  * Resource routing
  */
 
-app.use('/api/v1/shops', books);
+app.use('/api/v1/shops', shops);
 app.use('/api/v1/utentiBase', students);
 //app.use('/api/v1/booklendings', booklendings);
 
