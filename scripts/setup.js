@@ -1,5 +1,5 @@
 require('dotenv').config()
-var UtenteBase   = require('../app/models/utenteBase'); // get our mongoose model
+var UtenteBase   = require('../app/models/utenteBase'); 
 
 var mongoose    = require('mongoose');
 

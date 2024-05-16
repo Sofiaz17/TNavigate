@@ -9,7 +9,6 @@ const tokenChecker = require('./tokenChecker.js');
 
 const students = require('./utentiBase.js');
 const shops = require('./shops.js');
-//const booklendings = require('./booklendings.js');
 
 
 /**

@@ -152,7 +152,7 @@ function loadShopOwner() {
 
 /**
  * This function is called by clicking on the "insert shop" button.
- * It creates a new book given the specified title,
+ * It creates a new shop given the specified name,
  * and force the refresh of the whole list of shops.
  */
 function insertShop()
@@ -175,6 +175,7 @@ function insertShop()
     .catch( error => console.error(error) ); // If there is any error you will catch them here
 
 };
+
 
 //registrazione 
 function register(clickId)
@@ -238,6 +239,79 @@ function register(clickId)
         // Inserimento del form nella pagina HTML
         document.body.appendChild(form);
 
+            // Array di oggetti contenenti informazioni sui campi del form
+            const campi = [
+                { label: 'Username', id: 'username', type: 'text' },
+                { label: 'Password', id: 'password', type: 'password' },
+                { label: 'Conferma Password', id: 'confermaPassword', type: 'password' }
+            ];
+
+            // Creazione dei campi del form
+            campi.forEach(campo => {
+                
+                // Creazione dell'elemento label
+                const label = document.createElement('label');
+                label.setAttribute('for', campo.id);
+                label.textContent = campo.label + ':';
+                form.appendChild(label);
+
+                // Creazione dell'elemento input
+                const input = document.createElement('input');
+                input.setAttribute('type', campo.type);
+                input.setAttribute('name', campo.id);
+                input.setAttribute('id', campo.id);
+                form.appendChild(input);
+
+                // Aggiunta di un salto di riga dopo ogni campo
+                form.appendChild(document.createElement('br'));
+
+            });
+
+            /** 
+            // Creazione degli elementi per mostrare/nascondere la password
+            const showPasswordCheckbox = createShowPasswordCheckbox('password', 'Mostra Password', 'showPassword()');
+            const showConfPasswordCheckbox = createShowPasswordCheckbox('confermaPassword', 'Mostra Password', 'showConfPassword()');
+
+            // Aggiunta degli elementi al form
+            form.appendChild(showPasswordCheckbox);
+            form.appendChild(document.createElement('br'));
+            form.appendChild(showConfPasswordCheckbox);
+            form.appendChild(document.createElement('br'));
+            form.appendChild(document.createElement('br'));
+
+            // Funzione per creare il checkbox per mostrare/nascondere la password
+            function createShowPasswordCheckbox(inputId, labelValue, onclickFunction) {
+                const checkbox = document.createElement('input');
+                checkbox.setAttribute('type', 'checkbox');
+                checkbox.setAttribute('value', labelValue);
+                checkbox.setAttribute('onclick', onclickFunction);
+                const label = document.createElement('label');
+                label.textContent = labelValue;
+                const lineBreak = document.createElement('br');
+                return [checkbox, label, lineBreak];
+            }
+            */
+
+            // Creazione degli elementi per il reset e l'invio del form
+            const resetButton = createButton('reset', 'Reset', 'button2');
+            const submitButton = createButton('submit', 'Registra', 'button2');
+
+            // Aggiunta degli elementi al form
+            form.appendChild(resetButton);
+            form.appendChild(submitButton);
+
+            // Funzione per creare un bottone
+            function createButton(type, value, className) {
+                const button = document.createElement('input');
+                button.setAttribute('type', type);
+                button.setAttribute('value', value);
+                button.setAttribute('class', className);
+                return button;
+            }
+
+            // Inserimento del form nella pagina HTML
+            document.body.appendChild(form);
+
     } else{
         if(clickId=="negoziante"){
             hideUB.style.display= 'none'; 
@@ -291,6 +365,78 @@ function register(clickId)
             inputEmail.setAttribute('id', 'email');
             form.appendChild(inputEmail);
 
+            // Creazione dell'elemento label e input per il campo Nome negozio
+            const labelShopName = document.createElement('label');
+            labelShopName.setAttribute('for', 'shopName');
+            labelShopName.textContent = 'Nome negozio:';
+            form.appendChild(labelShopName);
+
+            const inputShopName = document.createElement('input');
+            inputShopName.setAttribute('type', 'text');
+            inputShopName.setAttribute('name', 'shopName');
+            inputShopName.setAttribute('id', 'shopName');
+            form.appendChild(inputShopName);
+
+            // Creazione dell'elemento label e input per il campo Indirizzo
+            const labelAddress = document.createElement('label');
+            labelAddress.setAttribute('for', 'address');
+            labelAddress.textContent = 'Indirizzo negozio (specificare se Via, Piazza, Strada, etc.):';
+            form.appendChild(labelAddress);
+
+            const inputAddress = document.createElement('input');
+            inputAddress.setAttribute('type', 'text');
+            inputAddress.setAttribute('name', 'address');
+            inputAddress.setAttribute('id', 'address');
+            form.appendChild(inputAddress);
+            
+            // Creazione dell'elemento label e input per il campo Numero civico
+            const labelCivico = document.createElement('label');
+            labelCivico.setAttribute('for', 'civico');
+            labelCivico.textContent = 'Numero civico:';
+            form.appendChild(labelCivico);
+
+            const inputCivico = document.createElement('input');
+            inputCivico.setAttribute('type', 'number');
+            inputCivico.setAttribute('name', 'civico');
+            inputCivico.setAttribute('id', 'civico');
+            form.appendChild(inputCivico);
+
+            // Creazione dell'elemento label e input per il campo CAP
+            const labelCap = document.createElement('label');
+            labelCap.setAttribute('for', 'cap');
+            labelCap.textContent = 'CAP:';
+            form.appendChild(labelCap);
+
+            const inputCap = document.createElement('input');
+            inputCap.setAttribute('type', 'number');
+            inputCap.setAttribute('name', 'civico');
+            inputCap.setAttribute('id', 'civico');
+            form.appendChild(inputCap);
+            
+            // Creazione dell'elemento label e input per il campo Città
+            const labelCity = document.createElement('label');
+            labelCity.setAttribute('for', 'city');
+            labelCity.textContent = 'Città:';
+            form.appendChild(labelCity);
+
+            const inputCity = document.createElement('input');
+            inputCity.setAttribute('type', 'text');
+            inputCity.setAttribute('name', 'city');
+            inputCity.setAttribute('id', 'city');
+            form.appendChild(inputCity);
+         
+            // Creazione dell'elemento label e input per il campo Provincia
+            const labelProvincia = document.createElement('label');
+            labelProvincia.setAttribute('for', 'provincia');
+            labelProvincia.textContent = 'Provincia:';
+            form.appendChild(labelProvincia);
+
+            const inputProvincia = document.createElement('input');
+            inputProvincia.setAttribute('type', 'text');
+            inputProvincia.setAttribute('name', 'provincia');
+            inputProvincia.setAttribute('id', 'provincia');
+            form.appendChild(inputProvincia);
+
             // Array di oggetti contenenti informazioni sui campi del form
             const campi = [
                 { label: 'Username', id: 'username', type: 'text' },
@@ -316,7 +462,7 @@ function register(clickId)
 
                 // Aggiunta di un salto di riga dopo ogni campo
                 form.appendChild(document.createElement('br'));
-                
+
             });
 
             /** 
