@@ -126,6 +126,10 @@ function loadShops() {
     
 }
 
+function viewInformation(shop){
+    
+
+}
 function loadCategory() {
     console.log("load category called");
     
@@ -164,11 +168,17 @@ function loadCategory() {
             let button = document.createElement('button');
             button.type = 'button'
             button.onclick = ()=>searchShopfromCat(category.name);
-            button.textContent = 'Search shops';
+            button.textContent = 'Visualizza negozi';
+
+            let button2 = document.createElement('button');
+            button2.type = 'button'
+            button2.onclick = ()=>searchProdfromCat(category.name);
+            button2.textContent = 'Visualizza prodotti';
             
             // Append all our elements
             span.appendChild(a);
             span.appendChild(button);
+            span.appendChild(button2);
             li.appendChild(span);
             ul.appendChild(li);
        })
@@ -310,8 +320,10 @@ async function searchShopByProduct() {           //called 4 times before fetchin
 
     ul.textContent = '';
 
-    const categToSearch = await prodCategory();
-                console.log('categtosearch: ' + categToSearch);
+    if(categToSearch==undefined){
+        categToSearch = await prodCategory();
+        console.log('categtosearch: ' + categToSearch);
+    }
 
     searchShopByName(categToSearch);
     
@@ -337,4 +349,192 @@ async function prodCategory() {           //called 4 times before fetching
         })
 }
 
+
+        
+
+function loadProducts() {           //called 4 times before fetching
+        console.log("loadProducts called");
+
+        const ul = document.getElementById('productsList'); 
+
+        ul.textContent = '';
+
+
+    fetch('../api/v1/products')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) { // Here you get the data to modify as you please
+        
+            data.sort((a, b) => a.name.localeCompare(b.name));
+        
+            return data.map(function(product) { // Map through the results and for each run the code below
+            
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+            // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+            a.href = product.self
+            a.textContent = product.name;
+            // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+             //let button = document.createElement('button');
+            // button.type = 'button'
+            // button.onclick = ()=>takeShop(category.self)
+            // button.textContent = 'Take the category';
+            
+            // Append all our elements
+            span.appendChild(a);
+          //  span.appendChild(button);
+            li.appendChild(span);
+            ul.appendChild(li);
+        })
+    })
+    .catch( error => console.error(error) );// If there is any error you will catch them here
+    
+}
+
+function searchProdfromCat(category) {
+    const ul = document.getElementById('Products in categories'); 
+    // console.log(Shop);
+     ul.textContent = '';
+    fetch('../api/v1/products?category=' + category)
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // 
+        console.log("searchProdfromCat called");
+        //const shopOfCateg = await Shop.find({data.category: category.name });
+        console.log('Data: ' + data);
+        
+        return data.map(function(product){
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+         // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+           // a.href;
+            a.addEventListener('click', function(event) {
+                // Prevent the default behavior of following the link
+                event.preventDefault();
+                console.log('searchProdfromCat: prod cat->', product.category);
+                // Call the searchShopByProduct function
+                searchShopByProduct(product.category);
+            });
+            a.textContent = product.name;
+        // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+        // Append all our elements
+            span.appendChild(a);
+            li.appendChild(span);
+            ul.appendChild(li);
+    })
+})}
+
+        //console.log('enter func data Searchbyprod');
+        // console.log(data);
+        // Sort the data array alphabetically based on the category names
+       // data.sort((a, b) => a.name.localeCompare(b.name));
+        
+//         return data.map(function(product) { // Map through the results and for each run the code below
+//             //console.log('enter return');
+//             // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
+//             let prodCateg = product.category;
+//             let li = document.createElement('li');
+//             let span = document.createElement('span');
+//             // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+//             let a = document.createElement('a');
+//             a.href = product.self
+//             a.textContent = product.name;
+//             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+//              //let button = document.createElement('button');
+//             // button.type = 'button'
+//             // button.onclick = ()=>takeShop(category.self)
+//             // button.textContent = 'Take the category';
+            
+//             // Append all our elements
+//             span.appendChild(a);
+//           //  span.appendChild(button);
+//             li.appendChild(span);
+//             ul.appendChild(li);
+//         })
+//     })
+//     .catch( error => console.error(error) );// If there is any error you will catch them here
+    
+// }
+//console.log('enumValues: ');
+   // console.log(Shop.schema.path('category'));
+
+
+   /// var categEnum = Shop.schema.path('category').enumValues;
+    
+
+    // fetch('../api/v1/shops')
+//     fetch('../api/v1/shopCategories')
+//     .then((resp) => resp.json()) // Transform the data into json
+//     .then(async function(data) { // Here you get the data to modify as you please
+//        // console.log('Enum values:', data);
+//        // console.log(data);
+//        // Sort the data array alphabetically based on the category names
+//         //const categories = new Set(data.map(x => x.category));
+//        // console.log(data);
+//         Shop
+//         const shopOfCateg = await Shop.find({ 'name': 'Ghost' }, 'name occupation');
+//         //return categories.forEach(function(category) { // Map through the results and for each run the code below
+//         return data.map(function(category) {  
+//             // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
+            
+//             let li = document.createElement('li');
+//             let span = document.createElement('span');
+//             // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+//             let a = document.createElement('a');
+//            // a.href = category.self
+//             a.textContent = category.name;
+//             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+          
+            
+//             // Append all our elements
+//             span.appendChild(a);
+            
+//             li.appendChild(span);
+//             ul.appendChild(li);
+//        })
+//    })
+
+//    .catch( error => console.error(error) );// If there is any error you will catch them here
+    
+// }
+
+// // function searchShopfromCat() {
+// //     console.log("searchShopfromCat called");
+
+// //     const ul = document.getElementById('categories'); 
+
+// //     ul.textContent = '';
+
+// //     fetch('../api/v1/shops')
+// //     .then((resp) => resp.json()) // Transform the data into json
+// //     .then(function(data) { // Here you get the data to modify as you please
+        
+// //         // console.log(data);
+// //         // Sort the data array alphabetically based on the category names
+// //         const categories = new Set(data.map(x => x.category));
+// //         console.log(categories);
+        
+// //         return categories.forEach(function(category) { // Map through the results and for each run the code below
+            
+// //             // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
+            
+// //             let li = document.createElement('li');
+// //             let span = document.createElement('span');
+// //             // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+// //             let a = document.createElement('a');
+// //            // a.href = category.self
+// //             a.textContent = category;
+// //             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+          
+            
+// //             // Append all our elements
+// //             span.appendChild(a);
+            
+// //             li.appendChild(span);
+// //             ul.appendChild(li);
+// //         })
+// //     })
+// //     .catch( error => console.error(error) );// If there is any error you will catch them here
+    
+// // }
 window.initMap = initMap;

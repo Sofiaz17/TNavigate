@@ -18,27 +18,31 @@
     <div class="containerwhite">
       <div class="left-column">
     
-          <form action="api/v1/shops" method="get" name="getShops" id="getShops">
-            <button type="button" onclick="loadShops()">Elenco negozi</button>
-            <button type="button" onclick="loadCategory()">Elenco categorie</button>
-            <label for="shopName">Shop or category:</label>
-           <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
-            <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-            <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
-            <input type="search" id="productName" >
-            <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
-          </form>
-          
-          <h2>Negozi:</h2>
-          <ul id="shops"></ul>
-          <h2>Categorie:</h2>
-          <ul id="categories"></ul>
-          <h2>Negozi in una specifica categoria:</h2>
-          <ul id="Shops in categories"></ul>
-          <h2>Input search:</h2>
-          <ul id="inputSearch"></ul>
-          <h2>Input product search:</h2>
-          <ul id="inputProductSearch"></ul>
+        <form action="api/v1/shops" method="get" name="getShops" id="getShops">
+          <button type="button" onclick="loadShops()">Elenco negozi</button>
+          <button type="button" onclick="loadCategory()">Elenco categorie</button>
+          <button type="button" onclick="loadProducts()">Elenco prodotti</button>
+          <label for="shopName">Negozio o categoria:</label>
+          <input type="search" id="shopName" onkeypress=triggerOnEnter()>
+          <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
+          <input type="search" id="productName" >
+          <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
+        </form>
+        
+        <h2>Negozi:</h2>
+        <ul id="shops"></ul>
+        <h2>Categorie:</h2>
+        <ul id="categories"></ul>
+        <h2>Negozi in una specifica categoria:</h2>
+        <ul id="Shops in categories"></ul>
+        <h2>Prodotti in una specifica categoria:</h2>
+        <ul id="Products in categories"></ul>
+        <h2>Input search:</h2>
+        <ul id="inputSearch"></ul>
+        <h2>Input product search:</h2>
+        <ul id="inputProductSearch"></ul>
+        <h2>Prodotti:</h2>
+        <ul id="productsList"></ul>
          
       </div>
       <div class="right-column">
@@ -68,20 +72,31 @@
   <input type="text" id="shopName" name="shopName"><br><br> -->
 <!--  <input type="search" id="shopName" onkeypress=triggerOnEnter()>
   <button type="button" id='searchBtn' onclick="searchShopByName()">Search</button>
+  <button type="button" onclick="loadShops()">Elenco negozi</button>
+  <button type="button" onclick="loadCategory()">Elenco categorie</button>
+  <button type="button" onclick="loadProducts()">Elenco prodotti</button>
+  <label for="shopName">Negozio o categoria:</label>
+ <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
+  <input type="search" id="shopName" onkeypress=triggerOnEnter()>
+  <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
   <input type="search" id="productName" >
-  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Search product</button>
+  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
 </form>
 
-<h2>Shops:</h2>
+<h2>Negozi:</h2>
 <ul id="shops"></ul>
-<h2>Categories:</h2>
+<h2>Categorie:</h2>
 <ul id="categories"></ul>
-<h2>Shops in categories:</h2>
+<h2>Negozi in una specifica categoria:</h2>
 <ul id="Shops in categories"></ul>
+<h2>Prodotti in una specifica categoria:</h2>
+<ul id="Products in categories"></ul>
 <h2>Input search:</h2>
 <ul id="inputSearch"></ul>
 <h2>Input product search:</h2>
 <ul id="inputProductSearch"></ul>
+<h2>Prodotti:</h2>
+<ul id="productsList"></ul>
 
 <script src="script.js"></script> 
     

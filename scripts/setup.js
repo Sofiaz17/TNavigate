@@ -81,4 +81,11 @@ Product.deleteMany().then( () => {
 		keywords: ['carne', 'pollo', 'carne bianca', 'carne di pollo']
 	});
 	return carnePollo.save();
+}).then( () => {
+	var cavoUsb = new Product({ 
+		name: 'cavo usb',
+		category: ['elettronica'],
+		keywords: ['cavo', 'usb']
+	});
+	return cavoUsb.save();
 });
