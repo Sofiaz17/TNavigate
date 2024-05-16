@@ -7,6 +7,8 @@ routerProduct.get('', async (req, res) => {
 
     if(req.query.name){
         product = await Product.find({name: req.query.name}).exec();
+    } else if(req.query.category){
+        product = await Product.find({category: req.query.category}).exec();
     } else {
         product = await Product.find().exec();
     }

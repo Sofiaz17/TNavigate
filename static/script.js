@@ -98,10 +98,16 @@ function loadCategory() {
             button.type = 'button'
             button.onclick = ()=>searchShopfromCat(category.name);
             button.textContent = 'Search shops';
+
+            let button2 = document.createElement('button');
+            button2.type = 'button'
+            button2.onclick = ()=>searchProdfromCat(category.name);
+            button2.textContent = 'Search proucts';
             
             // Append all our elements
             span.appendChild(a);
             span.appendChild(button);
+            span.appendChild(button2);
             li.appendChild(span);
             ul.appendChild(li);
        })
@@ -316,15 +322,17 @@ async function isCategory(input) {
 //         })
 // }
 
-async function searchShopByProduct() {           //called 4 times before fetching
+async function searchShopByProduct(categToSearch) {           //called 4 times before fetching
                 console.log("searchShopByProduct called");
 
     const ul = document.getElementById('inputProductSearch'); 
 
     ul.textContent = '';
 
-    const categToSearch = await prodCategory();
-                console.log('categtosearch: ' + categToSearch);
+    if(categToSearch==undefined){
+        categToSearch = await prodCategory();
+        console.log('categtosearch: ' + categToSearch);
+    }
 
     searchShopByName(categToSearch);
     
@@ -387,6 +395,40 @@ function loadProducts() {           //called 4 times before fetching
     .catch( error => console.error(error) );// If there is any error you will catch them here
     
 }
+
+function searchProdfromCat(category) {
+    const ul = document.getElementById('Products in categories'); 
+    // console.log(Shop);
+     ul.textContent = '';
+    fetch('../api/v1/products?category=' + category)
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // 
+        console.log("searchProdfromCat called");
+        //const shopOfCateg = await Shop.find({data.category: category.name });
+        console.log('Data: ' + data);
+        
+        return data.map(function(product){
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+         // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+           // a.href;
+            a.addEventListener('click', function(event) {
+                // Prevent the default behavior of following the link
+                event.preventDefault();
+                console.log('searchProdfromCat: prod cat->', product.category);
+                // Call the searchShopByProduct function
+                searchShopByProduct(product.category);
+            });
+            a.textContent = product.name;
+        // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+        // Append all our elements
+            span.appendChild(a);
+            li.appendChild(span);
+            ul.appendChild(li);
+    })
+})}
+
         //console.log('enter func data Searchbyprod');
         // console.log(data);
         // Sort the data array alphabetically based on the category names
