@@ -55,6 +55,10 @@ function loadShops() {
     
 }
 
+function viewInformation(shop){
+    
+
+}
 function loadCategory() {
     console.log("load category called");
     

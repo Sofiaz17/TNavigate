@@ -47,6 +47,22 @@ app.get("/", (req, res) => {
   res.json({ message: "Helloooo" });
 });
 
+// With middleware
+app.use('/verify', function (req, res, next) {
+  console.log("Authenticate and Redirect")
+  res.redirect('/user');
+  next();
+});
+
+app.get('/user', function (req, res) {
+  res.send("User Page");
+});
+
+app.listen(PORT, function (err) {
+  if (err) console.log(err);
+  console.log("Server listening on PORT", PORT);
+});
+
 app.use('/api/v1/shops', shops);
 app.use('/api/v1/shopCategories', categs);
 app.use('/api/v1/products', prods);
