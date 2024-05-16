@@ -84,134 +84,6 @@ function geocode(request, resolve, reject) {
 }
 
 
-// // Initialize and add the map
-// let map;
-
-// async function initMap() {
-//   // The location of Uluru
-//   const position = { lat: -25.344, lng: 131.031 };
-//   // Request needed libraries.
-//   //@ts-ignore
-//   const { Map } = await google.maps.importLibrary("maps");
-//   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-
-//   // The map, centered at Uluru
-//   map = new Map(document.getElementById("map"), {
-//     zoom: 15,
-//     center: position,
-//     mapId: "DEMO_MAP_ID",
-//   });
-
-//   // The marker, positioned at Uluru
-//   const marker = new AdvancedMarkerElement({
-//     map: map,
-//     position: position,
-//     title: "Uluru",
-//   });
-// }
-
-// initMap();
-
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function initMap (){
-//   map = new google.maps.Map(document.getElementById("map"), {
-//     zoom: 15,
-//     center: {lat: 46.067546, lng: 11.121488},
-//     mapTypeControl: false,
-//   });
-//   geocoder = new google.maps.Geocoder();
-
-//   //const inputText = document.createElement("input");
-
-// //   inputText.type = "text";
-// //   inputText.placeholder = "Enter a location";
-
-//   //const submitButton = document.createElement("input");
-
-// //   submitButton.type = "button";
-// //   submitButton.value = "Geocode";
-// //   submitButton.classList.add("button", "button-primary");
-
-//  // const clearButton = document.createElement("input");
-
-// //   clearButton.type = "button";
-// //   clearButton.value = "Clear";
-// //   clearButton.classList.add("button", "button-secondary");
-//   response = document.createElement("pre");
-//   response.id = "response";
-//   response.innerText = "";
-//   responseDiv = document.createElement("div");
-//   responseDiv.id = "response-container";
-//   responseDiv.appendChild(response);
-
-// //   const instructionsElement = document.createElement("p");
-
-// //   instructionsElement.id = "instructions";
-// //   instructionsElement.innerHTML =
-// //     "<strong>Instructions</strong>: Enter an address in the textbox to geocode or click on the map to reverse geocode.";
-// //   map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputText);
-// //   map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitButton);
-// //   map.controls[google.maps.ControlPosition.TOP_LEFT].push(clearButton);
-// //   map.controls[google.maps.ControlPosition.LEFT_TOP].push(instructionsElement);
-//    map.controls[google.maps.ControlPosition.LEFT_TOP].push(responseDiv);
-//   marker = new google.maps.Marker({
-//     map,
-//   });
-
-//   fetch('../api/v1/shops')
-//     .then((resp) => resp.json()) // Transform the data into json
-//     .then(function(data) { 
-
-//         return data.map(function(shop){
-//             map.addListener("click", (shop) => {
-//                 geocoder({ location: shop.address.latLng });
-//           });
-//     })})
-        
-// //   submitButton.addEventListener("click", () =>
-// //     geocode({ address: inputText.value }),
-// //   );
-// //   clearButton.addEventListener("click", () => {
-// //     clear();
-// //   });
-//   clear();
-// }
-
-// function clear() {
-//   marker.setMap(null);
-//   responseDiv.style.display = "none";
-// }
-
-
-//function geocoding(){
-    //     geocoder = new google.maps.Geocoder();
-    
-    //     fetch('../api/v1/shops')
-    //     .then((resp) => resp.json()) // Transform the data into json
-    //     .then(function(data) { 
-    
-    //         return data.map(function(shop){
-                
-    //             console.log('geocoder: ',  geocoder({ location: shop.address.latLng }));   
-    //     });
-    //     })}
-            
-
-// window.initMap = initMap;
-
 function loadShops() {
     console.log("load shops called");
 
@@ -254,57 +126,57 @@ function loadShops() {
     
 }
 
-// // function loadCategory() {
-// //     console.log("load category called");
+function loadCategory() {
+    console.log("load category called");
     
-// //     const ul = document.getElementById('categories'); 
-// //    // console.log(Shop);
-// //     ul.textContent = '';
+    const ul = document.getElementById('categories'); 
+   // console.log(Shop);
+    ul.textContent = '';
   
-// // //console.log('enumValues: ');
-// //    // console.log(Shop.schema.path('category'));
+    //console.log('enumValues: ');
+   // console.log(Shop.schema.path('category'));
 
 
-// //    /// var categEnum = Shop.schema.path('category').enumValues;
+   /// var categEnum = Shop.schema.path('category').enumValues;
     
 
-// //     // fetch('../api/v1/shops')
-// //     fetch('../api/v1/shopCategories')
-// //     .then((resp) => resp.json()) // Transform the data into json
-// //     .then(function(data) { // Here you get the data to modify as you please
-// //        // console.log('Enum values:', data);
-// //        // console.log(data);
-// //        // Sort the data array alphabetically based on the category names
-// //         //const categories = new Set(data.map(x => x.category));
-// //         console.log('CatData: ' + data);
+    // fetch('../api/v1/shops')
+    fetch('../api/v1/shopCategories')
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // Here you get the data to modify as you please
+       // console.log('Enum values:', data);
+       // console.log(data);
+       // Sort the data array alphabetically based on the category names
+        //const categories = new Set(data.map(x => x.category));
+        console.log('CatData: ' + data);
         
-// //         //return categories.forEach(function(category) { // Map through the results and for each run the code below
-// //         return data.map(function(category) {  
-// //             // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
-// //             console.log('CatCategoryName: ' + category.name);
-// //             let li = document.createElement('li');
-// //             let span = document.createElement('span');
-// //             // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
-// //             let a = document.createElement('a');
-// //            // a.href = category.self
-// //             a.textContent = category.name;
-// //             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
-// //             let button = document.createElement('button');
-// //             button.type = 'button'
-// //             button.onclick = ()=>searchShopfromCat(category.name);
-// //             button.textContent = 'Search shops';
+        //return categories.forEach(function(category) { // Map through the results and for each run the code below
+        return data.map(function(category) {  
+            // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
+            console.log('CatCategoryName: ' + category.name);
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+            // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+           // a.href = category.self
+            a.textContent = category.name;
+            // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+            let button = document.createElement('button');
+            button.type = 'button'
+            button.onclick = ()=>searchShopfromCat(category.name);
+            button.textContent = 'Search shops';
             
-// //             // Append all our elements
-// //             span.appendChild(a);
-// //             span.appendChild(button);
-// //             li.appendChild(span);
-// //             ul.appendChild(li);
-// //        })
-// //    })
+            // Append all our elements
+            span.appendChild(a);
+            span.appendChild(button);
+            li.appendChild(span);
+            ul.appendChild(li);
+       })
+   })
 
-// //    .catch( error => console.error(error) );// If there is any error you will catch them here
+   .catch( error => console.error(error) );// If there is any error you will catch them here
     
-// // }
+}
 
 function searchShopfromCat(category) {
     const ul = document.getElementById('Shops in categories'); 
@@ -431,38 +303,38 @@ async function isCategory(input) {
     })
 }
 
-// // async function searchShopByProduct() {           //called 4 times before fetching
-// //                 console.log("searchShopByProduct called");
+async function searchShopByProduct() {           //called 4 times before fetching
+                console.log("searchShopByProduct called");
 
-// //     const ul = document.getElementById('inputProductSearch'); 
+    const ul = document.getElementById('inputProductSearch'); 
 
-// //     ul.textContent = '';
+    ul.textContent = '';
 
-// //     const categToSearch = await prodCategory();
-// //                 console.log('categtosearch: ' + categToSearch);
+    const categToSearch = await prodCategory();
+                console.log('categtosearch: ' + categToSearch);
 
-// //     searchShopByName(categToSearch);
+    searchShopByName(categToSearch);
     
-// // }
+}
 
-// // async function prodCategory() {           //called 4 times before fetching
-// //                 console.log("prodCategory called");
+async function prodCategory() {           //called 4 times before fetching
+                console.log("prodCategory called");
 
-// //     const ul = document.getElementById('inputProductSearch'); 
+    const ul = document.getElementById('inputProductSearch'); 
 
-// //     ul.textContent = '';
+    ul.textContent = '';
     
-// //     const userInput = document.getElementById('productName').value.toLowerCase();
-// //                 console.log('userInput: ' + userInput);
-// //                 console.log('encoded uri userinput: ' + encodeURI(userInput.toLowerCase()));
+    const userInput = document.getElementById('productName').value.toLowerCase();
+                console.log('userInput: ' + userInput);
+                console.log('encoded uri userinput: ' + encodeURI(userInput.toLowerCase()));
     
    
-// //     return await fetch('../api/v1/products?name=' + encodeURI(userInput.toLowerCase()))
-// //     .then((resp) => resp.json()) // Transform the data into json
-// //     .then(function(data) { // Here you get the data to modify as you please
-// //         return data.map(prod => prod.category);
+    return await fetch('../api/v1/products?name=' + encodeURI(userInput.toLowerCase()))
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // Here you get the data to modify as you please
+        return data.map(prod => prod.category);
              
-// //         })
-// // }
+        })
+}
 
-// //window.initMap = initMap;
+window.initMap = initMap;
