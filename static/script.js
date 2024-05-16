@@ -348,6 +348,45 @@ async function prodCategory() {           //called 4 times before fetching
         return data.map(prod => prod.category);
              
         })}
+
+function loadProducts() {           //called 4 times before fetching
+        console.log("loadProducts called");
+
+        const ul = document.getElementById('productsList'); 
+
+        ul.textContent = '';
+
+
+    fetch('../api/v1/products')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) { // Here you get the data to modify as you please
+        
+            data.sort((a, b) => a.name.localeCompare(b.name));
+        
+            return data.map(function(product) { // Map through the results and for each run the code below
+            
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+            // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+            a.href = product.self
+            a.textContent = product.name;
+            // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+             //let button = document.createElement('button');
+            // button.type = 'button'
+            // button.onclick = ()=>takeShop(category.self)
+            // button.textContent = 'Take the category';
+            
+            // Append all our elements
+            span.appendChild(a);
+          //  span.appendChild(button);
+            li.appendChild(span);
+            ul.appendChild(li);
+        })
+    })
+    .catch( error => console.error(error) );// If there is any error you will catch them here
+    
+}
         //console.log('enter func data Searchbyprod');
         // console.log(data);
         // Sort the data array alphabetically based on the category names

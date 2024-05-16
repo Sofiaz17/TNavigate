@@ -12,6 +12,7 @@
 <form action="api/v1/shops" method="get" name="getShops" id="getShops">
   <button type="button" onclick="loadShops()">Elenco negozi</button>
   <button type="button" onclick="loadCategory()">Elenco categorie</button>
+  <button type="button" onclick="loadProducts()">Elenco prodotti</button>
   <label for="shopName">Shop or category:</label>
  <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
   <input type="search" id="shopName" onkeypress=triggerOnEnter()>
@@ -30,6 +31,8 @@
 <ul id="inputSearch"></ul>
 <h2>Input product search:</h2>
 <ul id="inputProductSearch"></ul>
+<h2>Prodotti:</h2>
+<ul id="productsList"></ul>
 
 <script src="script.js"></script> 
     
