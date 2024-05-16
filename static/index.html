@@ -11,6 +11,7 @@
     <h1>TNavigate</h1>
    
     <script type="text/javascript" 
+      
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwMXy4aFNldadM-ONrQO1SwUY7ibVmQk&callback=initMap&v=weekly"
         async defer
       ></script> 
@@ -33,6 +34,8 @@
         <ul id="shops"></ul>
         <h2>Categorie:</h2>
         <ul id="categories"></ul>
+        <h2>Informazioni negozio:</h2>
+        <ul id="information"></ul>
         <h2>Negozi in una specifica categoria:</h2>
         <ul id="Shops in categories"></ul>
         <h2>Prodotti in una specifica categoria:</h2>
@@ -52,54 +55,3 @@
       
   </body>
 </html>
-
-<!--
-<!DOCTYPE html>
-<html>
-
-<head>
-  <script type = "text/javascript" src="C:\Users\speci\OneDrive\Desktop\TNcopy\static\script.js"></script>
-</head>
-
-<body>
-
-<h1>TNavigate</h1>
-
-<form action="api/v1/shops" method="get" name="getShops" id="getShops">
-  <button type="button" onclick="loadShops()">See shops</button>
-  <button type="button" onclick="loadCategory()">See categories</button>
-  <label for="shopName">Shop or category:</label>
-  <input type="text" id="shopName" name="shopName"><br><br> -->
-<!--  <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-  <button type="button" id='searchBtn' onclick="searchShopByName()">Search</button>
-  <button type="button" onclick="loadShops()">Elenco negozi</button>
-  <button type="button" onclick="loadCategory()">Elenco categorie</button>
-  <button type="button" onclick="loadProducts()">Elenco prodotti</button>
-  <label for="shopName">Negozio o categoria:</label>
- <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
-  <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-  <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
-  <input type="search" id="productName" >
-  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
-</form>
-
-<h2>Negozi:</h2>
-<ul id="shops"></ul>
-<h2>Categorie:</h2>
-<ul id="categories"></ul>
-<h2>Negozi in una specifica categoria:</h2>
-<ul id="Shops in categories"></ul>
-<h2>Prodotti in una specifica categoria:</h2>
-<ul id="Products in categories"></ul>
-<h2>Input search:</h2>
-<ul id="inputSearch"></ul>
-<h2>Input product search:</h2>
-<ul id="inputProductSearch"></ul>
-<h2>Prodotti:</h2>
-<ul id="productsList"></ul>
-
-<script src="script.js"></script> 
-    
-</body>
-
-</html>-->

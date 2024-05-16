@@ -3,12 +3,11 @@ const setup = require('./scripts/setup.js');
 //const dbConfig = require("../app/db.config.js");
 const mongoose = require('mongoose');
 //const db = require('./app/models');
-const uri = "mongodb+srv://sofiazandona:MongoDB17@cluster0.6a7o7gj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 var Shop   = require('./app/models/shop');
 //const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 mongoose
-  .connect(uri/*,{useNewUrlParser: true, useUnifiedTopology: true}*/)
+  .connect(process.env.DB_URL/*,{useNewUrlParser: true, useUnifiedTopology: true}*/)
   .then(() => {
     console.log('| Connesso a MongoDB | HOST: localhost:27017');
   })
