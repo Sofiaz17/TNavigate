@@ -2,11 +2,44 @@ const express = require('express');
 const routerShop = express.Router();
 const Shop = require('./models/shop'); // get our mongoose model
 
-var itemrouterShop = express.Router({mergeParams: true});
+/** 
+ * @swagger
+ * components:
+ *  schemas:
+ *   Shop:
+ *      type: object
+ *      required:
+ *          - name
+ *          - address
+ *          - category
+ *      properties:
+ *          name:
+ *             type: string
+ *             description: 'Name of the shop'
+ *          address:
+ *             type: string
+ *             description: 'Complete address (street, house number, postal code, city, province) of the shop'
+ *          category:
+ *             type: string
+ *             enum: ['supermercato', 'farmacia', 'abbigliamento', 'ferramenta','elettronica','ristorazione','alimentari','sport','cartoleria','ortofrutta','gelateria']
+ *             description: 'Category of the shop'
+ */
 
 /**
- * Resource representation based on the following the pattern: 
- * https://cloud.google.com/blog/products/application-development/api-design-why-you-should-use-links-not-keys-to-represent-relationships-in-apis
+* @swagger
+* /shops:
+*   get:
+*       description: Get the list of shops with a certain name or belonging to a certain category.
+*       summary: View shops according to request parameters
+*   responses:
+*       '200':
+*           description: 'Collection of shops'
+*           content:
+*               application/json:
+*                   schema:
+*                       type: array
+*                   items:
+*                       $ref: '#/components/schemas/Shop'
  */
 routerShop.get('', async (req, res) => {
     let shop;
@@ -33,6 +66,28 @@ routerShop.get('', async (req, res) => {
     res.status(200).json(shop);
 });
 
+
+ /**
+ * @swagger
+ * /shops/{id}:
+ *   get:
+ *     summary: Retrieve a single shop.
+ *     description: Retrieve a single shop. Can be used to see information about the specific shop.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the shop to retrieve.
+ *         schema:
+ *          type: integer 
+ *     responses:
+ *      200:
+ *          description: A single shop.
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Shop'
+*/
 routerShop.get('/:id', async (req, res) => {
     // https://mongoosejs.com/docs/api.html#model_Model.findById
     let shop = await Shop.findById(req.params.id);
@@ -44,18 +99,28 @@ routerShop.get('/:id', async (req, res) => {
         coordinates: shop.coordinates
     });
 });
-// routerShop.get('/categories', async (req, res) => {
-//     // https://mongoosejs.com/docs/api.html#model_Model.findById
-//     let shop = await Shop.findById(req.params.id);
-//     res.status(200).json({
-//         self: '/api/v1/shops/' + shop.id,
-//         name: shop.name,
-//         category: shop.category
-//     });
-// });
-// Define an endpoint to get enum values
 
-
+ /**
+ * @swagger
+ * /shops/{id}:
+ *   delete:
+ *     summary: Delete a single shop.
+ *     description: Delete a single shop.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the shop to delete.
+ *         schema:
+ *          type: integer  
+ *     responses:
+ *         204:
+ *              description: Remove a single shop.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Shop'
+*/
 routerShop.delete('/:id', async (req, res) => {
     let shop = await Shop.findById(req.params.id).exec();
     if (!shop) {
@@ -68,6 +133,27 @@ routerShop.delete('/:id', async (req, res) => {
     res.status(204).send()
 });
 
+
+/**
+ * @swagger
+ *  /shops:
+ *      post:
+ *          description: Create a new shop in the system.
+ *          summary: Register a new shop
+ *          requestBody:
+ *               content:
+ *                   application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Shop'
+ *          responses:
+ *               '201':
+ *                   description: 'Shop created. Link in the Location header'
+ *                   headers:
+ *                       'Location':
+ *                          schema:
+ *                              type: string
+ *                          description: Link to the newly created shop.
+ */       
 routerShop.post('', async (req, res) => {
 
 	let shop = new Shop({
@@ -85,10 +171,6 @@ routerShop.post('', async (req, res) => {
 
     console.log('Shop saved successfully');
 
-    /**
-     * Link to the newly created resource is returned in the Location header
-     * https://www.restapitutorial.com/lessons/httpmethods.html
-     */
     res.location("/api/v1/shops/" + shopId).status(201).send();
     //res.location("/api/v1/shops/categories" + shopCat).status(201).send();
 });

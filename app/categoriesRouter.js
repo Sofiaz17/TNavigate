@@ -36,11 +36,24 @@ const express = require('express');
 const routerCateg = express.Router();
 const Shop = require('./models/shop'); // get our mongoose model
 
-var itemRouter = express.Router({mergeParams: true});
 
 /**
- * Resource representation based on the following the pattern: 
- * https://cloud.google.com/blog/products/application-development/api-design-why-you-should-use-links-not-keys-to-represent-relationships-in-apis
+* @swagger
+* /shopCategories:
+*   get:
+*       description: Get the list of categories with a certain name.
+*       summary: View categories according to request parameters
+*   responses:
+*       '200':
+*           description: 'Collection of categories'
+*           content:
+*               application/json:
+*                   schema:
+*                       type: array
+*                   items:
+*                       name:
+*                           type: string
+*                           description: 'Name of the category'
  */
 routerCateg.get('', async (req, res) => {
     let categ = await Shop.schema.path('category').enumValues;

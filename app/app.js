@@ -4,6 +4,9 @@ const Path = require('path');
 const express = require('express');
 const app = express();
 const cors = require("cors");
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 
 const shops = require('./shopsRouter.js');
 const categs = require('./categoriesRouter.js');
@@ -29,6 +32,32 @@ app.listen(PORT, () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Express API for shops',
+    version: '1.0.0',
+    description:
+    'This is a REST API application made with Express.',
+  },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Development server',
+      },
+    ],
+};
+
+const options = {
+  swaggerDefinition,
+  // Paths to files containing OpenAPI definitions
+  apis: ['./app/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 /**
  * Serve front-end static files
  */
