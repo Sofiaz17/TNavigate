@@ -25,6 +25,7 @@ app.use('./tokenChecker.js', function (req, res, next) {
     next();
 });
 
+app.use('/', express.static('static'));
 
 // Redirect to login..html 
 app.get('/login.html', function (req, res) {
