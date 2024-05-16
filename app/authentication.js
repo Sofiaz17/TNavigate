@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const UtenteBase = require('./models/utenteBase'); // get our mongoose model
-const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
+const UtenteBase = require('./models/utenteBase'); 
+const jwt = require('jsonwebtoken'); 
 
 
-// ---------------------------------------------------------
-// route to authenticate and get a new token
-// ---------------------------------------------------------
+// Route to authenticate and get a new token
+
 router.post('', async function(req, res) {
 	
 	// find the user

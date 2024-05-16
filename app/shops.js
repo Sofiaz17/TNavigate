@@ -4,12 +4,8 @@ const Shop = require('./models/shop');
 
 
 
-/**
- * Resource representation based on the following the pattern: 
- * https://cloud.google.com/blog/products/application-development/api-design-why-you-should-use-links-not-keys-to-represent-relationships-in-apis
- */
+// Relationships with apis
 router.get('', async (req, res) => {
-     // https://mongoosejs.com/docs/api.html#model_Model.find
     let shops = await Shop.find({});
     shops = shops.map( (shop) => {
         return {
@@ -21,7 +17,6 @@ router.get('', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    // https://mongoosejs.com/docs/api.html#model_Model.findById
     let shop = await Shop.findById(req.params.id);
     res.status(200).json({
         self: '/api/v1/shops/' + shop.id,
@@ -53,10 +48,6 @@ router.post('', async (req, res) => {
 
     console.log('Shop saved successfully');
 
-    /**
-     * Link to the newly created resource is returned in the Location header
-     * https://www.restapitutorial.com/lessons/httpmethods.html
-     */
     res.location("/api/v1/shops/" + shopId).status(201).send();
 });
 

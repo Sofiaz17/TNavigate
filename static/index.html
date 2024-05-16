@@ -26,8 +26,8 @@
 <form action="api/v1/utentiBase" method="post" name="loginform" id="loginform">
   <span>Logged User:</span>
   <span id="loggedUser"></span>
-  <input name="email" value="mario.rossi@unitn.com" id="loginEmail"/>
-  <input name="email" value="123" id="loginPassword"/>
+  <input name="email" id="loginEmail"/>
+  <input name="email" id="loginPassword"/>
   <button type="button" onclick="login()">LogIn</button>
 </form>
 
@@ -37,7 +37,7 @@
 <h2>Insert new shop:</h2>
 
 <form action="api/v1/shops" method="post" name="shopform" id="shopform">
-  <input name="name" value="name" id="shopName"/>
+  <input name="name" id="shopName"/>
   <button type="button" onclick="insertShop()">Insert new shop</button>
 </form>
 

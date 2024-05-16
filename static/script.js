@@ -1,20 +1,12 @@
-/**
- * This variable stores the logged in user
- */
+ // This variable stores the logged in user
 var loggedUser = {};
 
-/**
- * This function is called when login button is pressed.
- * Note that this does not perform an actual authentication of the user.
- * A student is loaded given the specified email,
- * if it exists, the studentId is used in future calls.
- */
+//This function is called when login button is pressed.
 function login()
 {
     //get the form object
     var email = document.getElementById("loginEmail").value;
     var password = document.getElementById("loginPassword").value;
-    // console.log(email);
 
     fetch('../api/v1/authentications', {
         method: 'POST',
@@ -22,8 +14,8 @@ function login()
         body: JSON.stringify( { email: email, password: password } ),
     })
     .then((resp) => resp.json()) // Transform the data into json
-    .then(function(data) { // Here you get the data to modify as you please
-        //console.log(data);
+    .then(function(data) { 
+
         loggedUser.token = data.token;
         console.log('token: ', loggedUser.token, ' ', data.token);
         loggedUser.email = data.email;
@@ -32,9 +24,8 @@ function login()
         console.log('id: ', loggedUser.id, ' ', data.id);
         loggedUser.self = data.self;
         console.log('self: ', loggedUser.self, ' ', data.self);
-        // loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
+        loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
         document.getElementById("loggedUser").textContent = loggedUser.email;
-       // loadLendings();
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here
@@ -110,47 +101,6 @@ function takeShop(shopUrl)
 };
 
 /**
-/**
- * This function refresh the list of bookLendings.
- * It only load bookLendings given the logged in student.
- * It is called every time a book is taken of when the user login.
- */
-/**
-function loadShopOwner() {
-
-    const ul = document.getElementById('shopOwners'); // Get the list where we will place our lendings
-
-    ul.innerHTML = '';
-
-    fetch('../api/v1/shop?studentId=' + loggedUser.id + '&token=' + loggedUser.token)
-    .then((resp) => resp.json()) // Transform the data into json
-    .then(function(data) { // Here you get the data to modify as you please
-        
-        console.log(data);
-        
-        return data.map( (entry) => { // Map through the results and for each run the code below
-            
-            // let shopId = shop.self.substring(book.self.lastIndexOf('/') + 1);
-            
-            let li = document.createElement('li');
-            let span = document.createElement('span');
-            // span.innerHTML = `<a href="${entry.self}">${entry.shop}</a>`;
-            let a = document.createElement('a');
-            a.href = entry.self
-            a.textContent = entry.shop;
-            
-            // Append all our elements
-            span.appendChild(a);
-            li.appendChild(span);
-            ul.appendChild(li);
-        })
-    })
-    .catch( error => console.error(error) );// If there is any error you will catch them here
-    
-}
- */
-
-/**
  * This function is called by clicking on the "insert shop" button.
  * It creates a new shop given the specified name,
  * and force the refresh of the whole list of shops.
@@ -176,8 +126,12 @@ function insertShop()
 
 };
 
-
-//registrazione 
+/**
+ * Registration:
+ * there are two different kinds of registration,
+ * one for the user (utenteBase) wanting to find shops in the application
+ * and one for the shop owner wanting to insert his shop in the application 
+ */
 function register(clickId)
 {
     console.log('clickId: ', clickId);
@@ -188,17 +142,17 @@ function register(clickId)
         hideUB.style.display= 'none'; 
         hideNeg.style.display= 'none'; 
 
-        // Creazione dell'elemento form
+        // Creation of form element
         const form = document.getElementById('form');
         form.setAttribute('method', 'post');
         form.setAttribute('name', 'modulo');
 
-        // Creazione dell'elemento h1 per il titolo
+        // Creation of element h1 for the title
         const title = document.createElement('h1');
         title.textContent = 'Registrati:';
         form.appendChild(title);
 
-        // Creazione dell'elemento label e input per il campo Nome
+        // Creation of element label and input for the field 'Nome'
         const labelNome = document.createElement('label');
         labelNome.setAttribute('for', 'nome');
         labelNome.textContent = 'Nome:';
@@ -211,7 +165,7 @@ function register(clickId)
         form.appendChild(inputNome);
         form.appendChild(document.createElement('br'));
 
-        // Creazione dell'elemento label e input per il campo Cognome
+        // Creation of element label and input for the field 'Cognome'
         const labelCognome = document.createElement('label');
         labelCognome.setAttribute('for', 'cognome');
         labelCognome.textContent = 'Cognome:';
@@ -224,7 +178,7 @@ function register(clickId)
         form.appendChild(inputCognome);
         form.appendChild(document.createElement('br'));
 
-        // Creazione dell'elemento label e input per il campo Email
+        // Creation of element label and input for the field 'Email'
         const labelEmail = document.createElement('label');
         labelEmail.setAttribute('for', 'email');
         labelEmail.textContent = 'Email:';
@@ -236,33 +190,32 @@ function register(clickId)
         inputEmail.setAttribute('id', 'email');
         form.appendChild(inputEmail);
 
-        // Inserimento del form nella pagina HTML
+        // Insert form in HTML page
         document.body.appendChild(form);
 
-            // Array di oggetti contenenti informazioni sui campi del form
             const campi = [
                 { label: 'Username', id: 'username', type: 'text' },
                 { label: 'Password', id: 'password', type: 'password' },
                 { label: 'Conferma Password', id: 'confermaPassword', type: 'password' }
             ];
 
-            // Creazione dei campi del form
+            // Creation of form fields
             campi.forEach(campo => {
                 
-                // Creazione dell'elemento label
+                // Creation of element label 
                 const label = document.createElement('label');
                 label.setAttribute('for', campo.id);
                 label.textContent = campo.label + ':';
                 form.appendChild(label);
 
-                // Creazione dell'elemento input
+                // Creation of element input 
                 const input = document.createElement('input');
                 input.setAttribute('type', campo.type);
                 input.setAttribute('name', campo.id);
                 input.setAttribute('id', campo.id);
                 form.appendChild(input);
 
-                // Aggiunta di un salto di riga dopo ogni campo
+                // Skip line
                 form.appendChild(document.createElement('br'));
 
             });
@@ -292,15 +245,15 @@ function register(clickId)
             }
             */
 
-            // Creazione degli elementi per il reset e l'invio del form
+            // Creation of elements for reset and send the form
             const resetButton = createButton('reset', 'Reset', 'button2');
             const submitButton = createButton('submit', 'Registra', 'button2');
 
-            // Aggiunta degli elementi al form
+            // Adding elements to the form
             form.appendChild(resetButton);
             form.appendChild(submitButton);
 
-            // Funzione per creare un bottone
+            // Function to create a button
             function createButton(type, value, className) {
                 const button = document.createElement('input');
                 button.setAttribute('type', type);
@@ -309,7 +262,7 @@ function register(clickId)
                 return button;
             }
 
-            // Inserimento del form nella pagina HTML
+            // Insert form in HTML page
             document.body.appendChild(form);
 
     } else{
@@ -317,17 +270,17 @@ function register(clickId)
             hideUB.style.display= 'none'; 
             hideNeg.style.display= 'none'; 
 
-            // Creazione dell'elemento form
+            // Creation of form element
             const form = document.getElementById('form');
             form.setAttribute('method', 'post');
             form.setAttribute('name', 'modulo');
 
-            // Creazione dell'elemento h1 per il titolo
+            // Creation of element h1 for the title
             const title = document.createElement('h1');
             title.textContent = 'Registrati:';
             form.appendChild(title);
 
-            // Creazione dell'elemento label e input per il campo Nome
+            // Creation of element label and input for the field 'Nome'
             const labelNome = document.createElement('label');
             labelNome.setAttribute('for', 'nome');
             labelNome.textContent = 'Nome:';
@@ -340,7 +293,7 @@ function register(clickId)
             form.appendChild(inputNome);
             form.appendChild(document.createElement('br'));
 
-            // Creazione dell'elemento label e input per il campo Cognome
+            // Creation of element label and input for the field 'Cognome'
             const labelCognome = document.createElement('label');
             labelCognome.setAttribute('for', 'cognome');
             labelCognome.textContent = 'Cognome:';
@@ -353,7 +306,7 @@ function register(clickId)
             form.appendChild(inputCognome);
             form.appendChild(document.createElement('br'));
 
-            // Creazione dell'elemento label e input per il campo Email
+            // Creation of element label and input for the field 'Email'
             const labelEmail = document.createElement('label');
             labelEmail.setAttribute('for', 'email');
             labelEmail.textContent = 'Email:';
@@ -365,7 +318,7 @@ function register(clickId)
             inputEmail.setAttribute('id', 'email');
             form.appendChild(inputEmail);
 
-            // Creazione dell'elemento label e input per il campo Nome negozio
+            // Creation of element label and input for the field 'Shop'
             const labelShopName = document.createElement('label');
             labelShopName.setAttribute('for', 'shopName');
             labelShopName.textContent = 'Nome negozio:';
@@ -377,7 +330,7 @@ function register(clickId)
             inputShopName.setAttribute('id', 'shopName');
             form.appendChild(inputShopName);
 
-            // Creazione dell'elemento label e input per il campo Indirizzo
+            // Creation of element label and input for the field 'Address'
             const labelAddress = document.createElement('label');
             labelAddress.setAttribute('for', 'address');
             labelAddress.textContent = 'Indirizzo negozio (specificare se Via, Piazza, Strada, etc.):';
@@ -389,7 +342,7 @@ function register(clickId)
             inputAddress.setAttribute('id', 'address');
             form.appendChild(inputAddress);
             
-            // Creazione dell'elemento label e input per il campo Numero civico
+            // Creation of element label and input for the field 'Civico'
             const labelCivico = document.createElement('label');
             labelCivico.setAttribute('for', 'civico');
             labelCivico.textContent = 'Numero civico:';
@@ -401,7 +354,7 @@ function register(clickId)
             inputCivico.setAttribute('id', 'civico');
             form.appendChild(inputCivico);
 
-            // Creazione dell'elemento label e input per il campo CAP
+            // Creation of element label and input for the field 'cap'
             const labelCap = document.createElement('label');
             labelCap.setAttribute('for', 'cap');
             labelCap.textContent = 'CAP:';
@@ -413,7 +366,7 @@ function register(clickId)
             inputCap.setAttribute('id', 'civico');
             form.appendChild(inputCap);
             
-            // Creazione dell'elemento label e input per il campo Città
+            // Creation of element label and input for the field 'City'
             const labelCity = document.createElement('label');
             labelCity.setAttribute('for', 'city');
             labelCity.textContent = 'Città:';
@@ -425,7 +378,7 @@ function register(clickId)
             inputCity.setAttribute('id', 'city');
             form.appendChild(inputCity);
          
-            // Creazione dell'elemento label e input per il campo Provincia
+            // Creation of element label and input for the field 'Provincia'
             const labelProvincia = document.createElement('label');
             labelProvincia.setAttribute('for', 'provincia');
             labelProvincia.textContent = 'Provincia:';
@@ -437,30 +390,29 @@ function register(clickId)
             inputProvincia.setAttribute('id', 'provincia');
             form.appendChild(inputProvincia);
 
-            // Array di oggetti contenenti informazioni sui campi del form
             const campi = [
                 { label: 'Username', id: 'username', type: 'text' },
                 { label: 'Password', id: 'password', type: 'password' },
                 { label: 'Conferma Password', id: 'confermaPassword', type: 'password' }
             ];
 
-            // Creazione dei campi del form
+            // Creation of form fields
             campi.forEach(campo => {
                 
-                // Creazione dell'elemento label
+                // Creation of element label
                 const label = document.createElement('label');
                 label.setAttribute('for', campo.id);
                 label.textContent = campo.label + ':';
                 form.appendChild(label);
 
-                // Creazione dell'elemento input
+                // Creation of element input
                 const input = document.createElement('input');
                 input.setAttribute('type', campo.type);
                 input.setAttribute('name', campo.id);
                 input.setAttribute('id', campo.id);
                 form.appendChild(input);
 
-                // Aggiunta di un salto di riga dopo ogni campo
+                // Skip line
                 form.appendChild(document.createElement('br'));
 
             });
@@ -490,15 +442,15 @@ function register(clickId)
             }
             */
 
-            // Creazione degli elementi per il reset e l'invio del form
+            // Creation of elements for reset and send the form
             const resetButton = createButton('reset', 'Reset', 'button2');
             const submitButton = createButton('submit', 'Registra', 'button2');
 
-            // Aggiunta degli elementi al form
+            // Adding elements to the form
             form.appendChild(resetButton);
             form.appendChild(submitButton);
 
-            // Funzione per creare un bottone
+            /// Function to create a button
             function createButton(type, value, className) {
                 const button = document.createElement('input');
                 button.setAttribute('type', type);
@@ -507,7 +459,7 @@ function register(clickId)
                 return button;
             }
 
-            // Inserimento del form nella pagina HTML
+            // Insert form in HTML page
             document.body.appendChild(form);
 
         }

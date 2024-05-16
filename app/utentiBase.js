@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Student = require('./models/utenteBase'); // get our mongoose model
+const Student = require('./models/utenteBase'); 
 
 
 
@@ -9,7 +9,6 @@ router.get('/me', async (req, res) => {
         return;
     }
 
-    // https://mongoosejs.com/docs/api.html#model_Model.find
     let utenteBase = await UtenteBase.findOne({email: req.loggedUser.email});
 
     res.status(200).json({
@@ -22,10 +21,9 @@ router.get('', async (req, res) => {
     let utentiBase;
 
     if (req.query.email)
-        // https://mongoosejs.com/docs/api.html#model_Model.find
-        utentiBase = await UtenteBase.find({email: req.query.email}).exec();
+        { utentiBase = await UtenteBase.find({email: req.query.email}).exec();}
     else
-        utentiBase = await UtenteBase.find().exec();
+        { utentiBase = await UtenteBase.find().exec();}
 
     utentiBase = utentiBase.map( (entry) => {
         return {
@@ -41,11 +39,13 @@ router.post('', async (req, res) => {
     
 	let utenteBase = new UtenteBase({
         email: req.body.email,
+        username: req.body.username,
         password: req.body.password
     });
 
+    // Check if email has been inserted correctly and in a valid format
     if (!utenteBase.email || typeof utenteBase.email != 'string' || !checkIfEmailInString(utenteBase.email)) {
-        res.status(400).json({ error: 'The field "email" must be a non-empty string, in email format' });
+        res.status(400).json({ error: 'Il campo email non è stato inserito correttamente, verifica che il formato sia corretto!' });
         return;
     }
     
@@ -53,16 +53,12 @@ router.post('', async (req, res) => {
     
     let utenteBaseId = utenteBase.id;
 
-    /**
-     * Link to the newly created resource is returned in the Location header
-     * https://www.restapitutorial.com/lessons/httpmethods.html
-     */
     res.location("/api/v1/utentiBase/" + utenteBaseId).status(201).send();
 });
 
 
 
-// https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+// Email address validation
 function checkIfEmailInString(text) {
     // eslint-disable-next-line
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
