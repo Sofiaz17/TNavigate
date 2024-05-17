@@ -35,14 +35,25 @@
     padding-right: 20%;
     background-color: var(--black);
   }
+
+  .containerwhite {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 3em;
+  }
   
   .left-column {
-    width: 60%;
+    width: 45%;
     padding-right: 20px;
   }
   
   .right-column {
-    width: 35%;
+    width: 45%;
   }
 
   .topnav {

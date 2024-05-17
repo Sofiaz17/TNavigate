@@ -86,6 +86,10 @@ app.get('/login.html', function (req, res) {
   res.sendFile(path.join(__dirname, '../static/login.html'));
 });
 
+app.get('/home.html', function (req, res) {
+  res.sendFile(path.join(__dirname, '../static/home.html'));
+});
+
 
 app.use((req,res,next) => {
     console.log(req.method + ' ' + req.url)

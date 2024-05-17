@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 
 // Route to authenticate and get a new token
-
+ 
 router.post('', async function(req, res) {
 	
 	// find the user
@@ -22,6 +22,7 @@ router.post('', async function(req, res) {
 	// check if password matches
 	if (user.password != req.body.password) {
 		res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+		return;
 	}
 	
 	// if user is found and password is right create a token

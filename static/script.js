@@ -168,7 +168,7 @@ function geocode(request, resolve, reject) {
 function loadShops() {
     console.log("load shops called");
 
-    const ul = document.getElementById('shops'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
 
@@ -214,7 +214,7 @@ function loadShops() {
 
 //displays shop information when shop is clicked. [TO FINISH]
 function viewInformation(shop){
-    hideMarkers();
+    //hideMarkers();
     console.log("viewInformation called");
     const ul = document.getElementById('information'); 
     ul.textContent = 'Questo è un testo di prova per mostrare le informazioni del negozio ',shop.name;
@@ -231,7 +231,7 @@ function viewInformation(shop){
 function loadCategory() {
     console.log("load category called");
     
-    const ul = document.getElementById('categories'); 
+    const ul = document.getElementById('results'); 
    // console.log(Shop);
     ul.textContent = '';
   
@@ -288,7 +288,7 @@ function loadCategory() {
 
 //shows shops belonging to a specific category
 function searchShopfromCat(category) {
-    const ul = document.getElementById('Shops in categories'); 
+    const ul = document.getElementById('results'); 
     // console.log(Shop);
      ul.textContent = '';
     fetch('../api/v1/shops?category=' + category)
@@ -339,7 +339,7 @@ function triggerOnEnter(){
 async function searchShopByName(userInput) {           //called 4 times before fetching
                 console.log("searchShopByName called");
 
-    const ul = document.getElementById('inputSearch'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
     let fetchUrl;
@@ -430,7 +430,7 @@ async function isCategory(input) {
 async function searchShopByProduct(categToSearch) {           //called 4 times before fetching
                 console.log("searchShopByProduct called");
 
-    const ul = document.getElementById('inputProductSearch'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
 
@@ -447,7 +447,7 @@ async function searchShopByProduct(categToSearch) {           //called 4 times b
 async function prodCategory() {           //called 4 times before fetching
                 console.log("prodCategory called");
 
-    const ul = document.getElementById('inputProductSearch'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
     
@@ -468,7 +468,7 @@ async function prodCategory() {           //called 4 times before fetching
 function loadProducts() {           //called 4 times before fetching
         console.log("loadProducts called");
 
-        const ul = document.getElementById('productsList'); 
+        const ul = document.getElementById('results'); 
 
         ul.textContent = '';
 
@@ -507,7 +507,7 @@ function loadProducts() {           //called 4 times before fetching
 //searched a product by pressing a button associated to a specific category.
 //Displays all products sold in that category of shops
 function searchProdfromCat(category) {
-    const ul = document.getElementById('Products in categories'); 
+    const ul = document.getElementById('results'); 
     // console.log(Shop);
      ul.textContent = '';
     fetch('../api/v1/products?category=' + category)

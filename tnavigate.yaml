@@ -1,0 +1,234 @@
+openapi: 3.0.0
+info:
+  title: Express API for shops
+  version: 1.0.0
+  description: This is a REST API application made with Express.
+externalDocs:
+  description: swagger.json
+  url: /swagger.json
+servers:
+  - url: 'http://localhost:3000/api/v1'
+paths:
+  /shopCategories:
+    get:
+      description: Get the list of categories.
+      summary: View all the possible categories a shop can belong to
+      responses:
+        '200':
+          description: Enum of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  
+  /products:
+    get:
+      description: Get the list of products with a certain name.
+      summary: View products according to request parameters
+      responses:
+        '200':
+          description: Collection of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+                  
+  '/products/{id}':
+    get:
+      summary: Retrieve a single product.
+      description: Retrieve a single product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Numeric ID of the product to retrieve.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /shops:
+    get:
+      description: >-
+        Get the list of shops with a certain name or belonging to a certain
+        category.
+      summary: View shops according to request parameters
+      responses:
+        '200':
+          description: Collection of shops
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+    post:
+      description: Create a new shop in the system.
+      summary: Register a new shop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+      responses:
+        '201':
+          description: Shop created.
+          
+  '/shops/{id}':
+    get:
+      summary: Retrieve a single shop.
+      description: >-
+        Retrieve a single shop. Can be used to see information about the
+        specific shop.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Numeric ID of the shop to retrieve.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single shop.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+    delete:
+      summary: Delete a single shop.
+      description: Delete a single shop.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Numeric ID of the shop to delete.
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Remove a single shop.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+  /utentiBase/me:
+    get:
+      description: Directory for authenticated user
+      summary: Access user's private area
+      responses:
+        '200':
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtenteBase'
+  /utentiBase:
+    get:
+      description: Get the list of base users.
+      summary: View users according to request parameters
+      responses:
+        '200':
+          description: Collection of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtenteBase'
+    post:
+      description: Create a new user in the system.
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtenteBase'
+      responses:
+        '201':
+          description: User created.
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - name
+        - category
+        - keywords
+      properties:
+        name:
+          type: string
+          description: Name of the product
+        category:
+          type: string
+          enum:
+            - supermercato
+            - farmacia
+            - abbigliamento
+            - ferramenta
+            - elettronica
+            - ristorazione
+            - alimentari
+            - sport
+            - cartoleria
+            - ortofrutta
+            - gelateria
+          description: Category of the product
+        keywords:
+          type: string
+          description: Keywords to search the product
+    Shop:
+      type: object
+      required:
+        - name
+        - address
+        - category
+      properties:
+        name:
+          type: string
+          description: Name of the shop
+        address:
+          type: string
+          description: >-
+            Complete address (street, house number, postal code, city, province)
+            of the shop
+        category:
+          type: string
+          enum:
+            - supermercato
+            - farmacia
+            - abbigliamento
+            - ferramenta
+            - elettronica
+            - ristorazione
+            - alimentari
+            - sport
+            - cartoleria
+            - ortofrutta
+            - gelateria
+          description: Category of the shop
+    UtenteBase:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          description: Email of the user
+        password:
+          type: string
+          description: Password of the user
