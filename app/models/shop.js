@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
 
-// const categoryEnumSchema = ['supermercato', 
-// 					  'farmacia', 
-// 					  'abbigliamento', 
-// 					  'ferramenta', 
-// 					  'elettronica', 
-// 					  'ristorazione', 
-// 					  'alimentari', 
-// 					  'sport'];
 const shopSchema = new mongoose.Schema({
     name: String,
 	owner: String,
 	address: String,
+	civico: Number,
+	cap: Number,
+	city: String,
+	provincia: String,
 	coordinates: [Number],
 	category: { 
 		type: String,

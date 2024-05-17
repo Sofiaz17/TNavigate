@@ -1,6 +1,7 @@
 require('dotenv').config()
 var Shop   = require('../app/models/shop'); // get our mongoose model
 var Product = require('../app/models/product');
+var UtenteBase   = require('../app/models/utenteBase'); 
 
 var mongoose = require('mongoose');
 // connect to database
@@ -88,4 +89,24 @@ Product.deleteMany().then( () => {
 		keywords: ['cavo', 'usb']
 	});
 	return cavoUsb.save();
+});
+
+// Clear users
+UtenteBase.deleteMany().then( () => {
+	var merlino = new UtenteBase({ 
+		email: 'merlino@unitn.com',
+		password: 'magaMago'
+	});
+	return merlino.save();
+}).then( () => {
+	console.log('User merlino@unitn.com saved successfully');
+}).then( () => {
+	var mario = new UtenteBase({ 
+		email: 'mario.rossi@unitn.com',
+		password: '123'
+	});
+	return mario.save();
+}).then( () => {
+	console.log('User mario.rossi@unitn.com saved successfully');
+	//process.exit();
 });

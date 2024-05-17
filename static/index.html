@@ -1,57 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Control Positioning</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="script.js"></script>
-  </head>
 
-  <body>
-    <h1>TNavigate</h1>
-   
-    <script type="text/javascript" 
-      
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwMXy4aFNldadM-ONrQO1SwUY7ibVmQk&callback=initMap&v=weekly"
-        async defer
-      ></script> 
-   
-    <div class="containerwhite">
-      <div class="left-column">
+<head>
+	<title>TNavigate</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<header class="headerhome"> 
+    <div class="headertext"> 
+    </div>
+    <div class="topnav">
+        <a href="/home.html">Home</a>
+        <a class="active" href="/index.HTML">Lista Shops</a>
+        <a href="/login.html">Login</a>
+        <a href="/signin.html">Registrati</a>
+      </div>
+  </header>
+
+<body>
+
+<h1>TNavigate</h1>
+
+<form action="api/v1/utentiBase" method="post" name="loginform" id="loginform">
+  <span>Logged User:</span>
+  <span id="loggedUser"></span>
+  <input name="email" id="loginEmail"/>
+  <input name="email" id="loginPassword"/>
+  <button type="button" onclick="login()">LogIn</button>
+</form>
+
+<script src="script.js"></script> 
     
-        <form action="api/v1/shops" method="get" name="getShops" id="getShops">
-          <button type="button" onclick="loadShops()">Elenco negozi</button>
-          <button type="button" onclick="loadCategory()">Elenco categorie</button>
-          <button type="button" onclick="loadProducts()">Elenco prodotti</button>
-          <label for="shopName">Negozio o categoria:</label>
-          <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-          <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
-          <input type="search" id="productName" >
-          <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
-        </form>
-        
-        <h2>Negozi:</h2>
-        <ul id="shops"></ul>
-        <h2>Categorie:</h2>
-        <ul id="categories"></ul>
-        <h2>Informazioni negozio:</h2>
-        <ul id="information"></ul>
-        <h2>Negozi in una specifica categoria:</h2>
-        <ul id="Shops in categories"></ul>
-        <h2>Prodotti in una specifica categoria:</h2>
-        <ul id="Products in categories"></ul>
-        <h2>Input search:</h2>
-        <ul id="inputSearch"></ul>
-        <h2>Input product search:</h2>
-        <ul id="inputProductSearch"></ul>
-        <h2>Prodotti:</h2>
-        <ul id="productsList"></ul>
-         
-      </div>
-      <div class="right-column">
-        <div id="map" style="height:450px; width:450px;"></div>
+</body>
 
-      </div>
-      
-  </body>
 </html>
