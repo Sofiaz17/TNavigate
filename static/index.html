@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Control Positioning</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="script.js"></script>
-  </head>
 
-  <body>
+<head>
+	<title>TNavigate</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="script.js"></script>
+</head>
+
+<header class="headerhome"> 
+    <div class="headertext"> 
+    </div>
+    <div class="topnav">
+        <a class="active" href="/home.html">Home</a>
+        <a href="/index.HTML">Lista Shops</a>
+        <a href="/login.html" >Login</a>
+        <a href="/signin.html">Registrati</a>
+      </div>
+  </header>
+
+
+<body>
     <h1>TNavigate</h1>
    
     <script type="text/javascript" 
+      
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwMXy4aFNldadM-ONrQO1SwUY7ibVmQk&callback=initMap&v=weekly"
         async defer
       ></script> 
@@ -18,27 +34,23 @@
     <div class="containerwhite">
       <div class="left-column">
     
-          <form action="api/v1/shops" method="get" name="getShops" id="getShops">
-            <button type="button" onclick="loadShops()">Elenco negozi</button>
-            <button type="button" onclick="loadCategory()">Elenco categorie</button>
-            <label for="shopName">Shop or category:</label>
-           <!-- <input type="text" id="shopName" name="shopName"><br><br> -->
-            <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-            <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
-            <input type="search" id="productName" >
-            <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
-          </form>
-          
-          <h2>Negozi:</h2>
-          <ul id="shops"></ul>
-          <h2>Categorie:</h2>
-          <ul id="categories"></ul>
-          <h2>Negozi in una specifica categoria:</h2>
-          <ul id="Shops in categories"></ul>
-          <h2>Input search:</h2>
-          <ul id="inputSearch"></ul>
-          <h2>Input product search:</h2>
-          <ul id="inputProductSearch"></ul>
+        <form action="api/v1/shops" method="get" name="getShops" id="getShops">
+          <button type="button" onclick="loadShops()">Elenco negozi</button>
+          <button type="button" onclick="loadCategory()">Elenco categorie</button>
+          <button type="button" onclick="loadProducts()">Elenco prodotti</button>
+          <br><br>
+          <input type="search" id="shopName" onkeypress=triggerOnEnter()>
+          <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
+          <br><br>
+          <input type="search" id="productName" >
+          <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
+        </form>
+        
+        <h2>Ricerca:</h2>
+        <ul id="results"></ul>
+        <h2>Informazioni negozio:</h2>
+        <ul id="information"></ul>
+   
          
       </div>
       <div class="right-column">
@@ -48,43 +60,3 @@
       
   </body>
 </html>
-
-<!--
-<!DOCTYPE html>
-<html>
-
-<head>
-  <script type = "text/javascript" src="C:\Users\speci\OneDrive\Desktop\TNcopy\static\script.js"></script>
-</head>
-
-<body>
-
-<h1>TNavigate</h1>
-
-<form action="api/v1/shops" method="get" name="getShops" id="getShops">
-  <button type="button" onclick="loadShops()">See shops</button>
-  <button type="button" onclick="loadCategory()">See categories</button>
-  <label for="shopName">Shop or category:</label>
-  <input type="text" id="shopName" name="shopName"><br><br> -->
-<!--  <input type="search" id="shopName" onkeypress=triggerOnEnter()>
-  <button type="button" id='searchBtn' onclick="searchShopByName()">Search</button>
-  <input type="search" id="productName" >
-  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Search product</button>
-</form>
-
-<h2>Shops:</h2>
-<ul id="shops"></ul>
-<h2>Categories:</h2>
-<ul id="categories"></ul>
-<h2>Shops in categories:</h2>
-<ul id="Shops in categories"></ul>
-<h2>Input search:</h2>
-<ul id="inputSearch"></ul>
-<h2>Input product search:</h2>
-<ul id="inputProductSearch"></ul>
-
-<script src="script.js"></script> 
-    
-</body>
-
-</html>-->

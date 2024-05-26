@@ -1,13 +1,46 @@
 const mongoose = require('mongoose');
 
-// const categoryEnumSchema = ['supermercato', 
-// 					  'farmacia', 
-// 					  'abbigliamento', 
-// 					  'ferramenta', 
-// 					  'elettronica', 
-// 					  'ristorazione', 
-// 					  'alimentari', 
-// 					  'sport'];
+// Define a schema for the time intervals
+const timeIntervalSchema = new mongoose.Schema({
+	day: {
+	  type: String,
+	 // required: true,
+	  enum: ['LUN', 'MAR', 'MER', 'GIO', 'VEN', 'SAB', 'DOM']
+	},
+	state: {
+		type: String,
+		enum: ['open', 'closed']
+	},
+	periods: [{
+		startHours: {
+			type: Number,
+			min: 0,
+			max: 23,
+		  //  required: true
+		  },
+		  startMinutes: {
+			type: Number,
+			min: 0,
+			max: 59,
+		  //  required: true
+		  },
+		  endHours: {
+			type: Number,
+			min: 0,
+			max: 23,
+		  //  required: true
+		  },
+		  endMinutes: {
+			type: Number,
+			min: 0,
+			max: 59,
+		  //  required: true
+		  }
+	}]
+  });
+  
+
+
 const shopSchema = new mongoose.Schema({
     name: String,
 	owner: String,
@@ -29,10 +62,10 @@ const shopSchema = new mongoose.Schema({
 		//enum: categoryEnumSchema
 	},
 	information: String,
+	opening_hours: [{type: timeIntervalSchema}],
 	dataModified: Boolean
 });
 
 const Shop = mongoose.model('Shop', shopSchema);
-//const categEnum = mongoose.model("Category", categoryEnumSchema)
-//.exports = Shop;
+
 module.exports = Shop;

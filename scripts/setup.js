@@ -9,15 +9,86 @@ var mongoose = require('mongoose');
 // 	console.log("Connected to Database")
 // });
 
-
 // Clear users
 Shop.deleteMany().then( () => {
 	var coop = new Shop({ 
 		name: 'Coop',
 		address: 'Piazza Giannantonio Manci, 8, 38123 Povo TN',
 		category: 'supermercato',
-		coordinates: [46.059392,11.1330611]
-	});
+		coordinates: [46.059392,11.1330611],
+		opening_hours:[
+			  {
+				day: 'LUN',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  },
+			  {
+				day: 'MAR',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  },
+			  {
+				day: 'MER',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  },
+			  {
+				day: 'GIO',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  },
+			  {
+				day: 'VEN',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  },
+			  {
+				day: 'SAB',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  },
+			  {
+				day: 'DOM',
+				state: 'open',
+				periods:[{
+					startHours: 8,
+					startMinutes: 0,
+					  endHours: 20,
+					  endMinutes: 0
+				  }],
+			  }]
+	
+});
 	return coop.save();
 }).then( () => {
 	console.log('shop Coop saved successfully');
@@ -26,7 +97,108 @@ Shop.deleteMany().then( () => {
 		name: 'Farmacia Igea',
 		address: 'Via Milano, 66/68, 38122 Trento TN',
 		category: 'farmacia',
-		coordinates: [46.0609025,11.1255008]
+		coordinates: [46.0609025,11.1255008],
+		opening_hours:[
+			{
+			  day: 'LUN',
+			  state: 'open',
+			  periods:[{
+				startHours: 8,
+				startMinutes: 30,
+			  	endHours: 12,
+			  	endMinutes: 30
+			  },
+			  {
+				startHours: 15,
+				startMinutes: 0,
+			  	endHours: 19,
+			  	endMinutes: 0
+			  }]
+			},
+			{
+			  day: 'MAR',
+			  state: 'open',
+			  periods:[{
+				startHours: 8,
+				startMinutes: 30,
+			  	endHours: 12,
+			  	endMinutes: 30
+			  },
+			  {
+				startHours: 15,
+				startMinutes: 0,
+			  	endHours: 19,
+			  	endMinutes: 0
+			  }]
+			},
+			{
+			  day: 'MER',
+			  state: 'open',
+			  periods:[{
+				startHours: 8,
+				startMinutes: 30,
+			  	endHours: 12,
+			  	endMinutes: 30
+			  },
+			  {
+				startHours: 15,
+				startMinutes: 0,
+			  	endHours: 19,
+			  	endMinutes: 0
+			  }]
+			},
+			{
+			  day: 'GIO',
+			  state: 'open',
+			  periods:[{
+				startHours: 8,
+				startMinutes: 30,
+			  	endHours: 12,
+			  	endMinutes: 30
+			  },
+			  {
+				startHours: 15,
+				startMinutes: 0,
+			  	endHours: 19,
+			  	endMinutes: 0
+			  }]
+			},
+			{
+			  day: 'VEN',
+			  state: 'open',
+			  periods:[{
+				startHours: 8,
+				startMinutes: 30,
+			  	endHours: 12,
+			  	endMinutes: 30
+			  },
+			  {
+				startHours: 15,
+				startMinutes: 0,
+			  	endHours: 19,
+			  	endMinutes: 0
+			  }]
+			},
+			{
+			  day: 'SAB',
+			  state: 'open',
+			  periods:[{
+				startHours: 8,
+				startMinutes: 30,
+			  	endHours: 12,
+			  	endMinutes: 30
+			  },
+			  {
+				startHours: 15,
+				startMinutes: 0,
+			  	endHours: 19,
+			  	endMinutes: 0
+			  }]
+			},
+			{
+			  day: 'DOM',
+			  state: 'closed'
+			}]
 	});
 	return farmacia.save();
 }).then( () => {
@@ -36,7 +208,78 @@ Shop.deleteMany().then( () => {
 	var conad = new Shop({ 
 		name: 'Conad',
 		address: 'Via Roberto da Sanseverino, 97, 38122 Trento TN',
-		category: 'supermercato'
+		category: 'supermercato',
+		opening_hours:[
+			{
+			  day: 'LUN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'MAR',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'MER',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'GIO',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'VEN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'SAB',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'DOM',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			}]
 	});
 	return conad.save();
 }).then( () => {
@@ -46,28 +289,236 @@ Shop.deleteMany().then( () => {
 	var aldi = new Shop({ 
 		name: 'Aldi',
 		address: 'Corso 3 Novembre 1918, 59, 38122 Trento TN',
-		category: 'supermercato'
+		category: 'supermercato',
+		opening_hours:[
+			{
+			  day: 'LUN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'MAR',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'MER',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'GIO',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'VEN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'SAB',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 0,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			},
+			{
+			  day: 'DOM',
+			  state: 'open',
+			  periods:[{
+				  startHours: 8,
+				  startMinutes: 30,
+					endHours: 20,
+					endMinutes: 0
+				}],
+			}]
 	});
 	return aldi.save();
 }).then( () => {
 	var coop = new Shop({ 
 		name: 'Coop',
 		address: 'Via Brigata Acqui, 2, 38122 Trento TN',
-		category: 'supermercato'
-	});
-	return coop.save();
+		category: 'supermercato',
+		opening_hours:[
+			{
+			  day: 'LUN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 7,
+				  startMinutes: 30,
+					endHours: 19,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'MAR',
+			  state: 'open',
+			  periods:[{
+				  startHours: 7,
+				  startMinutes: 30,
+					endHours: 19,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'MER',
+			  state: 'open',
+			  periods:[{
+				  startHours: 7,
+				  startMinutes: 30,
+					endHours: 19,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'GIO',
+			  state: 'open',
+			  periods:[{
+				  startHours: 7,
+				  startMinutes: 30,
+					endHours: 19,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'VEN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 7,
+				  startMinutes: 30,
+					endHours: 19,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'SAB',
+			  state: 'open',
+			  periods:[{
+				  startHours: 7,
+				  startMinutes: 30,
+					endHours: 19,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'DOM',
+			  state: 'closed'
+			}]
+  });
+  return coop.save();
 }).then( () => {
 	var laRomana = new Shop({ 
 		name: 'La Romana',
 		category: 'gelateria',
-		address: 'Via Antonio Rosmini, 5, 38122 Trento TN'
+		address: 'Via Antonio Rosmini, 5, 38122 Trento TN',
+		opening_hours:[
+			{
+			  day: 'LUN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'MAR',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'MER',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'GIO',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 30
+				}],
+			},
+			{
+			  day: 'VEN',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 59
+				}],
+			},
+			{
+			  day: 'SAB',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 59
+				}],
+			},
+			{
+			  day: 'DOM',
+			  state: 'open',
+			  periods:[{
+				  startHours: 11,
+				  startMinutes: 0,
+					endHours: 23,
+					endMinutes: 30
+				}],
+			}]
+  
 	});
 	return laRomana.save();
 });
 
 Product.deleteMany().then( () => {
 	var fruttaFresca = new Product({ 
-		name: 'frutta fresca',
+		name: 'Frutta Fresca',
 		category: ['supermercato','ortofrutta'],
 		keywords: ['frutta', 'ortofrutta']
 	});
