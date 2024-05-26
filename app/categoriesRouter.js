@@ -64,4 +64,32 @@ routerCateg.get('', async (req, res) => {
     res.status(200).json(categ);
 });
 
+routerCateg.get('/:category', async (req, res) => {
+    let categ = await Shop.schema.path('category').enumValues;
+   // categ = categ.map( (categ) => {
+        if(categ.includes(req.params.category)){
+            res.status(200).json({
+                self: '/api/v1/shopCategories/' + req.params.category,
+                name: req.params.category
+            });
+        }  else {
+            console.log('Categoria non trovata');
+        }
+    });
+
+   
+
+   
+
+// routerCateg.get('/:category', async (req, res) => {
+//     let shops = await Shop.find({category : req.params.category});
+//     console.log('req.params.category: ' + req.params.category);
+//     console.log('router shops: ' + shops);
+//     console.log('router categ: ' + shops[0].category);
+//     res.status(200).json({
+//         self: '/api/v1/shopCategories/' + shops[0].category,
+//         name: shops[0].category
+//     });
+// });
+
 module.exports = routerCateg;
