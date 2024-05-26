@@ -11,17 +11,18 @@ async function importMaps() {
   const { Map } = await google.maps.importLibrary("maps");
 }
 
-
+//initialized map, zoomed on Trento
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
         center: {lat: 46.067546, lng: 11.121488},
         mapTypeControl: false,
     });
-    seeShops();
+   // seeShops();
  // geocoder = new google.maps.Geocoder();
 }
 
+//shows on map all shops in database, by retrieving their coordinates from their address
 function seeShops() {
     console.log('seeShops called');
     geocoder = new google.maps.Geocoder(); 
@@ -65,6 +66,53 @@ function seeShops() {
         });
 }
 
+//shows on map a single shop retrieving its coordinates from its address
+function seeSingleShop(name) {
+    console.log('seeSingleShop called');
+    console.log('name passed in seeSingleShop: ', name);
+    geocoder = new google.maps.Geocoder(); 
+    initMap();
+
+    fetch('../api/v1/shops?name=' + name)
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) { 
+            // Create an array to store promises
+            const geocodePromises = [];
+            // Iterate over each shop data and create a promise for geocoding
+            data.forEach(function(shop) {
+                // Create a promise for each geocoding request
+                const promise = new Promise((resolve, reject) => {
+                    geocode(shop.address, resolve, reject);
+                });
+                // Push the promise to the array
+                geocodePromises.push(promise);
+            });
+            // Wait for all geocoding promises to resolve
+            return Promise.all(geocodePromises);
+        })
+        .then(function(results) {
+            console.log('Results:', results);
+          
+            results.forEach(function (result){
+                console.log('Geocoding completed:', result.address_components);
+                console.log('Geocoding completed:', result.geometry.location.lat(), ' ', result.geometry.location.lng());
+             
+
+                new google.maps.Marker({
+                    position: {lat: result.geometry.location.lat(), lng: result.geometry.location.lng()},
+                    map,
+                    title: "Hello World!",
+                  })}
+            )
+            // This code will execute after all geocoding requests are complete
+             })
+            // Do something with the geocoding results
+        .catch(function(error) {
+            console.error(error);
+        });
+}
+
+//transforms street address in [lat,lng] coordinates
 function geocode(request, resolve, reject) {
     console.log('geocoder entered');
     console.log('request: ', request);
@@ -83,11 +131,11 @@ function geocode(request, resolve, reject) {
     });
 }
 
-
+//loads all shops in database and shows them in an unordered list. Activated by button click
 function loadShops() {
     console.log("load shops called");
 
-    const ul = document.getElementById('shops'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
 
@@ -107,7 +155,12 @@ function loadShops() {
             let span = document.createElement('span');
             // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
             let a = document.createElement('a');
-            a.href = shop.self
+            //a.href = shop.self
+            a.addEventListener('click', function(event) {
+                // Prevent the default behavior of following the link
+                event.preventDefault();
+                viewInformation(capitalizeFirstLetter(shop.name.toLowerCase()));
+            });
             a.textContent = shop.name;
             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
              //let button = document.createElement('button');
@@ -126,10 +179,27 @@ function loadShops() {
     
 }
 
+//displays shop information when shop is clicked. [TO FINISH]
+function viewInformation(name){
+    console.log('name passed in viewinfo: ', name);
+    //hideMarkers();
+    console.log("viewInformation called");
+    const ul = document.getElementById('information'); 
+    ul.textContent = 'Questo è un testo di prova per mostrare le informazioni del negozio ' + name;
+    seeSingleShop(name);
+}
+
+
+// function hideMarkers() {
+//    // setMapOnAll(null);
+//   }
+
+//loads all categories from enum in Shop Mongoose Schema and shows them in an unordered list. 
+//By every category name there is a button to show shops belonging to category and products sold in that category
 function loadCategory() {
     console.log("load category called");
     
-    const ul = document.getElementById('categories'); 
+    const ul = document.getElementById('results'); 
    // console.log(Shop);
     ul.textContent = '';
   
@@ -164,11 +234,17 @@ function loadCategory() {
             let button = document.createElement('button');
             button.type = 'button'
             button.onclick = ()=>searchShopfromCat(category.name);
-            button.textContent = 'Search shops';
+            button.textContent = 'Visualizza negozi';
+
+            let button2 = document.createElement('button');
+            button2.type = 'button'
+            button2.onclick = ()=>searchProdfromCat(category.name);
+            button2.textContent = 'Visualizza prodotti';
             
             // Append all our elements
             span.appendChild(a);
             span.appendChild(button);
+            span.appendChild(button2);
             li.appendChild(span);
             ul.appendChild(li);
        })
@@ -178,8 +254,9 @@ function loadCategory() {
     
 }
 
+//shows shops belonging to a specific category
 function searchShopfromCat(category) {
-    const ul = document.getElementById('Shops in categories'); 
+    const ul = document.getElementById('results'); 
     // console.log(Shop);
      ul.textContent = '';
     fetch('../api/v1/shops?category=' + category)
@@ -195,6 +272,11 @@ function searchShopfromCat(category) {
          // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
             let a = document.createElement('a');
        // a.href = category.self
+            a.addEventListener('click', function(event) {
+        // Prevent the default behavior of following the link
+            event.preventDefault();
+                viewInformation(shop.name);
+            });
             a.textContent = shop.name + ', ' + shop.address;
         // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
         // Append all our elements
@@ -205,6 +287,7 @@ function searchShopfromCat(category) {
 })
 }
 
+//simulates button clicked when pressing enter-key
 function triggerOnEnter(){
     var input = document.getElementById("shopName");
     console.log("trigger on enter key");
@@ -220,10 +303,11 @@ function triggerOnEnter(){
   }}, {once: true});
 }
 
+//takes user-input and searches shop by name or by category, displaying the results
 async function searchShopByName(userInput) {           //called 4 times before fetching
                 console.log("searchShopByName called");
 
-    const ul = document.getElementById('inputSearch'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
     let fetchUrl;
@@ -260,7 +344,12 @@ async function searchShopByName(userInput) {           //called 4 times before f
             let span = document.createElement('span');
             // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
             let a = document.createElement('a');
-            a.href = shop.self
+            //a.href = shop.self
+            a.addEventListener('click', function(event) {
+                // Prevent the default behavior of following the link
+                event.preventDefault();
+                viewInformation(shop.name);
+            });
             a.textContent = shop.name+ ', ' + shop.address;
             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
              //let button = document.createElement('button');
@@ -279,10 +368,12 @@ async function searchShopByName(userInput) {           //called 4 times before f
     
 }
 
+//capitalizes first letter of a string
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//checkes whether a user input is a category expressed in enum in Shop Mongoose Schema
 async function isCategory(input) {
                 console.log('isCategory entered');
 
@@ -303,24 +394,28 @@ async function isCategory(input) {
     })
 }
 
-async function searchShopByProduct() {           //called 4 times before fetching
+//searches shop by product user input
+async function searchShopByProduct(categToSearch) {           //called 4 times before fetching
                 console.log("searchShopByProduct called");
 
-    const ul = document.getElementById('inputProductSearch'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
 
-    const categToSearch = await prodCategory();
-                console.log('categtosearch: ' + categToSearch);
+    if(categToSearch==undefined){
+        categToSearch = await prodCategory();
+        console.log('categtosearch: ' + categToSearch);
+    }
 
     searchShopByName(categToSearch);
     
 }
 
+//fetches products with a specific name and returns their category
 async function prodCategory() {           //called 4 times before fetching
                 console.log("prodCategory called");
 
-    const ul = document.getElementById('inputProductSearch'); 
+    const ul = document.getElementById('results'); 
 
     ul.textContent = '';
     
@@ -336,5 +431,84 @@ async function prodCategory() {           //called 4 times before fetching
              
         })
 }
+
+//loads and shows all products existing in db
+function loadProducts() {           //called 4 times before fetching
+        console.log("loadProducts called");
+
+        const ul = document.getElementById('results'); 
+
+        ul.textContent = '';
+
+
+    fetch('../api/v1/products')
+        .then((resp) => resp.json()) // Transform the data into json
+        .then(function(data) { // Here you get the data to modify as you please
+        
+            data.sort((a, b) => a.name.localeCompare(b.name));
+        
+            return data.map(function(product) { // Map through the results and for each run the code below
+            
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+            // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+            a.href = product.self
+            a.textContent = product.name;
+            // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+             //let button = document.createElement('button');
+            // button.type = 'button'
+            // button.onclick = ()=>takeShop(category.self)
+            // button.textContent = 'Take the category';
+            
+            // Append all our elements
+            span.appendChild(a);
+          //  span.appendChild(button);
+            li.appendChild(span);
+            ul.appendChild(li);
+        })
+    })
+    .catch( error => console.error(error) );// If there is any error you will catch them here
+    
+}
+
+//searched a product by pressing a button associated to a specific category.
+//Displays all products sold in that category of shops
+function searchProdfromCat(category) {
+    const ul = document.getElementById('results'); 
+    // console.log(Shop);
+     ul.textContent = '';
+    fetch('../api/v1/products?category=' + category)
+    .then((resp) => resp.json()) // Transform the data into json
+    .then(function(data) { // 
+        console.log("searchProdfromCat called");
+        //const shopOfCateg = await Shop.find({data.category: category.name });
+        console.log('Data: ' + data);
+        
+        return data.map(function(product){
+            let li = document.createElement('li');
+            let span = document.createElement('span');
+         // span.innerHTML = `<a href="${book.self}">${book.title}</a>`;
+            let a = document.createElement('a');
+           // a.href;
+            a.addEventListener('click', function(event) {
+                // Prevent the default behavior of following the link
+                event.preventDefault();
+                console.log('searchProdfromCat: prod cat->', product.category);
+                // Call the searchShopByProduct function
+                searchShopByProduct(product.category);
+            });
+            a.textContent = product.name;
+        // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
+        // Append all our elements
+            span.appendChild(a);
+            li.appendChild(span);
+            ul.appendChild(li);
+    })
+})}
+
+
+
+
 
 window.initMap = initMap;
