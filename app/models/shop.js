@@ -10,6 +10,7 @@ module.exports = mongoose.model('Shop', new Schema({
 	cap: Number,
 	city: String,
 	provincia: String,
+	coordinates: [Number],
 	category: {
 		type: String,
 		enum: ['supermercato' ,
