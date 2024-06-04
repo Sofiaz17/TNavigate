@@ -73,6 +73,11 @@ routerShop.get('', async (req, res) => {
     //             //console.log(`${day1.day}: ${day1.periods[i].startHours}:${day1.periods[i].startMinutes} - ${day1.periods[i].endHours}:${day1.periods[i].endMinutes}`); 
             
     //   }));
+    if(shop.length === 0){
+        console.log('Nessun risultato trovato!');
+        res.status(404).json({ error: 'Not found' }).send();
+        return;
+    }
       console.log('SHOP' +
       shop.forEach((shop) =>{
         console.log('\n' + shop.name +' :');
@@ -86,11 +91,7 @@ routerShop.get('', async (req, res) => {
       }));
      //console.log('SHOP' + shop.opening_hours[0].day);
 
-    if(shop.length === 0){
-        console.log('Nessun risultato trovato!');
-        res.status(404).json({ error: 'Not found' }).send();
-        return;
-    }
+   
 
     shop = shop.map( (shop) => {
         return {
@@ -151,6 +152,23 @@ routerShop.get('/:id', async (req, res) => {
         state: req.shop.state
     });
 });
+
+routerShop.patch('/:id', async (req, res) =>{
+    console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
+    let shop = await Shop.findByIdAndUpdate(req.params.id, {
+        coordinates: req.body.coordinates
+    }).exec();
+    if (!shop) {
+        res.status(404).send()
+        console.log('shop not found')
+        return;
+    }
+
+    let shopId = shop.id;
+
+    console.log('shop modified')
+    res.location("/api/v1/shops/" + shopId).status(200).send();
+})
 
  /**
  * @swagger
