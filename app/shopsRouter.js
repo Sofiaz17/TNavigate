@@ -154,12 +154,13 @@ routerShop.get('/:id', async (req, res) => {
 });
 
 routerShop.patch('/:id', async (req, res) =>{
+    console.log('in patch');
     console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
     let shop = await Shop.findByIdAndUpdate(req.params.id, {
         coordinates: req.body.coordinates
     }).exec();
     if (!shop) {
-        res.status(404).send()
+        res.status(404).json('shop not found').send()
         console.log('shop not found')
         return;
     }
@@ -192,9 +193,10 @@ routerShop.patch('/:id', async (req, res) =>{
  *                          $ref: '#/components/schemas/Shop'
 */
 routerShop.delete('/:id', async (req, res) => {
+    console.log('in delete');
     let shop = await Shop.findById(req.params.id).exec();
     if (!shop) {
-        res.status(404).send()
+        res.status(404).json( 'shop not found').send()
         console.log('shop not found')
         return;
     }
@@ -202,7 +204,6 @@ routerShop.delete('/:id', async (req, res) => {
     console.log('shop removed')
     res.status(204).send()
 });
-
 
 /**
  * @swagger
