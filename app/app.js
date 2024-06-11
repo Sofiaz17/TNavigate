@@ -36,9 +36,12 @@ app.use(cors(corsOptions));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}
 
 
 /**
@@ -111,6 +114,12 @@ app.use('/api/v1/products', prods);
 app.use((req, res) => {
     res.status(404);
     res.json({ error: 'Not found' });
+});
+
+/* Default error handler */
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
 });
 
 module.exports = app;

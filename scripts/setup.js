@@ -518,8 +518,8 @@ Shop.deleteMany().then( () => {
 
 Product.deleteMany().then( () => {
 	var fruttaFresca = new Product({ 
-		name: 'Frutta Fresca',
-		category: ['supermercato','ortofrutta'],
+		name: 'frutta fresca',
+		category: ['ortofrutta'],
 		keywords: ['frutta', 'ortofrutta']
 	});
 	return fruttaFresca.save();
@@ -532,4 +532,53 @@ Product.deleteMany().then( () => {
 		keywords: ['carne', 'pollo', 'carne bianca', 'carne di pollo']
 	});
 	return carnePollo.save();
+}).then( () => {
+	var sale = new Product({ 
+		name: 'sale',
+		category: ['supermercato'],
+		keywords: ['sale grosso', 'sale fino', 'sale iodato', 'sale fino iodato']
+	});
+	return sale.save();
+}).then( () => {
+	var jeans = new Product({ 
+		name: 'jeans',
+		category: ['abbigliamento'],
+		keywords: ['pantaloni', 'blue jeans']
+	});
+	return jeans.save();
+}).then( () => {
+	var cavoUSB = new Product({ 
+		name: 'cavo USB',
+		category: ['elettronica'],
+		keywords: ['cavo', 'USB']
+	});
+	return cavoUSB.save();
+}).then( () => {
+	var chiaveInglese = new Product({ 
+		name: 'chiave inglese',
+		category: ['ferramenta'],
+		keywords: ['chiave']
+	});
+	return chiaveInglese.save();
+}).then( () => {
+	var cacciavite = new Product({ 
+		name: 'cacciavite',
+		category: ['ferramenta'],
+		keywords: ['cacciavite stella']
+	});
+	return cacciavite.save();
+}).then( () => {
+	var buscofen = new Product({ 
+		name: 'buscofen',
+		category: ['farmacia'],
+		keywords: ['buscofen act']
+	});
+	return buscofen.save();
+}).then( () => {
+	var crepes = new Product({ 
+		name: 'crepes',
+		category: ['gelateria'],
+		keywords: ['']
+	});
+	return crepes.save();
 });
