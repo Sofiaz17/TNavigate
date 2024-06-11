@@ -95,8 +95,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 /**
  * Serve front-end static files
  */
-//const FRONTEND = process.env.FRONTEND || Path.join( __dirname, '..', 'node_modules', 'easylibvue', 'dist' );
-//app.use('/EasyLibApp/', express.static( FRONTEND ));
+const FRONTEND = process.env.FRONTEND  || Path.join( __dirname, '..', 'node_modules', 'tnavigatevue', 'dist' );
+app.use('/', express.static( FRONTEND ));
 
 // If process.env.FRONTEND folder does not contain index.html then use the one from static
 app.use('/', express.static('static')); // expose also this folder
