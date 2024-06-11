@@ -45,14 +45,24 @@ const Product = require('./models/product'); // get our mongoose model
 routerProduct.get('', async (req, res) => {
     let product;
 
-    if(req.query.name){
+    
+    if(req.query.name=='') {
+        console.log('Specificare un parametro valido');
+        res.status(400).json({ error: 'Inserire un parametro di ricerca valido' });
+        return;
+    } else if(req.query.name){
         product = await Product.find({name: req.query.name}).exec();
     } else if(req.query.category){
         product = await Product.find({category: req.query.category}).exec();
     } else {
-        product = await Product.find().exec();
+        product = await Product.find({}).exec();
     }
     
+    if(product.length === 0){
+        console.log('Nessun risultato trovato!');
+        res.status(404).json({ error: 'Not found' }).send();
+        return;
+    }
     product = product.map( (product) => {
         return {
             self: '/api/v1/products/' + product.id,
@@ -85,12 +95,22 @@ routerProduct.get('', async (req, res) => {
  *                  schema:
  *                      $ref: '#/components/schemas/Product'
 */
-routerProduct.get('/:id', async (req, res) => {
+
+routerProduct.use('/:id', async(req, res, next) =>{
     let product = await Product.findById(req.params.id);
+    if(!product){
+        res.status(404).send();
+        console.log('product not found!');
+        return;
+    }
+    req.product = product;
+    next();
+});
+routerProduct.get('/:id', async (req, res) => {
     res.status(200).json({
-        self: '/api/v1/products/' + product.id,
-        name: encodeURI(product.name),
-        category: product.category
+        self: '/api/v1/products/' + req.product.id,
+        name: encodeURI(req.product.name),
+        category: req.product.category
     });
 });
 

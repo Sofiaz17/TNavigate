@@ -16,17 +16,35 @@ const tokenChecker = require('./tokenChecker.js');
 const utentiBase = require('./utentiBase.js');
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:5173"
 };
 
-//app.use(cors(corsOptions));
+app.use(function (req, res, next) { // Add headers before the routes are defined
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Pass to next layer of middleware
+  next();
+});
+  
+
+app.use(cors(corsOptions));
 
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+}
 
 app.use('./tokenChecker.js', function (req, res, next) {
   console.log("Authenticate and Redirect")
@@ -40,6 +58,8 @@ app.use('./tokenChecker.js', function (req, res, next) {
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 
 
 const swaggerDefinition = {
@@ -119,6 +139,12 @@ app.use('/api/v1/utentiBase', utentiBase);
 app.use((req, res) => {
     res.status(404);
     res.json({ error: 'Not found' });
+});
+
+/* Default error handler */
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
 });
 
 module.exports = app;

@@ -44,6 +44,16 @@ const Shop = require('./models/shop'); // get our mongoose model
 routerShop.get('', async (req, res) => {
     let shop;
     console.log("req query category: " + req.query.category);
+    console.log("req query name : " + req.query.name);
+
+  
+    if(req.query.name=='' || req.query.category=='') 
+     //   ||(req.query.name === '' && req.query.category === ''))
+     {
+        console.log('Specificare un parametro valido');
+        res.status(400).json({ error: 'Inserire un parametro di ricerca valido' });
+        return;
+    } else 
     if(req.query.category){
         console.log('router, cat');
         shop = await Shop.find({category: req.query.category}).exec();
@@ -54,13 +64,44 @@ routerShop.get('', async (req, res) => {
     // https://mongoosejs.com/docs/api.html#model_Model.find
         shop = await Shop.find({}).exec();
     }
+    // console.log('SHOP' + shop.forEach((shop) => {
+    //     console.log(shop.name + ' :'); 
+    //     shop.opening_hours.forEach((day1) => {
+     
+    //         //console.log(`${'D',day1.day}: ${'P',day1.periods.forEach(per => console.log('S',per.startHours) )}`);
+    //         console.log('D:'+ day1.day +': '+ 'P:'+ day1.periods.forEach(per => per.startHours) )});
+    //             //console.log(`${day1.day}: ${day1.periods[i].startHours}:${day1.periods[i].startMinutes} - ${day1.periods[i].endHours}:${day1.periods[i].endMinutes}`); 
+            
+    //   }));
+    if(shop.length === 0){
+        console.log('Nessun risultato trovato!');
+        res.status(404).json({ error: 'Not found' }).send();
+        return;
+    }
+      console.log('SHOP' +
+      shop.forEach((shop) =>{
+        console.log('\n' + shop.name +' :');
+        shop.opening_hours.forEach((day1) => {
+            console.log(`Day: ${day1.day}`);
+            day1.periods.forEach(period => {
+              console.log(`Start Hours: ${period.startHours}`);
+            });
+      })
+      
+      }));
+     //console.log('SHOP' + shop.opening_hours[0].day);
+
+   
+
     shop = shop.map( (shop) => {
         return {
             self: '/api/v1/shops/' + shop.id,
             name: shop.name,
             category: shop.category,
             address: shop.address,
-            coordinates: shop.coordinates
+            coordinates: shop.coordinates,
+            opening_hours: shop.opening_hours,
+            state: shop.state
         };
     });
     res.status(200).json(shop);
@@ -88,17 +129,47 @@ routerShop.get('', async (req, res) => {
  *                  schema:
  *                      $ref: '#/components/schemas/Shop'
 */
+routerShop.use('/:id', async(req, res, next) =>{
+    let shop = await Shop.findById(req.params.id);
+    if(!shop){
+        res.status(404).send();
+        console.log('shop not found!');
+        return;
+    }
+    req.shop = shop;
+    next();
+});
+
 routerShop.get('/:id', async (req, res) => {
     // https://mongoosejs.com/docs/api.html#model_Model.findById
-    let shop = await Shop.findById(req.params.id);
     res.status(200).json({
-        self: '/api/v1/shops/' + shop.id,
-        name: shop.name,
-        category: shop.category,
-        address: shop.address,
-        coordinates: shop.coordinates
+        self: '/api/v1/shops/' + req.shop.id,
+        name: req.shop.name,
+        category: req.shop.category,
+        address: req.shop.address,
+        coordinates: req.shop.coordinates,
+        opening_hours: req.shop.opening_hours,
+        state: req.shop.state
     });
 });
+
+routerShop.patch('/:id', async (req, res) =>{
+    console.log('in patch');
+    console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
+    let shop = await Shop.findByIdAndUpdate(req.params.id, {
+        coordinates: req.body.coordinates
+    }).exec();
+    if (!shop) {
+        res.status(404).json('shop not found').send()
+        console.log('shop not found')
+        return;
+    }
+
+    let shopId = shop.id;
+
+    console.log('shop modified')
+    res.location("/api/v1/shops/" + shopId).status(200).send();
+})
 
  /**
  * @swagger
@@ -122,9 +193,10 @@ routerShop.get('/:id', async (req, res) => {
  *                          $ref: '#/components/schemas/Shop'
 */
 routerShop.delete('/:id', async (req, res) => {
+    console.log('in delete');
     let shop = await Shop.findById(req.params.id).exec();
     if (!shop) {
-        res.status(404).send()
+        res.status(404).json( 'shop not found').send()
         console.log('shop not found')
         return;
     }
@@ -132,7 +204,6 @@ routerShop.delete('/:id', async (req, res) => {
     console.log('shop removed')
     res.status(204).send()
 });
-
 
 /**
  * @swagger
@@ -162,7 +233,9 @@ routerShop.post('', async (req, res) => {
         address: req.body.address,
         coordinates: req.body.coordinates,
         address: req.body.address,
-        category: req.body.category
+        category: req.body.category,
+        opening_hours: req.body.opening_hours,
+        state: req.body.state
     });
     
 	shop = await shop.save();

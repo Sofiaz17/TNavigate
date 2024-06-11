@@ -103,10 +103,11 @@ function seeShops() {
 //shows on map a single shop retrieving its coordinates from its address
 function seeSingleShop(name) {
     console.log('seeSingleShop called');
+    console.log('name passed in seeSingleShop: ', name);
     geocoder = new google.maps.Geocoder(); 
     initMap();
 
-    fetch('../api/v1/shops?name=',name)
+    fetch('../api/v1/shops?name=' + name)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) { 
             // Create an array to store promises
@@ -192,7 +193,7 @@ function loadShops() {
             a.addEventListener('click', function(event) {
                 // Prevent the default behavior of following the link
                 event.preventDefault();
-                viewInformation(shop.name);
+                viewInformation(capitalizeFirstLetter(shop.name.toLowerCase()));
             });
             a.textContent = shop.name;
             // span.innerHTML += `<button type="button" onclick="takeBook('${book.self}')">Take the book</button>`
@@ -213,12 +214,13 @@ function loadShops() {
 }
 
 //displays shop information when shop is clicked. [TO FINISH]
-function viewInformation(shop){
+function viewInformation(name){
+    console.log('name passed in viewinfo: ', name);
     //hideMarkers();
     console.log("viewInformation called");
     const ul = document.getElementById('information'); 
-    ul.textContent = 'Questo è un testo di prova per mostrare le informazioni del negozio ',shop.name;
-    seeSingleShop(shop.name);
+    ul.textContent = 'Questo è un testo di prova per mostrare le informazioni del negozio ' + name;
+    seeSingleShop(name);
 }
 
 

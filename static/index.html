@@ -5,6 +5,8 @@
 	<title>TNavigate</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="script.js"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -13,6 +15,7 @@
     </div>
     <div class="topnav">
         <a href="/home.html">Home</a>
+        <a href="/index.HTML">Lista Shops</a>
         <a class="active" href="/index.HTML">Lista Shops</a>
         <a href="/login.html">Login</a>
         <a href="/signin.html">Registrati</a>
@@ -22,7 +25,11 @@
 <body>
 
 <h1>TNavigate</h1>
-
+<script type="text/javascript" 
+      
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNwMXy4aFNldadM-ONrQO1SwUY7ibVmQk&callback=initMap&v=weekly"
+        async defer
+      ></script> 
 <form action="api/v1/utentiBase" method="post" name="loginform" id="loginform">
   <span>Logged User:</span>
   <span id="loggedUser"></span>
@@ -30,6 +37,27 @@
   <input name="email" id="loginPassword"/>
   <button type="button" onclick="login()">LogIn</button>
 </form>
+<form action="api/v1/shops" method="get" name="getShops" id="getShops">
+  <button type="button" onclick="loadShops()">Elenco negozi</button>
+  <button type="button" onclick="loadCategory()">Elenco categorie</button>
+  <button type="button" onclick="loadProducts()">Elenco prodotti</button>
+  <br><br>
+  <input type="search" id="shopName" onkeypress=triggerOnEnter()>
+  <button type="button" id='searchBtn' onclick="searchShopByName()">Cerca negozio o categoria</button>
+  <br><br>
+  <input type="search" id="productName" >
+  <button type="button" id='searchBtn2' onclick="searchShopByProduct()">Cerca prodotto</button>
+</form>
+
+<h2>Ricerca:</h2>
+<ul id="results"></ul>
+<h2>Informazioni negozio:</h2>
+<ul id="information"></ul>
+<div class="right-column">
+  <div id="map" style="height:450px; width:450px;"></div>
+
+</div>
+
 
 <script src="script.js"></script> 
     
