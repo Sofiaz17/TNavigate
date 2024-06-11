@@ -39,7 +39,7 @@ app.use(cors());
 /**
  * Serve front-end static files
  */
-const FRONTEND = process.env.FRONTEND  || Path.join( __dirname, '..', 'node_modules', 'tnavigatevue', 'dist' );
+const FRONTEND = process.env.FRONTEND; // || Path.join( __dirname, '..', 'node_modules', 'tnavigatevue', 'dist' );
 app.use('/TNavigateApp/', express.static( FRONTEND ));
 
 // If process.env.FRONTEND folder does not contain index.html then use the one from static
