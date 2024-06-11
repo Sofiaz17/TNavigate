@@ -548,7 +548,7 @@ Product.deleteMany().then( () => {
 	return jeans.save();
 }).then( () => {
 	var cavoUSB = new Product({ 
-		name: 'cavo USB',
+		name: 'cavo usb',
 		category: ['elettronica'],
 		keywords: ['cavo', 'USB']
 	});
