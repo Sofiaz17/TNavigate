@@ -21,7 +21,7 @@ var corsOptions = {
 
 app.use(function (req, res, next) { // Add headers before the routes are defined
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND);
+  res.setHeader('Access-Control-Allow-Origin', "https://github.com/Sofiaz17/TNavigateApp.git");
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   // Request headers you wish to allow
