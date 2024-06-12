@@ -40,8 +40,8 @@ const Shop = require('./models/shop'); // get our mongoose model
 *                       type: array
 *                   items:
 *                       $ref: '#/components/schemas/Shop'
-*        '404':
-             description: 'No shop found'
+*       '404':
+            description: 'No shop found'
  */
 routerShop.get('', async (req, res) => {
     let shop;
@@ -124,14 +124,14 @@ routerShop.get('', async (req, res) => {
  *         schema:
  *          type: integer 
  *     responses:
- *      200:
- *          description: A single shop.
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Shop'
- *      404:
- *          description: Shop not found
+ *          200:
+ *              description: A single shop.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Shop'
+ *          404:
+ *              description: Shop not found
 */
 routerShop.use('/:id', async(req, res, next) =>{
     let shop = await Shop.findById(req.params.id);
@@ -170,7 +170,7 @@ routerShop.get('/:id', async (req, res) => {
  *          responses:
  *               '200':
  *                   description: 'Coordinates updated successfully'
- *                '404':
+ *               '404':
  *                   description: 'Shop not found'
  */ 
 routerShop.patch('/:id', async (req, res) =>{
@@ -211,8 +211,8 @@ routerShop.patch('/:id', async (req, res) =>{
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Shop'
- *          '404':
- *               description: Shop not found
+ *         '404':
+ *              description: Shop not found
 */
 routerShop.delete('/:id', async (req, res) => {
     console.log('in delete');
