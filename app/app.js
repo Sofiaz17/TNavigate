@@ -19,31 +19,46 @@ var corsOptions = {
   origin: process.env.FRONTEND
 };
 
-app.use(function (req, res, next) { // Add headers before the routes are defined
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', "https://github.com/Sofiaz17/TNavigateApp.git");
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  // Pass to next layer of middleware
-  next();
-});
+/**
+ * Configure Express.js parsing middleware
+ */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+
+
+// app.use(function (req, res, next) { // Add headers before the routes are defined
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', "https://github.com/Sofiaz17/TNavigateApp.git");
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   // Pass to next layer of middleware
+//   next();
+// });
   
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 /**
  * Serve front-end static files
  */
-const FRONTEND = process.env.FRONTEND; // || Path.join( __dirname, '..', 'node_modules', 'tnavigatevue', 'dist' );
+const FRONTEND = process.env.FRONTEND || Path.join( __dirname, '..', 'node_modules', 'tnavigatevue', 'dist' );
 app.use('/TNavigateApp/', express.static( FRONTEND ));
 
 // If process.env.FRONTEND folder does not contain index.html then use the one from static
 //app.use('/', express.static('static')); // expose also this folder
+
+
+app.use((req,res,next) => {
+  console.log(req.method + ' ' + req.url)
+  next()
+})
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
@@ -59,14 +74,6 @@ app.use('./tokenChecker.js', function (req, res, next) {
   res.redirect('../static/login.html');
   next();
 });
-
-
-/**
- * Configure Express.js parsing middleware
- */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 
 
 
@@ -116,14 +123,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // });
 
 
-app.use((req,res,next) => {
-    console.log(req.method + ' ' + req.url)
-    next()
-})
+
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Helloooo" });
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "Helloooo" });
+// });
 
 app.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
