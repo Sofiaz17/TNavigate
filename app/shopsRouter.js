@@ -29,7 +29,7 @@ const Shop = require('./models/shop'); // get our mongoose model
 * @swagger
 * /shops:
 *   get:
-*       description: Get the list of shops with a certain name or belonging to a certain category.
+*       description: If name or category are specified, get the list of all shops with a certain name or belonging to a certain category. Otherwise, get all shops
 *       summary: View shops according to request parameters
 *   responses:
 *       '200':
@@ -40,6 +40,8 @@ const Shop = require('./models/shop'); // get our mongoose model
 *                       type: array
 *                   items:
 *                       $ref: '#/components/schemas/Shop'
+*        '404':
+             description: 'No shop found'
  */
 routerShop.get('', async (req, res) => {
     let shop;
@@ -128,6 +130,8 @@ routerShop.get('', async (req, res) => {
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Shop'
+ *      404:
+ *          description: Shop not found
 */
 routerShop.use('/:id', async(req, res, next) =>{
     let shop = await Shop.findById(req.params.id);
@@ -153,6 +157,22 @@ routerShop.get('/:id', async (req, res) => {
     });
 });
 
+/**
+ * @swagger
+ *  /shops/{id}:
+ *      patch:
+ *          description: Updates coordinates of a shop.
+ *          requestBody:
+ *               content:
+ *                   application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Shop'
+ *          responses:
+ *               '200':
+ *                   description: 'Coordinates updated successfully'
+ *                '404':
+ *                   description: 'Shop not found'
+ */ 
 routerShop.patch('/:id', async (req, res) =>{
     console.log('in patch');
     console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
@@ -185,12 +205,14 @@ routerShop.patch('/:id', async (req, res) =>{
  *         schema:
  *          type: integer  
  *     responses:
- *         204:
+ *         '204':
  *              description: Remove a single shop.
  *              content:
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Shop'
+ *          '404':
+ *               description: Shop not found
 */
 routerShop.delete('/:id', async (req, res) => {
     console.log('in delete');
@@ -218,12 +240,7 @@ routerShop.delete('/:id', async (req, res) => {
  *                          $ref: '#/components/schemas/Shop'
  *          responses:
  *               '201':
- *                   description: 'Shop created. Link in the Location header'
- *                   headers:
- *                       'Location':
- *                          schema:
- *                              type: string
- *                          description: Link to the newly created shop.
+ *                   description: 'Shop created'
  */       
 routerShop.post('', async (req, res) => {
 

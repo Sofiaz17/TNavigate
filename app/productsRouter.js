@@ -30,7 +30,7 @@ const Product = require('./models/product'); // get our mongoose model
 * @swagger
 * /products:
 *   get:
-*       description: Get the list of products with a certain name.
+*       description: Get the list of products with a certain name or get all products if name not specified in query
 *       summary: View products according to request parameters
 *   responses:
 *       '200':
@@ -41,6 +41,10 @@ const Product = require('./models/product'); // get our mongoose model
 *                       type: array
 *                   items:
 *                       $ref: '#/components/schemas/Product'
+         '400':
+            description: 'Bad request'
+         '404':
+            description: 'No product found'
  */
 routerProduct.get('', async (req, res) => {
     let product;
@@ -78,7 +82,6 @@ routerProduct.get('', async (req, res) => {
  * @swagger
  * /products/{id}:
  *   get:
- *     summary: Retrieve a single product.
  *     description: Retrieve a single product.
  *     parameters:
  *       - in: path
@@ -94,6 +97,8 @@ routerProduct.get('', async (req, res) => {
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Product'
+ *      404:
+ *         description: Product not found
 */
 
 routerProduct.use('/:id', async(req, res, next) =>{

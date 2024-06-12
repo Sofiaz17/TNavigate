@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.28% </span>
+                <span class="strong">89.96% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>225/252</span>
+                <span class='fraction'>242/269</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.28% </span>
+                <span class="strong">89.96% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>225/252</span>
+                <span class='fraction'>242/269</span>
             </div>
         
             
@@ -314,7 +314,26 @@
 <a name='L249'></a><a href='#L249'>249</a>
 <a name='L250'></a><a href='#L250'>250</a>
 <a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -446,6 +465,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -476,10 +497,28 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -512,11 +551,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -596,7 +630,7 @@ const Shop = require('./models/shop'); // get our mongoose model
 * @swagger
 * /shops:
 *   get:
-*       description: Get the list of shops with a certain name or belonging to a certain category.
+*       description: If name or category are specified, get the list of all shops with a certain name or belonging to a certain category. Otherwise, get all shops
 *       summary: View shops according to request parameters
 *   responses:
 *       '200':
@@ -607,6 +641,8 @@ const Shop = require('./models/shop'); // get our mongoose model
 *                       type: array
 *                   items:
 *                       $ref: '#/components/schemas/Shop'
+*        '404':
+             description: 'No shop found'
  */
 routerShop.get('', async (req, res) =&gt; {
     let shop;
@@ -695,6 +731,8 @@ routerShop.get('', async (req, res) =&gt; {
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/Shop'
+ *      404:
+ *          description: Shop not found
 */
 routerShop.use('/:id', async(req, res, next) =&gt;{
     let shop = await Shop.findById(req.params.id);
@@ -720,6 +758,22 @@ routerShop.get('/:id', async (req, res) =&gt; {
     });
 });
 &nbsp;
+/**
+ * @swagger
+ *  /shops/{id}:
+ *      patch:
+ *          description: Updates coordinates of a shop.
+ *          requestBody:
+ *               content:
+ *                   application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Shop'
+ *          responses:
+ *               '200':
+ *                   description: 'Coordinates updated successfully'
+ *                '404':
+ *                   description: 'Shop not found'
+ */ 
 routerShop.patch('/:id', async (req, res) =&gt;{
     console.log('in patch');
     console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
@@ -752,12 +806,14 @@ routerShop.patch('/:id', async (req, res) =&gt;{
  *         schema:
  *          type: integer  
  *     responses:
- *         204:
+ *         '204':
  *              description: Remove a single shop.
  *              content:
  *                  application/json:
  *                      schema:
  *                          $ref: '#/components/schemas/Shop'
+ *          '404':
+ *               description: Shop not found
 */
 routerShop.delete('/:id', async (req, res) =&gt; {
     console.log('in delete');
@@ -785,12 +841,7 @@ routerShop.delete('/:id', async (req, res) =&gt; {
  *                          $ref: '#/components/schemas/Shop'
  *          responses:
  *               '201':
- *                   description: 'Shop created. Link in the Location header'
- *                   headers:
- *                       'Location':
- *                          schema:
- *                              type: string
- *                          description: Link to the newly created shop.
+ *                   description: 'Shop created'
  */       
 routerShop.post('', async (req, res) =&gt; {
 <span class="cstat-no" title="statement not covered" ></span>
@@ -823,7 +874,7 @@ module.exports = routerShop;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-06-12T00:01:06.904Z
+                at 2024-06-12T00:54:10.135Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -85,7 +85,7 @@ const swaggerDefinition = {
     servers: [
       {
         url: 'http://localhost:3000/api/v1'
-      },
+      }
     ],
 };
 
@@ -106,14 +106,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 
-// Redirect to login..html 
-app.get('/login.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../static/login.html'));
-});
+// // Redirect to login..html 
+// app.get('/login.html', function (req, res) {
+//   res.sendFile(path.join(__dirname, '../static/login.html'));
+// });
 
-app.get('/home.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '../static/home.html'));
-});
+// app.get('/home.html', function (req, res) {
+//   res.sendFile(path.join(__dirname, '../static/home.html'));
+// });
 
 
 app.use((req,res,next) => {
