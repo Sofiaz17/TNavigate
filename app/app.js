@@ -16,7 +16,7 @@ const tokenChecker = require('./tokenChecker.js');
 const utentiBase = require('./utentiBase.js');
 
 var corsOptions = {
-  origin: "http://localhost:5173"
+  origin: process.env.FRONTEND
 };
 
 app.use(function (req, res, next) { // Add headers before the routes are defined
@@ -34,7 +34,7 @@ app.use(function (req, res, next) { // Add headers before the routes are defined
 });
   
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 /**
  * Serve front-end static files
