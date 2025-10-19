@@ -14,6 +14,7 @@ const prods = require('./productsRouter.js');
 const authentication = require('./authentication.js');
 const tokenChecker = require('./tokenChecker.js');
 const utentiBase = require('./utentiBase.js');
+const users = require('./usersRouter.js');
 
 var corsOptions = {
   origin: process.env.FRONTEND
@@ -62,7 +63,7 @@ app.use((req,res,next) => {
 })
 
 // set port, listen for requests
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
@@ -141,6 +142,8 @@ app.use('/api/v1/shopCategories', categs);
 app.use('/api/v1/products', prods);
 // Authentication routing and middleware
 app.use('/api/v1/authentications', authentication);
+// User management routes
+app.use('/api/v1/users', users);
 // Access is restricted only to authenticated users a valid token must be provided in the request
 app.use('/api/v1/utentiBase/me', tokenChecker);
 // Resource routing

@@ -1,7 +1,7 @@
 require('dotenv').config()
 var Shop   = require('../app/models/shop'); // get our mongoose model
 var Product = require('../app/models/product');
-var UtenteBase   = require('../app/models/utenteBase'); 
+var User   = require('../app/models/user'); 
 
 var mongoose = require('mongoose');
 // connect to database
@@ -585,18 +585,28 @@ Product.deleteMany().then( () => {
 });
 
 // Clear users
-UtenteBase.deleteMany().then( () => {
-	var merlino = new UtenteBase({ 
+User.deleteMany().then( () => {
+	var merlino = new User({ 
+		userType: 'base_user',
+		name: 'Merlino',
+		surname: 'Mago',
 		email: 'merlino@unitn.com',
-		password: 'magaMago'
+		password: 'magaMago123',
+		phone: '+39 123 456 7890',
+		address: 'Via delle Streghe, 1, Trento TN'
 	});
 	return merlino.save();
 }).then( () => {
 	console.log('User merlino@unitn.com saved successfully');
 }).then( () => {
-	var mario = new UtenteBase({ 
+	var mario = new User({ 
+		userType: 'base_user',
+		name: 'Mario',
+		surname: 'Rossi',
 		email: 'mario.rossi@unitn.com',
-		password: '123'
+		password: 'password123',
+		phone: '+39 987 654 3210',
+		address: 'Via Roma, 10, Trento TN'
 	});
 	return mario.save();
 }).then( () => {
