@@ -17,7 +17,10 @@ const utentiBase = require('./utentiBase.js');
 const users = require('./usersRouter.js');
 
 var corsOptions = {
-  origin: process.env.FRONTEND
+  origin: process.env.FRONTEND || 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 /**
@@ -44,7 +47,7 @@ app.use(express.urlencoded({ extended: true }));
 // });
   
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 /**
  * Serve front-end static files
@@ -63,7 +66,7 @@ app.use((req,res,next) => {
 })
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
@@ -79,24 +82,7 @@ app.use('./tokenChecker.js', function (req, res, next) {
 
 
 
-const swaggerDefinition = {
-  openapi: '3.0.0',
-  info: {
-    title: 'Express API for shops',
-    version: '1.0.0',
-    description:
-    'This is a REST API application made with Express.',
-  },
-  externalDocs: {                // <<< this will add the link to your swagger page
-    description: "swagger.json", // <<< link title
-    url: "/swagger.json"         // <<< and the file added below in app.get(...)
-  },
-    servers: [
-      {
-        url: 'http://localhost:3000/api/v1'
-      }
-    ],
-};
+const swaggerDefinition = require('./api-docs');
 
 const options = {
   swaggerDefinition,

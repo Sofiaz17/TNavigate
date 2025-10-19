@@ -56,17 +56,6 @@ const tokenChecker = require('./tokenChecker');
  *     responses:
  *       201:
  *         description: User registered successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 message:
- *                   type: string
- *                 userId:
- *                   type: string
  *       400:
  *         description: Bad request - validation error
  *       409:
@@ -81,24 +70,21 @@ router.post('/register', async (req, res) => {
         // Validate required fields
         if (!userType || !name || !surname || !email || !password) {
             return res.status(400).json({
-                success: false,
-                message: 'Missing required fields: userType, name, surname, email, password'
+                message: 'Validation error'
             });
         }
 
         // Validate userType
         if (!['base_user', 'shop_owner'].includes(userType)) {
             return res.status(400).json({
-                success: false,
-                message: 'Invalid userType. Must be either "base_user" or "shop_owner"'
+                message: 'Invalid user type'
             });
         }
 
         // Validate password strength
         if (password.length < 6) {
             return res.status(400).json({
-                success: false,
-                message: 'Password must be at least 6 characters long'
+                message: 'Validation error'
             });
         }
 
@@ -106,8 +92,7 @@ router.post('/register', async (req, res) => {
         const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
             return res.status(409).json({
-                success: false,
-                message: 'User with this email already exists'
+                message: 'Email already exists'
             });
         }
 
@@ -126,9 +111,16 @@ router.post('/register', async (req, res) => {
         const savedUser = await newUser.save();
 
         res.status(201).json({
-            success: true,
             message: 'User registered successfully',
-            userId: savedUser._id.toString()
+            user: {
+                id: savedUser._id.toString(),
+                userType: savedUser.userType,
+                name: savedUser.name,
+                surname: savedUser.surname,
+                email: savedUser.email,
+                phone: savedUser.phone || '',
+                address: savedUser.address || ''
+            }
         });
 
     } catch (error) {
@@ -136,25 +128,20 @@ router.post('/register', async (req, res) => {
         
         // Handle Mongoose validation errors
         if (error.name === 'ValidationError') {
-            const errors = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({
-                success: false,
-                message: 'Validation error',
-                errors: errors
+                message: 'Validation error'
             });
         }
 
         // Handle duplicate key error (email)
         if (error.code === 11000) {
             return res.status(409).json({
-                success: false,
-                message: 'User with this email already exists'
+                message: 'Email already exists'
             });
         }
 
         res.status(500).json({
-            success: false,
-            message: 'Internal server error during registration'
+            message: 'Internal server error'
         });
     }
 });
@@ -181,25 +168,6 @@ router.post('/register', async (req, res) => {
  *     responses:
  *       200:
  *         description: User profile retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                 email:
- *                   type: string
- *                 userType:
- *                   type: string
- *                 name:
- *                   type: string
- *                 surname:
- *                   type: string
- *                 phone:
- *                   type: string
- *                 address:
- *                   type: string
  *       401:
  *         description: Unauthorized - invalid or missing token
  *       403:
@@ -207,43 +175,32 @@ router.post('/register', async (req, res) => {
  *       404:
  *         description: User not found
  */
-// Apply token checker middleware to protected routes
 router.get('/:userId', tokenChecker, async (req, res) => {
     try {
-        // Check if user is authenticated
-        if (!req.loggedUser) {
-            return res.status(401).json({
-                success: false,
-                message: 'Authentication required'
+        const { userId } = req.params;
+
+        // Check if user is accessing their own profile
+        if (req.loggedUser.id !== userId) {
+            return res.status(403).json({
+                message: 'Access denied'
             });
         }
 
-        const { userId } = req.params;
-
         // Find user by ID
-        const user = await User.findById(userId).select('-password -auth');
+        const user = await User.findById(userId).select('-password');
         
         if (!user) {
             return res.status(404).json({
-                success: false,
                 message: 'User not found'
-            });
-        }
-
-        // Check if user is accessing their own profile or has admin rights
-        if (req.loggedUser.id !== userId) {
-            return res.status(403).json({
-                success: false,
-                message: 'Access denied. You can only view your own profile.'
             });
         }
 
         res.status(200).json({
             id: user._id.toString(),
-            email: user.email,
             userType: user.userType,
             name: user.name,
             surname: user.surname,
+            email: user.email,
             phone: user.phone || '',
             address: user.address || ''
         });
@@ -251,7 +208,220 @@ router.get('/:userId', tokenChecker, async (req, res) => {
     } catch (error) {
         console.error('Get user profile error:', error);
         res.status(500).json({
-            success: false,
+            message: 'Internal server error'
+        });
+    }
+});
+
+/**
+ * @swagger
+ * /users/{userId}:
+ *   put:
+ *     summary: Update user profile
+ *     description: Update user profile information
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         description: Bearer token
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               currentPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ *       400:
+ *         description: Bad request - validation error
+ *       401:
+ *         description: Unauthorized - invalid or missing token
+ *       403:
+ *         description: Forbidden - access denied
+ *       404:
+ *         description: User not found
+ */
+router.put('/:userId', tokenChecker, async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { name, surname, email, phone, address, currentPassword, newPassword } = req.body;
+
+        // Check if user is updating their own profile
+        if (req.loggedUser.id !== userId) {
+            return res.status(403).json({
+                message: 'Access denied'
+            });
+        }
+
+        // Find user by ID
+        const user = await User.findById(userId);
+        
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
+
+        // Check if email is being changed and if it already exists
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email: email.toLowerCase() });
+            if (existingUser) {
+                return res.status(400).json({
+                    message: 'Email already exists'
+                });
+            }
+        }
+
+        // Handle password change
+        if (newPassword) {
+            if (!currentPassword) {
+                return res.status(400).json({
+                    message: 'Current password is required to change password'
+                });
+            }
+
+            const isCurrentPasswordValid = await user.comparePassword(currentPassword);
+            if (!isCurrentPasswordValid) {
+                return res.status(400).json({
+                    message: 'Current password is incorrect'
+                });
+            }
+
+            if (newPassword.length < 6) {
+                return res.status(400).json({
+                    message: 'New password must be at least 6 characters long'
+                });
+            }
+
+            user.password = newPassword; // Will be hashed by pre-save middleware
+        }
+
+        // Update user fields
+        if (name) user.name = name.trim();
+        if (surname) user.surname = surname.trim();
+        if (email) user.email = email.toLowerCase().trim();
+        if (phone !== undefined) user.phone = phone ? phone.trim() : '';
+        if (address !== undefined) user.address = address ? address.trim() : '';
+
+        // Save updated user
+        const updatedUser = await user.save();
+
+        res.status(200).json({
+            message: 'Profile updated successfully',
+            user: {
+                id: updatedUser._id.toString(),
+                userType: updatedUser.userType,
+                name: updatedUser.name,
+                surname: updatedUser.surname,
+                email: updatedUser.email,
+                phone: updatedUser.phone || '',
+                address: updatedUser.address || ''
+            }
+        });
+
+    } catch (error) {
+        console.error('Update user profile error:', error);
+        
+        // Handle Mongoose validation errors
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                message: 'Validation error'
+            });
+        }
+
+        // Handle duplicate key error (email)
+        if (error.code === 11000) {
+            return res.status(400).json({
+                message: 'Email already exists'
+            });
+        }
+
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
+});
+
+/**
+ * @swagger
+ * /users/{userId}:
+ *   delete:
+ *     summary: Delete user account
+ *     description: Delete user account permanently
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         description: Bearer token
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Account deleted successfully
+ *       401:
+ *         description: Unauthorized - invalid or missing token
+ *       403:
+ *         description: Forbidden - access denied
+ *       404:
+ *         description: User not found
+ */
+router.delete('/:userId', tokenChecker, async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Check if user is deleting their own account
+        if (req.loggedUser.id !== userId) {
+            return res.status(403).json({
+                message: 'Access denied'
+            });
+        }
+
+        // Find and delete user
+        const deletedUser = await User.findByIdAndDelete(userId);
+        
+        if (!deletedUser) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            message: 'Account deleted successfully'
+        });
+
+    } catch (error) {
+        console.error('Delete user error:', error);
+        res.status(500).json({
             message: 'Internal server error'
         });
     }

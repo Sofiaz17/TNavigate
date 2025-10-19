@@ -5,9 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:simple": "jest --config jest.simple.config.js --testPathPattern=simple-api.test.js",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:api": "node scripts/test-api.js",
     "start": "node index.js",
     "start_local": "echo use: $ npm run dev",
-    "dev": "node -r dotenv/config index.js"
+    "dev": "node scripts/dev-server.js",
+    "dev:simple": "node -r dotenv/config index.js",
+    "lint": "echo 'No linter configured'",
+    "docs": "echo 'API docs available at http://localhost:3000/api-docs'"
   },
   "jest": {
     "verbose": true,
@@ -25,8 +32,10 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "abort-controller": "^3.0.0",
     "dotenv": "^8.6.0",
     "jest": "^26.6.3",
+    "node-fetch": "^2.7.0",
     "supertest": "^6.3.4",
     "vite": "^2.9.5"
   }

@@ -3,9 +3,6 @@ const router = express.Router();
 const User = require('./models/user'); 
 const jwt = require('jsonwebtoken'); 
 
-
-// Route to authenticate and get a new token
- 
 /**
  * @swagger
  * /authentications:
@@ -58,71 +55,65 @@ const jwt = require('jsonwebtoken');
  *         description: Authentication failed
  */
 router.post('', async function(req, res) {
-	try {
-		const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-		// Validate input
-		if (!email || !password) {
-			return res.status(400).json({ 
-				success: false, 
-				message: 'Email and password are required' 
-			});
-		}
+        // Validate input
+        if (!email || !password) {
+            return res.status(400).json({ 
+                message: 'Email and password are required' 
+            });
+        }
 
-		// Find the user
-		let user = await User.findOne({
-			email: email.toLowerCase().trim()
-		}).exec();
-		
-		// User not found
-		if (!user) {
-			return res.status(401).json({ 
-				success: false, 
-				message: 'Authentication failed. User not found.' 
-			});
-		}
-		
-		// Check if password matches using bcrypt
-		const isPasswordValid = await user.comparePassword(password);
-		if (!isPasswordValid) {
-			return res.status(401).json({ 
-				success: false, 
-				message: 'Authentication failed. Wrong password.' 
-			});
-		}
-		
-		// If user is found and password is right, create a token
-		var payload = {
-			email: user.email,
-			id: user._id.toString(),
-			userType: user.userType
-		}
-		var options = {
-			expiresIn: 86400 // expires in 24 hours
-		}
-		var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
+        // Find the user
+        let user = await User.findOne({
+            email: email.toLowerCase().trim()
+        }).exec();
+        
+        // User not found
+        if (!user) {
+            return res.status(401).json({ 
+                message: 'Invalid credentials' 
+            });
+        }
+        
+        // Check if password matches using bcrypt
+        const isPasswordValid = await user.comparePassword(password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ 
+                message: 'Invalid credentials' 
+            });
+        }
+        
+        // If user is found and password is right, create a token
+        var payload = {
+            email: user.email,
+            id: user._id.toString(),
+            userType: user.userType
+        }
+        var options = {
+            expiresIn: 86400 // expires in 24 hours
+        }
+        var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
 
-		res.json({
-			token: token,
-			email: user.email,
-			id: user._id.toString(),
-			self: "/api/v1/users/" + user._id,
-			userType: user.userType,
-			name: user.name,
-			surname: user.surname,
-			phone: user.phone || '',
-			address: user.address || ''
-		});
+        res.json({
+            token: token,
+            id: user._id.toString(),
+            email: user.email,
+            userType: user.userType,
+            name: user.name,
+            surname: user.surname,
+            phone: user.phone || '',
+            address: user.address || '',
+            self: "/api/v1/users/" + user._id
+        });
 
-	} catch (error) {
-		console.error('Authentication error:', error);
-		res.status(500).json({
-			success: false,
-			message: 'Internal server error during authentication'
-		});
-	}
+    } catch (error) {
+        console.error('Authentication error:', error);
+        res.status(500).json({
+            message: 'Internal server error during authentication'
+        });
+    }
 });
-
-
 
 module.exports = router;

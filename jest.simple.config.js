@@ -1,9 +1,3 @@
-/*
- * For a detailed explanation regarding each configuration property, visit:
- * https://jestjs.io/docs/en/configuration.html
- */
-
-  
 module.exports = {
     // All imported modules in your tests should be mocked automatically
     // automock: false,
@@ -18,7 +12,7 @@ module.exports = {
     // clearMocks: false,
   
     // Indicates whether the coverage information should be collected while executing the test
-    collectCoverage: true,
+    collectCoverage: false, // Disable coverage for simple tests
   
     // An array of glob patterns indicating a set of files for which coverage information should be collected
     // collectCoverageFrom: undefined,
@@ -129,7 +123,7 @@ module.exports = {
     setupFiles: ["<rootDir>/.jest/setEnvVars.js"],
   
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
-    setupFilesAfterEnv: ["<rootDir>/app/test-setup.js"],
+    setupFilesAfterEnv: ["<rootDir>/app/simple-test-setup.js"],
   
     // The number of seconds after which a test is considered as slow and reported as such in the results.
     // slowTestThreshold: 5,
@@ -187,7 +181,7 @@ module.exports = {
     //   "\\.pnp\\.[^\\\\]+$"
     // ],
   
-    // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
+    // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for this module
     // unmockedModulePathPatterns: undefined,
   
     // Indicates whether each individual test should be reported during the run
