@@ -63,7 +63,7 @@ DB_URL=mongodb://localhost:27017/tnavigate
 SUPER_SECRET=your_super_secret_jwt_key_here
 PORT=3000
 NODE_ENV=development
-FRONTEND=http://localhost:5173
+FRONTEND=http://Sofiaz17.github.io/TNavigateVue/
 ```
 
 ### Start Development Server

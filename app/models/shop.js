@@ -70,6 +70,11 @@ const shopSchema = new mongoose.Schema({
 	dataModified: Boolean
 });
 
+// Add indexes for better performance
+shopSchema.index({ owner: 1 }); // For faster queries by owner
+shopSchema.index({ category: 1 }); // For faster queries by category
+shopSchema.index({ name: 1 }); // For faster queries by name
+
 const Shop = mongoose.model('Shop', shopSchema);
 
 module.exports = Shop;

@@ -53,7 +53,7 @@ PORT=3000
 NODE_ENV=development
 
 # Frontend URL for CORS
-FRONTEND=http://localhost:5173
+FRONTEND=http://Sofiaz17.github.io/TNavigateVue/
 `;
 
         fs.writeFileSync('.env', envContent);
@@ -105,7 +105,7 @@ FRONTEND=http://localhost:5173
             }
         });
 
-        console.log('👀 File watching enabled for hot reload');
+        console.log(' File watching enabled for hot reload');
     }
 
     /**
@@ -148,7 +148,7 @@ FRONTEND=http://localhost:5173
  API Server: http://localhost:3000
  API Documentation: http://localhost:3000/api-docs
  Swagger JSON: http://localhost:3000/swagger.json
- Frontend: http://localhost:5173 (if running)
+ Frontend: http://Sofiaz17.github.io/TNavigateVue/
 
  Available Commands:
 - npm test          : Run all tests

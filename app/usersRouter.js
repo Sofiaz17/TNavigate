@@ -148,6 +148,54 @@ router.post('/register', async (req, res) => {
 
 /**
  * @swagger
+ * /users/me:
+ *   get:
+ *     summary: Get current user profile
+ *     description: Get current user profile information from JWT token
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         required: true
+ *         description: Bearer token
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Current user profile retrieved successfully
+ *       401:
+ *         description: Unauthorized - invalid or missing token
+ *       404:
+ *         description: User not found
+ */
+router.get('/me', tokenChecker, async (req, res) => {
+    try {
+        const user = await User.findById(req.loggedUser.id).select('-password');
+        
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            id: user._id.toString(),
+            userType: user.userType,
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            phone: user.phone || '',
+            address: user.address || ''
+        });
+    } catch (error) {
+        console.error('Get current user error:', error);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
+});
+
+/**
+ * @swagger
  * /users/{userId}:
  *   get:
  *     summary: Get user profile

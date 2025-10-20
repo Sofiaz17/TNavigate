@@ -18,11 +18,11 @@ const users = require('./usersRouter.js');
 
 var corsOptions = {
   origin: [
-    process.env.FRONTEND || 'http://localhost:5173',
+    process.env.FRONTEND || 'http://Sofiaz17.github.io/TNavigateVue/',
     'http://localhost:3000'
   ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 

@@ -1,6 +1,40 @@
 const express = require('express');
 const routerShop = express.Router();
 const Shop = require('./models/shop'); // get our mongoose model
+const tokenChecker = require('./tokenChecker');
+
+/**
+ * Middleware to validate shop ownership
+ */
+const validateShopOwnership = async (req, res, next) => {
+    try {
+        const shop = await Shop.findById(req.params.id);
+        
+        if (!shop) {
+            return res.status(404).json({ message: 'Shop not found' });
+        }
+        
+        if (shop.owner !== req.loggedUser.email) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        
+        req.shop = shop;
+        next();
+    } catch (error) {
+        console.error('Shop ownership validation error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+/**
+ * Middleware to set owner from token
+ */
+const setOwnerFromToken = (req, res, next) => {
+    if (req.loggedUser && req.loggedUser.email) {
+        req.body.owner = req.loggedUser.email;
+    }
+    next();
+};
 
 /** 
  * @swagger
@@ -47,23 +81,19 @@ routerShop.get('', async (req, res) => {
     let shop;
     console.log("req query category: " + req.query.category);
     console.log("req query name : " + req.query.name);
+    console.log("req query owner : " + req.query.owner);
 
-  
-    if(req.query.name=='' || req.query.category=='') 
-     //   ||(req.query.name === '' && req.query.category === ''))
-     {
-        console.log('Specificare un parametro valido');
-        res.status(400).json({ error: 'Inserire un parametro di ricerca valido' });
-        return;
-    } else 
-    if(req.query.category){
+    // Handle owner-based querying for shop owners
+    if (req.query.owner) {
+        shop = await Shop.find({ owner: req.query.owner }).exec();
+    } else if (req.query.category) {
         console.log('router, cat');
         shop = await Shop.find({category: req.query.category}).exec();
-    } else if(req.query.name){
+    } else if (req.query.name) {
         console.log('router, name');
         shop = await Shop.find({name: req.query.name}).exec();
-    } else{
-    // https://mongoosejs.com/docs/api.html#model_Model.find
+    } else {
+        // https://mongoosejs.com/docs/api.html#model_Model.find
         shop = await Shop.find({}).exec();
     }
     // console.log('SHOP' + shop.forEach((shop) => {
@@ -77,7 +107,7 @@ routerShop.get('', async (req, res) => {
     //   }));
     if(shop.length === 0){
         console.log('Nessun risultato trovato!');
-        res.status(404).json({ error: 'Not found' }).send();
+        res.status(404).json({ message: 'No shops found' });
         return;
     }
       console.log('SHOP' +
@@ -103,7 +133,8 @@ routerShop.get('', async (req, res) => {
             address: shop.address,
             coordinates: shop.coordinates,
             opening_hours: shop.opening_hours,
-            state: shop.state
+            state: shop.state,
+            owner: shop.owner
         };
     });
     res.status(200).json(shop);
@@ -133,28 +164,31 @@ routerShop.get('', async (req, res) => {
  *          404:
  *              description: Shop not found
 */
-routerShop.use('/:id', async(req, res, next) =>{
-    let shop = await Shop.findById(req.params.id);
-    if(!shop){
-        res.status(404).send();
-        console.log('shop not found!');
-        return;
-    }
-    req.shop = shop;
-    next();
-});
-
 routerShop.get('/:id', async (req, res) => {
-    // https://mongoosejs.com/docs/api.html#model_Model.findById
-    res.status(200).json({
-        self: '/api/v1/shops/' + req.shop.id,
-        name: req.shop.name,
-        category: req.shop.category,
-        address: req.shop.address,
-        coordinates: req.shop.coordinates,
-        opening_hours: req.shop.opening_hours,
-        state: req.shop.state
-    });
+    try {
+        let shop = await Shop.findById(req.params.id);
+        if(!shop){
+            res.status(404).json({ message: 'Shop not found' });
+            console.log('shop not found!');
+            return;
+        }
+        
+        res.status(200).json({
+            self: '/api/v1/shops/' + shop.id,
+            name: shop.name,
+            category: shop.category,
+            address: shop.address,
+            coordinates: shop.coordinates,
+            opening_hours: shop.opening_hours,
+            state: shop.state,
+            owner: shop.owner
+        });
+    } catch (error) {
+        console.error('Get shop error:', error);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
 });
 
 /**
@@ -173,22 +207,33 @@ routerShop.get('/:id', async (req, res) => {
  *               '404':
  *                   description: 'Shop not found'
  */ 
-routerShop.patch('/:id', async (req, res) =>{
-    console.log('in patch');
-    console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
-    let shop = await Shop.findByIdAndUpdate(req.params.id, {
-        coordinates: req.body.coordinates
-    }).exec();
-    if (!shop) {
-        res.status(404).json('shop not found').send()
-        console.log('shop not found')
-        return;
+routerShop.patch('/:id', tokenChecker, validateShopOwnership, async (req, res) =>{
+    try {
+        console.log('in patch');
+        console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
+
+        // Update the shop (ownership already validated by middleware)
+        let updatedShop = await Shop.findByIdAndUpdate(req.params.id, {
+            coordinates: req.body.coordinates
+        }, { new: true }).exec();
+
+        console.log('shop modified');
+        res.status(200).json({
+            self: '/api/v1/shops/' + updatedShop.id,
+            name: updatedShop.name,
+            category: updatedShop.category,
+            address: updatedShop.address,
+            coordinates: updatedShop.coordinates,
+            opening_hours: updatedShop.opening_hours,
+            state: updatedShop.state,
+            owner: updatedShop.owner
+        });
+    } catch (error) {
+        console.error('Update shop error:', error);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
     }
-
-    let shopId = shop.id;
-
-    console.log('shop modified')
-    res.location("/api/v1/shops/" + shopId).status(200).send();
 })
 
  /**
@@ -214,17 +259,22 @@ routerShop.patch('/:id', async (req, res) =>{
  *         '404':
  *              description: Shop not found
 */
-routerShop.delete('/:id', async (req, res) => {
-    console.log('in delete');
-    let shop = await Shop.findById(req.params.id).exec();
-    if (!shop) {
-        res.status(404).json( 'shop not found').send()
-        console.log('shop not found')
-        return;
+routerShop.delete('/:id', tokenChecker, validateShopOwnership, async (req, res) => {
+    try {
+        console.log('in delete');
+        
+        // Delete the shop (ownership already validated by middleware)
+        await req.shop.deleteOne();
+        console.log('shop removed');
+        res.status(200).json({
+            message: 'Shop deleted successfully'
+        });
+    } catch (error) {
+        console.error('Delete shop error:', error);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
     }
-    await shop.deleteOne()
-    console.log('shop removed')
-    res.status(204).send()
 });
 
 /**
@@ -242,27 +292,55 @@ routerShop.delete('/:id', async (req, res) => {
  *               '201':
  *                   description: 'Shop created'
  */       
-routerShop.post('', async (req, res) => {
+routerShop.post('', tokenChecker, setOwnerFromToken, async (req, res) => {
+    try {
+        // Only shop_owner users can create shops
+        if (req.loggedUser.userType !== 'shop_owner') {
+            return res.status(403).json({
+                message: 'Only shop owners can create shops'
+            });
+        }
 
-	let shop = new Shop({
-        name: req.body.name,
-        category: req.body.category,
-        address: req.body.address,
-        coordinates: req.body.coordinates,
-        address: req.body.address,
-        category: req.body.category,
-        opening_hours: req.body.opening_hours,
-        state: req.body.state
-    });
-    
-	shop = await shop.save();
-    
-    let shopId = shop.id;
+        let shop = new Shop({
+            name: req.body.name,
+            category: req.body.category,
+            address: req.body.address,
+            coordinates: req.body.coordinates,
+            opening_hours: req.body.opening_hours,
+            state: req.body.state,
+            owner: req.body.owner
+        });
+        
+        shop = await shop.save();
+        
+        let shopId = shop.id;
 
-    console.log('Shop saved successfully');
+        console.log('Shop saved successfully');
 
-    res.location("/api/v1/shops/" + shopId).status(201).send();
-    //res.location("/api/v1/shops/categories" + shopCat).status(201).send();
+        res.status(201).json({
+            self: '/api/v1/shops/' + shopId,
+            name: shop.name,
+            category: shop.category,
+            address: shop.address,
+            coordinates: shop.coordinates,
+            opening_hours: shop.opening_hours,
+            state: shop.state,
+            owner: shop.owner
+        });
+    } catch (error) {
+        console.error('Create shop error:', error);
+        
+        // Handle Mongoose validation errors
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                message: 'Validation error'
+            });
+        }
+
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
 });
 
 
