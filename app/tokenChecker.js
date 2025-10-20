@@ -1,30 +1,40 @@
 const jwt = require('jsonwebtoken'); 
 
 const tokenChecker = function(req, res, next) {
-    // Check for Bearer token in Authorization header
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+    // Accept token from multiple places for compatibility with various clients
+    // 1) Authorization: Bearer <token>
+    // 2) Authorization: <token>
+    // 3) x-access-token header
+    // 4) query parameter: ?token=...
+    // 5) body.token
 
-    // If there is no token
+    const authHeader = req.headers && req.headers['authorization'];
+    let token = null;
+
+    if (authHeader) {
+        const parts = authHeader.split(' ');
+        token = parts.length === 2 ? parts[1] : parts[0];
+    }
+
+    // Fallbacks
+    token = token || req.headers['x-access-token'] || req.query.token || req.body.token;
+
     if (!token) {
         return res.status(401).json({ 
-            success: false,
-            message: 'No token provided.'
+            message: 'Unauthorized'
         });
     }
 
-    // Decode token, verifies secret and checks exp
+    // Verify token
     jwt.verify(token, process.env.SUPER_SECRET, function(err, decoded) {			
         if (err) {
-            return res.status(403).json({
-                success: false,
-                message: 'Failed to authenticate token.'
+            return res.status(401).json({
+                message: 'Unauthorized'
             });		
-        } else {
-            // if everything is good, save to request for use in other routes
-            req.loggedUser = decoded;
-            next();
         }
+
+        req.loggedUser = decoded;
+        next();
     });
 };
 

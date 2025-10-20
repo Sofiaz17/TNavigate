@@ -181,8 +181,8 @@ router.get('/:userId', tokenChecker, async (req, res) => {
 
         // Check if user is accessing their own profile
         if (req.loggedUser.id !== userId) {
-            return res.status(403).json({
-                message: 'Access denied'
+            return res.status(401).json({
+                message: 'Unauthorized'
             });
         }
 
@@ -272,8 +272,8 @@ router.put('/:userId', tokenChecker, async (req, res) => {
 
         // Check if user is updating their own profile
         if (req.loggedUser.id !== userId) {
-            return res.status(403).json({
-                message: 'Access denied'
+            return res.status(401).json({
+                message: 'Unauthorized'
             });
         }
 
@@ -307,7 +307,7 @@ router.put('/:userId', tokenChecker, async (req, res) => {
             const isCurrentPasswordValid = await user.comparePassword(currentPassword);
             if (!isCurrentPasswordValid) {
                 return res.status(400).json({
-                    message: 'Current password is incorrect'
+                    message: 'Invalid current password'
                 });
             }
 
@@ -401,8 +401,8 @@ router.delete('/:userId', tokenChecker, async (req, res) => {
 
         // Check if user is deleting their own account
         if (req.loggedUser.id !== userId) {
-            return res.status(403).json({
-                message: 'Access denied'
+            return res.status(401).json({
+                message: 'Unauthorized'
             });
         }
 

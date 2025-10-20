@@ -20,7 +20,7 @@ class DevServer {
      * Start the development server
      */
     start() {
-        console.log('🚀 Starting TNavigate Development Server...\n');
+        console.log(' Starting TNavigate Development Server...\n');
         
         // Check if .env file exists
         if (!fs.existsSync('.env')) {
@@ -98,7 +98,7 @@ FRONTEND=http://localhost:5173
             if (fs.existsSync(watchPath)) {
                 fs.watch(watchPath, { recursive: true }, (eventType, filename) => {
                     if (filename && !filename.includes('node_modules') && !filename.includes('.git')) {
-                        console.log(`\n🔄 File changed: ${filename}`);
+                        console.log(`\n File changed: ${filename}`);
                         this.restartServer();
                     }
                 });
