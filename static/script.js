@@ -447,23 +447,32 @@ async function searchShopByProduct(categToSearch) {           //called 4 times b
 
 //fetches products with a specific name and returns their category
 async function prodCategory() {           //called 4 times before fetching
-                console.log("prodCategory called");
+    console.log("prodCategory called");
 
     const ul = document.getElementById('results'); 
 
     ul.textContent = '';
     
     const userInput = document.getElementById('productName').value.toLowerCase();
-                console.log('userInput: ' + userInput);
-                console.log('encoded uri userinput: ' + encodeURI(userInput.toLowerCase()));
+    console.log('userInput: ' + userInput);
+    console.log('encoded uri userinput: ' + encodeURI(userInput.toLowerCase()));
     
-   
-    return await fetch('../api/v1/products?name=' + encodeURI(userInput.toLowerCase()))
-    .then((resp) => resp.json()) // Transform the data into json
-    .then(function(data) { // Here you get the data to modify as you please
-        return data.map(prod => prod.category);
-             
-        })
+    try {
+        const response = await fetch('../api/v1/products?name=' + encodeURI(userInput.toLowerCase()));
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+            const categories = data.map(prod => prod.category);
+            console.log('Product categories found:', categories);
+            return categories;
+        } else {
+            console.log('No products found for:', userInput);
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching product categories:', error);
+        return [];
+    }
 }
 
 //loads and shows all products existing in db

@@ -15,12 +15,12 @@ const authentication = require('./authentication.js');
 const tokenChecker = require('./tokenChecker.js');
 const utentiBase = require('./utentiBase.js');
 const users = require('./usersRouter.js');
+const favorites = require('./favoritesRouter.js');
 
 var corsOptions = {
-  origin: [
-    process.env.FRONTEND || 'http://Sofiaz17.github.io/TNavigateVue/',
-    'http://localhost:3000'
-  ],
+  origin: process.env.NODE_ENV === 'production' 
+    ? (process.env.FRONTEND || 'http://Sofiaz17.github.io/TNavigateVue/') 
+    : '*', // Allow all origins in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -131,6 +131,8 @@ app.use('/api/v1/shopCategories', categs);
 app.use('/api/v1/products', prods);
 // Authentication routing and middleware
 app.use('/api/v1/authentications', authentication);
+// User favorites routes - mount first
+app.use('/api/v1/users', favorites);
 // User management routes
 app.use('/api/v1/users', users);
 // Access is restricted only to authenticated users a valid token must be provided in the request
