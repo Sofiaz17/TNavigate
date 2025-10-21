@@ -127,6 +127,7 @@ routerShop.get('', async (req, res) => {
 
     shop = shop.map( (shop) => {
         return {
+            id: shop.id,
             self: '/api/v1/shops/' + shop.id,
             name: shop.name,
             category: shop.category,
@@ -174,6 +175,7 @@ routerShop.get('/:id', async (req, res) => {
         }
         
         res.status(200).json({
+            id: shop.id,
             self: '/api/v1/shops/' + shop.id,
             name: shop.name,
             category: shop.category,
