@@ -47,13 +47,19 @@ DB_URL=mongodb://localhost:27017/tnavigate
 
 # JWT Secret (use a strong secret in production)
 SUPER_SECRET=your_super_secret_jwt_key_here_change_this_in_production
+SESSION_SECRET=your_strong_session_secret_here
 
 # Server Configuration
 PORT=3000
 NODE_ENV=development
+BACKEND_URL=http://localhost:3000
 
 # Frontend URL for CORS
 FRONTEND=http://Sofiaz17.github.io/TNavigateVue/
+
+# Google OAuth Credentials
+GOOGLE_CLIENT_ID=your_google_client_id_here
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 `;
 
         fs.writeFileSync('.env', envContent);

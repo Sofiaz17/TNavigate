@@ -6,10 +6,9 @@ const passport = require('./google-auth');
 
 router.get('/google/login',
     (req, res, next) => {
-        req.session.userType = 'login'; // or some indicator for login
-        next();
-    },
-    passport.authenticate('google', { scope: ['profile', 'email'] })
+        // We no longer need to use the session for the login flow
+        passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+    }
 );
 
 router.get('/google/signup/:userType',
@@ -18,36 +17,45 @@ router.get('/google/signup/:userType',
         if (!['base_user', 'shop_owner'].includes(userType)) {
             return res.status(400).send('Invalid user type');
         }
+
+        // Store in session as backup (though it won't persist)
         req.session.userType = userType;
-        next();
-    },
-    passport.authenticate('google', { scope: ['profile', 'email'] })
+
+        // Use Passport's state option to pass userType through the OAuth flow
+        passport.authenticate('google', {
+            scope: ['profile', 'email'],
+            state: JSON.stringify({ userType: userType }) // Pass userType in state
+        })(req, res, next);
+    }
 );
 
-router.get('/google/callback', 
+router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/login.html' }),
     async (req, res) => {
         try {
-            // req.user is the user profile returned from Google strategy
             if (req.authInfo && req.authInfo.newUser) {
-                // New user, needs to select user type
-                const userType = req.session.userType;
-                if (!userType || userType === 'login') {
-                    // This case should ideally not happen if routes are used correctly
-                    // Or it could mean a user with googleId exists but tries to signup
-                    let existingUser = await User.findOne({email: req.user.email});
-                    if( existingUser && !existingUser.googleId ) {
-                        // A user with this email exists but without googleId
-                        // Potentially link accounts or show an error
-                        return res.redirect('/login.html?error=Email already exists');
+                // Try to get userType from session first, then from OAuth state
+                let userType = req.session.userType;
+
+                if (!userType && req.query.state) {
+                    try {
+                        const state = JSON.parse(req.query.state);
+                        userType = state.userType;
+                    } catch (e) {
+                        console.error('Error parsing state parameter:', e);
                     }
                 }
 
-                req.user.userType = req.session.userType;
+                if (!userType || userType === 'login') {
+                    return res.redirect('/login.html?error=User type not specified');
+                }
+
+                // Set userType and save the new user
+                req.user.userType = userType;
                 await req.user.save();
             }
 
-            // For both new and existing users, create a token and send it
+            // Generate JWT token for the user
             const payload = {
                 email: req.user.email,
                 id: req.user._id.toString(),
@@ -55,14 +63,16 @@ router.get('/google/callback',
             };
             const options = { expiresIn: 86400 }; // 24 hours
             const token = jwt.sign(payload, process.env.SUPER_SECRET, options);
-            
-            // Redirect to a frontend page with the token
-            const frontendUrl = process.env.FRONTEND || 'http://localhost:5173';
+
+            // Redirect to frontend with token
+            const frontendUrl = process.env.NODE_ENV === 'production'
+                ? (process.env.FRONTEND || 'http://Sofiaz17.github.io/TNavigateVue/')
+                : 'http://localhost:5173';
             res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
 
         } catch (error) {
             console.error('Google auth callback error:', error);
-            res.redirect('/login.html?error=Authentication failed');
+            res.redirect(`/login.html?error=Authentication failed: ${error.message}`);
         }
     }
 );

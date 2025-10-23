@@ -1,6 +1,3 @@
-var Shop   = require('../app/models/shop'); 
-const mongoose = require('mongoose');
-
 var map;
 let marker;
 var geocoder;
