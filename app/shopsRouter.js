@@ -211,14 +211,29 @@ routerShop.get('/:id', async (req, res) => {
  */ 
 routerShop.patch('/:id', tokenChecker, validateShopOwnership, async (req, res) =>{
     try {
-        console.log('in patch');
-        console.log('REQ.BODY.COORD: '+ req.body.coordinates[0] + ' '+ req.body.coordinates[1]);
+        const updatableFields = [
+            'name', 'category', 'address', 'civico', 'cap', 'city', 'provincia',
+            'coordinates', 'opening_hours', 'information', 'state'
+        ];
+        const updateData = {};
+
+        for (const field of updatableFields) {
+            if (req.body[field] !== undefined) {
+                updateData[field] = req.body[field];
+            }
+        }
 
         // Update the shop (ownership already validated by middleware)
-        let updatedShop = await Shop.findByIdAndUpdate(req.params.id, {
-            coordinates: req.body.coordinates
-        }, { new: true }).exec();
+        let updatedShop = await Shop.findByIdAndUpdate(
+            req.params.id,
+            { $set: updateData },
+            { new: true, runValidators: true }
+        ).exec();
 
+        if (!updatedShop) {
+            return res.status(404).json({ message: 'Shop not found' });
+        }
+        
         console.log('shop modified');
         res.status(200).json({
             self: '/api/v1/shops/' + updatedShop.id,
