@@ -19,13 +19,13 @@ class APITester {
      * Run a single API test
      */
     async runTest(testName, testFunction) {
-        console.log(`\n🧪 Running test: ${testName}`);
+        console.log(`\n Running test: ${testName}`);
         try {
             await testFunction();
-            console.log(`✅ ${testName} - PASSED`);
+            console.log(` ${testName} - PASSED`);
             this.testResults.push({ name: testName, status: 'PASSED' });
         } catch (error) {
-            console.log(`❌ ${testName} - FAILED: ${error.message}`);
+            console.log(` ${testName} - FAILED: ${error.message}`);
             this.testResults.push({ name: testName, status: 'FAILED', error: error.message });
         }
     }
@@ -256,7 +256,7 @@ class APITester {
      * Print test results
      */
     printResults() {
-        console.log('\n📊 Test Results Summary:');
+        console.log('\n Test Results Summary:');
         console.log('========================');
         
         const passed = this.testResults.filter(r => r.status === 'PASSED').length;
@@ -273,7 +273,7 @@ class APITester {
                 .forEach(r => console.log(`   - ${r.name}: ${r.error}`));
         }
         
-        console.log('\n🎉 API testing completed!');
+        console.log('\nAPI testing completed!');
     }
 }
 

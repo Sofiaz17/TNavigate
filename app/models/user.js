@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
+        required: function() { return !this.googleId; }, // required if not using Google login
         minlength: [6, 'Password must be at least 6 characters long']
     },
     phone: {
@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
         trim: true
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true // allows multiple documents to have a null value for this field
     }
 }, {
     timestamps: true // This adds createdAt and updatedAt fields

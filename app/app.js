@@ -6,6 +6,8 @@ const app = express();
 const cors = require("cors");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const session = require('express-session');
+const passport = require('./google-auth.js');
 
 
 const shops = require('./shopsRouter.js');
@@ -31,6 +33,17 @@ var corsOptions = {
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your_default_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
+
+// Initialize Passport and restore authentication state, if any, from the session.
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
