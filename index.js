@@ -1,4 +1,12 @@
-require('dotenv').config();
+// Load dotenv only if available (local development)
+// In production (Render), environment variables are injected directly
+try {
+  require('dotenv').config();
+} catch (e) {
+  // dotenv not available, using system environment variables
+  console.log('dotenv not found, using system environment variables.');
+}
+
 const app = require('./app/app.js');
 const mongoose = require('mongoose');
 const session = require('express-session');
