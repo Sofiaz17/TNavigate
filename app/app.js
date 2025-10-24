@@ -19,7 +19,7 @@ const favorites = require('./favoritesRouter.js');
 
 var corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? (process.env.FRONTEND || 'http://Sofiaz17.github.io/TNavigateVue/') 
+    ? (process.env.FRONTEND || 'https://sofiaz17.github.io/TNavigateVue/') 
     : '*', // Allow all origins in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
