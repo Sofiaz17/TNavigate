@@ -4,14 +4,12 @@ var Product = require('../app/models/product');
 var User   = require('../app/models/user'); 
 
 var mongoose = require('mongoose');
-// connect to database
-// mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
-// .then ( () => {
-// 	console.log("Connected to Database")
-// });
 
-// Clear users
-Shop.deleteMany().then( () => {
+mongoose.connect(process.env.DB_URL)
+.then(() => {
+    console.log("Connected to Database for setup");
+
+    const shopsPromise = Shop.deleteMany().then( () => {
 	var coop = new Shop({ 
 		name: 'Coop',
 		address: 'Piazza Giannantonio Manci, 8, 38123 Povo TN',
@@ -517,7 +515,7 @@ Shop.deleteMany().then( () => {
 	return laRomana.save();
 });
 
-Product.deleteMany().then( () => {
+    const productsPromise = Product.deleteMany().then( () => {
 	var fruttaFresca = new Product({ 
 		name: 'frutta fresca',
 		category: ['ortofrutta'],
@@ -584,8 +582,7 @@ Product.deleteMany().then( () => {
 	return crepes.save();
 });
 
-// Clear users
-User.deleteMany().then( () => {
+    const usersPromise = User.deleteMany().then( () => {
 	var merlino = new User({ 
 		userType: 'base_user',
 		name: 'Merlino',
@@ -612,4 +609,16 @@ User.deleteMany().then( () => {
 }).then( () => {
 	console.log('User mario.rossi@unitn.com saved successfully');
 	//process.exit();
+});
+
+    return Promise.all([shopsPromise, productsPromise, usersPromise]);
+})
+.then(() => {
+    console.log("Database setup completed successfully.");
+    mongoose.connection.close();
+})
+.catch((err) => {
+    console.error("Database setup failed:", err);
+    mongoose.connection.close();
+    process.exit(1);
 });

@@ -28,14 +28,17 @@ class DevServer {
             this.createSampleEnvFile();
         }
 
-        // Start the server
-        this.startServer();
-        
-        // Set up file watching for hot reload
-        this.setupFileWatching();
-        
-        // Handle graceful shutdown
-        this.setupGracefulShutdown();
+        // Run setup script
+        this.runSetupScript(() => {
+            // Start the server after setup is complete
+            this.startServer();
+            
+            // Set up file watching for hot reload
+            this.setupFileWatching();
+            
+            // Handle graceful shutdown
+            this.setupGracefulShutdown();
+        });
     }
 
     /**
@@ -64,6 +67,31 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret_here
 
         fs.writeFileSync('.env', envContent);
         console.log(' Sample .env file created. Please update the values as needed.\n');
+    }
+
+    /**
+     * Run the setup script to populate the database
+     */
+    runSetupScript(callback) {
+        const setupPath = path.join(__dirname, '..', 'scripts', 'setup.js');
+        console.log(' Running database setup script...');
+        
+        const setupProcess = spawn('node', ['-r', 'dotenv/config', setupPath], {
+            stdio: 'inherit'
+        });
+
+        setupProcess.on('error', (error) => {
+            console.error(' Error running setup script:', error);
+        });
+
+        setupProcess.on('exit', (code) => {
+            if (code === 0) {
+                console.log(' Database setup script completed successfully.\n');
+            } else {
+                console.log(`\n  Setup script exited with code ${code}.`);
+            }
+            callback();
+        });
     }
 
     /**
@@ -123,7 +151,9 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret_here
             this.serverProcess.kill('SIGTERM');
             
             setTimeout(() => {
-                this.startServer();
+                this.runSetupScript(() => {
+                    this.startServer();
+                });
             }, 1000);
         }
     }
