@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('dotenv').config();
+
 /**
  * Development Server for TNavigate
  * Provides hot reloading and development utilities
@@ -100,7 +102,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret_here
     startServer() {
         const serverPath = path.join(__dirname, '..', 'index.js');
         
-        this.serverProcess = spawn('node', ['-r', 'dotenv/config', serverPath], {
+        this.serverProcess = spawn('node', [serverPath], {
             stdio: 'inherit',
             env: { ...process.env, NODE_ENV: 'development' }
         });

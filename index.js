@@ -1,3 +1,4 @@
+require('dotenv').config();
 const app = require('./app/app.js');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -49,7 +50,7 @@ mongoose
     app.use('/api/v1/shops', shops);
     app.use('/api/v1/shopCategories', categs);
     app.use('/api/v1/products', prods);
-    app.use('/api/v1/users', favorites);
+    app.use('/api/v1', favorites);
     app.use('/api/v1/users', users);
     app.use('/api/v1/utentiBase/me', tokenChecker);
     app.use('/api/v1/utentiBase', utentiBase);

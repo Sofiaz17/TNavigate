@@ -121,38 +121,74 @@ routerProduct.get('/:id', async (req, res) => {
 });
 
 
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Delete a single product.
+ *     description: Deletes a single product by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the product to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '204':
+ *         description: Product deleted successfully.
+ *       '404':
+ *         description: Product not found.
+ */
+routerProduct.delete('/:id', async (req, res) => {
+    let product = await Product.findById(req.params.id).exec();
+    if (!product) {
+        res.status(404).send()
+        console.log('product not found')
+        return;
+    }
+    await product.deleteOne()
+    console.log('product removed')
+    res.status(204).send()
+});
 
-// routerProduct.delete('/:id', async (req, res) => {
-//     let product = await Product.findById(req.params.id).exec();
-//     if (!product) {
-//         res.status(404).send()
-//         console.log('product not found')
-//         return;
-//     }
-//     await product.deleteOne()
-//     console.log('product removed')
-//     res.status(204).send()
-// });
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Create a new product.
+ *     description: Creates a new product.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       '201':
+ *         description: Product created successfully.
+ *       '400':
+ *         description: Bad request, validation error.
+ */
+routerProduct.post('', async (req, res) => {
 
-// routerProduct.post('', async (req, res) => {
+	let product = new Product({
+        name: req.body.name,
+        category: req.body.category,
+        keywords: req.body.keywords
+    });
+   
+	product = await product.save();
+   
+    let prodId = product.id;
 
-// 	let product = new Product({
-//         name: req.body.name,
-//         category: req.body.category,
-//         keywords: req.body.keywords
-//     });
-    
-// 	product = await product.save();
-    
-//     let prodId = product.id;
+    console.log('product saved successfully');
 
-//     console.log('product saved successfully');
-
-//     /**
-//      * Link to the newly created resource is returned in the Location header
-//      * https://www.restapitutorial.com/lessons/httpmethods.html
-//      */
-//     res.location("/api/v1/products/" + prodId).status(201).send();
-//     //res.location("/api/v1/shops/categories" + shopCat).status(201).send();
-// });
+    /**
+     * Link to the newly created resource is returned in the Location header
+     * https://www.restapitutorial.com/lessons/httpmethods.html
+     */
+    res.location("/api/v1/products/" + prodId).status(201).send();
+    //res.location("/api/v1/shops/categories" + shopCat).status(201).send();
+});
 module.exports = routerProduct;

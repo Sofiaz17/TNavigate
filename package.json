@@ -38,6 +38,7 @@
   "devDependencies": {
     "abort-controller": "^3.0.0",
     "dotenv": "^8.6.0",
+    "dotenv-cli": "^10.0.0",
     "jest": "^26.6.3",
     "node-fetch": "^2.7.0",
     "supertest": "^6.3.4",

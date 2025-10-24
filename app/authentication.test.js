@@ -279,4 +279,36 @@ describe('Authentication System', () => {
             expect(response.body.message).toBe('Invalid credentials');
         });
     });
+
+    describe('Google OAuth Authentication', () => {
+        test('GET /api/v1/authentications/google/login should redirect to Google', async () => {
+            const response = await request(app)
+                .get('/api/v1/authentications/google/login')
+                .expect(302);
+            
+            expect(response.header.location).toContain('accounts.google.com');
+        });
+
+        test('GET /api/v1/authentications/google/signup/base_user should redirect to Google', async () => {
+            const response = await request(app)
+                .get('/api/v1/authentications/google/signup/base_user')
+                .expect(302);
+
+            expect(response.header.location).toContain('accounts.google.com');
+        });
+
+        test('GET /api/v1/authentications/google/signup/shop_owner should redirect to Google', async () => {
+            const response = await request(app)
+                .get('/api/v1/authentications/google/signup/shop_owner')
+                .expect(302);
+
+            expect(response.header.location).toContain('accounts.google.com');
+        });
+
+        test('GET /api/v1/authentications/google/signup/invalid_type should return 400', async () => {
+            await request(app)
+                .get('/api/v1/authentications/google/signup/invalid_type')
+                .expect(400);
+        });
+    });
 });

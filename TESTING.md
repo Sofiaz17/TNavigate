@@ -211,7 +211,7 @@ DEBUG=* npm run dev
 tail -f logs/app.log  # if logging is configured
 ```
 
-## 📊 Test Results
+##  Test Results
 
 After running tests, you'll see:
 -  Passed tests

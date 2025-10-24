@@ -97,7 +97,7 @@ const tokenChecker = require('./tokenChecker');
  *       500:
  *         description: Internal server error
  */
-router.get('/me/favorites', tokenChecker, async (req, res) => {
+router.get('/users/me/favorites', tokenChecker, async (req, res) => {
     try {
         const userId = req.loggedUser.id;
         const page = parseInt(req.query.page) || 1;
@@ -189,7 +189,7 @@ router.get('/me/favorites', tokenChecker, async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.post('/me/favorites', tokenChecker, async (req, res) => {
+router.post('/users/me/favorites', tokenChecker, async (req, res) => {
     try {
         const userId = req.loggedUser.id;
         const { shop_id } = req.body;
@@ -285,7 +285,7 @@ router.post('/me/favorites', tokenChecker, async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.delete('/me/favorites/:shop_id', tokenChecker, async (req, res) => {
+router.delete('/users/me/favorites/:shop_id', tokenChecker, async (req, res) => {
     try {
         const userId = req.loggedUser.id;
         const { shop_id } = req.params;
@@ -360,7 +360,7 @@ router.delete('/me/favorites/:shop_id', tokenChecker, async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/me/favorites/:shop_id', tokenChecker, async (req, res) => {
+router.get('/users/me/favorites/:shop_id', tokenChecker, async (req, res) => {
     try {
         const userId = req.loggedUser.id;
         const { shop_id } = req.params;
