@@ -18,9 +18,10 @@ const users = require('./usersRouter.js');
 const favorites = require('./favoritesRouter.js');
 
 var corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? (process.env.FRONTEND || 'https://sofiaz17.github.io') 
-    : '*', // Allow all origins in development
+  //origin: process.env.NODE_ENV === 'production' 
+    //? (process.env.FRONTEND || 'https://sofiaz17.github.io') 
+    //: '*', // Allow all origins in development
+  origin: '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
