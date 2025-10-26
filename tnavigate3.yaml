@@ -1,0 +1,806 @@
+openapi: 3.0.0
+info:
+  title: TNavigate API
+  version: '3.0.0'
+  description: Complete user authentication, profile management, shops, products and favorites system for TNavigate
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+externalDocs:
+  description: swagger.json
+  url: /swagger.json
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Development server
+  - url: https://api.tnavigate.com/api/v1
+    description: Production server
+tags:
+  - name: Authentication
+    description: User authentication endpoints
+  - name: Users
+    description: User management endpoints
+  - name: Shops
+    description: Shops management endpoints
+  - name: Products
+    description: Products management endpoints
+  - name: Categories
+    description: Categories management endpoints
+  - name: Favorites
+    description: User favorites management endpoints
+paths:
+  /authentications:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user and get token
+      description: Authenticate user with email and password, return JWT token and user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Authentication failed
+  /users/register:
+    post:
+      tags:
+        - Users
+      summary: Register a new user
+      description: Register a new user with user type selection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Bad request - validation error
+        '409':
+          description: Conflict - email already exists
+        '500':
+          description: Internal server error
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Get current user profile
+      description: Get current user profile information from JWT token
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  '/users/{userId}':
+    get:
+      tags:
+        - Users
+      summary: Get user profile
+      description: Get user profile information by user ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile retrieved successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags:
+        - Users
+      summary: Update user profile
+      description: Update user profile information
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: User ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Profile updated successfully
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    delete:
+      tags:
+        - Users
+      summary: Delete user account
+      description: Delete user account permanently
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: User ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account deleted successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /shops:
+    get:
+      tags:
+        - Shops
+      summary: View shops according to request parameters
+      description: If name or category are specified, get the list of all shops with a certain name or belonging to a certain category. Otherwise, get all shops
+      responses:
+        '200':
+          description: Collection of shops
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+        '404':
+          description: No shop found
+    post:
+      tags:
+        - Shops
+      summary: Register a new shop
+      description: Create a new shop in the system.
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+      responses:
+        '201':
+          description: Shop created
+  '/shops/{id}':
+    get:
+      tags:
+        - Shops
+      summary: Retrieve a single shop.
+      description: >-
+        Retrieve a single shop. Can be used to see information about the
+        specific shop.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Numeric ID of the shop to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single shop.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+        '404':
+          description: Shop not found
+    patch:
+      tags:
+        - Shops
+      description: Updates coordinates of a shop.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the shop to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+      responses:
+        '200':
+          description: Coordinates updated successfully
+        '404':
+          description: Shop not found
+    delete:
+      tags:
+        - Shops
+      summary: Delete a single shop.
+      description: Delete a single shop.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the shop to delete.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Remove a single shop.
+        '404':
+          description: Shop not found
+  /products:
+    get:
+      tags:
+        - Products
+      summary: View products according to request parameters
+      description: Get the list of products with a certain name or get all products if name not specified in query
+      responses:
+        '200':
+          description: Collection of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request
+        '404':
+          description: No product found
+    post:
+      tags:
+        - Products
+      summary: Create a new product.
+      description: Creates a new product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Product created successfully.
+        '400':
+          description: Bad request, validation error.
+  '/products/{id}':
+    get:
+      tags:
+        - Products
+      description: Retrieve a single product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Numeric ID of the product to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+    delete:
+      tags:
+        - Products
+      summary: Delete a single product.
+      description: Deletes a single product by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the product to delete.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Product deleted successfully.
+        '404':
+          description: Product not found.
+  /shopCategories:
+    get:
+      tags:
+        - Categories
+      description: Get the list of categories.
+      summary: >-
+        View all the possible categories a shop can belong to (predefined values
+        from enum in database)
+      responses:
+        '200':
+          description: Enum of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  '/shopCategories/{category}':
+    get:
+      tags:
+        - Categories
+      description: Retrieve a single category.
+      parameters:
+        - in: path
+          name: category
+          required: true
+          description: >-
+            Category name of the category to retrieve (unique because comes from
+            enum)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single category.
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: Category not found
+  /users/me/favorites:
+    get:
+      tags:
+        - Favorites
+      summary: Get user's favorite shops
+      description: Retrieve all favorite shops for the authenticated user
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          required: false
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          required: false
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: User's favorite shops retrieved successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - Favorites
+      summary: Add shop to favorites
+      description: Add a shop to the authenticated user's favorites
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - shop_id
+              properties:
+                shop_id:
+                  type: string
+                  description: ID of the shop to add to favorites
+      responses:
+        '201':
+          description: Shop added to favorites successfully
+        '400':
+          description: Bad request - invalid shop ID or missing shop_id
+        '404':
+          description: Shop not found
+        '409':
+          description: Shop already in favorites
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal server error
+  '/users/me/favorites/{shop_id}':
+    get:
+      tags:
+        - Favorites
+      summary: Check if shop is favorited
+      description: Check if a specific shop is in the authenticated user's favorites
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: shop_id
+          required: true
+          description: ID of the shop to check
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Favorite status retrieved successfully
+        '404':
+          description: Shop not found or not in favorites
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - Favorites
+      summary: Remove shop from favorites
+      description: Remove a shop from the authenticated user's favorites
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: shop_id
+          required: true
+          description: ID of the shop to remove from favorites
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Shop removed from favorites successfully
+        '404':
+          description: Favorite not found
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from authentication endpoint
+  schemas:
+    User:
+      type: object
+      required:
+        - userType
+        - name
+        - surname
+        - email
+        - password
+      properties:
+        userType:
+          type: string
+          enum:
+            - base_user
+            - shop_owner
+          description: Type of user account
+          example: base_user
+        name:
+          type: string
+          description: User's first name
+          example: John
+          minLength: 1
+          maxLength: 50
+        surname:
+          type: string
+          description: User's last name
+          example: Doe
+          minLength: 1
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: john.doe@example.com
+        password:
+          type: string
+          description: User's password (minimum 6 characters)
+          example: password123
+          minLength: 6
+        phone:
+          type: string
+          description: User's phone number (optional)
+          example: +39 123 456 7890
+        address:
+          type: string
+          description: User's address (optional)
+          example: 'Via Roma, 123, Trento TN'
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique user identifier
+          example: 507f1f77bcf86cd799439011
+        userType:
+          type: string
+          enum:
+            - base_user
+            - shop_owner
+          example: base_user
+        name:
+          type: string
+          example: John
+        surname:
+          type: string
+          example: Doe
+        email:
+          type: string
+          format: email
+          example: john.doe@example.com
+        phone:
+          type: string
+          example: +39 123 456 7890
+        address:
+          type: string
+          example: 'Via Roma, 123, Trento TN'
+    AuthRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: john.doe@example.com
+        password:
+          type: string
+          description: User's password
+          example: password123
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT authentication token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        id:
+          type: string
+          description: User ID
+          example: 507f1f77bcf86cd799439011
+        email:
+          type: string
+          format: email
+          example: john.doe@example.com
+        userType:
+          type: string
+          enum:
+            - base_user
+            - shop_owner
+          example: base_user
+        name:
+          type: string
+          example: John
+        surname:
+          type: string
+          example: Doe
+        phone:
+          type: string
+          example: +39 123 456 7890
+        address:
+          type: string
+          example: 'Via Roma, 123, Trento TN'
+        self:
+          type: string
+          description: URL to user profile
+          example: /api/v1/users/507f1f77bcf86cd799439011
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Updated first name
+          example: John Updated
+        surname:
+          type: string
+          description: Updated last name
+          example: Doe Updated
+        email:
+          type: string
+          format: email
+          description: Updated email address
+          example: john.updated@example.com
+        phone:
+          type: string
+          description: Updated phone number
+          example: +39 999 888 7777
+        address:
+          type: string
+          description: Updated address
+          example: 'Via Updated, 456, Trento TN'
+        currentPassword:
+          type: string
+          description: Current password (required when changing password)
+          example: currentpassword123
+        newPassword:
+          type: string
+          description: New password (minimum 6 characters)
+          example: newpassword123
+          minLength: 6
+    Shop:
+      type: object
+      required:
+        - name
+        - address
+        - category
+      properties:
+        name:
+          type: string
+          description: Name of the shop
+        address:
+          type: string
+          description: Complete address (street, house number, postal code, city, province) of the shop
+        category:
+          type: string
+          enum:
+            - supermercato
+            - farmacia
+            - abbigliamento
+            - ferramenta
+            - elettronica
+            - ristorazione
+            - alimentari
+            - sport
+            - cartoleria
+            - ortofrutta
+            - gelateria
+          description: Category of the shop
+    Product:
+      type: object
+      required:
+        - name
+        - category
+        - keywords
+      properties:
+        name:
+          type: string
+          description: Name of the product
+        category:
+          type: string
+          enum:
+            - supermercato
+            - farmacia
+            - abbigliamento
+            - ferramenta
+            - elettronica
+            - ristorazione
+            - alimentari
+            - sport
+            - cartoleria
+            - ortofrutta
+            - gelateria
+          description: Category of the product
+        keywords:
+          type: string
+          description: Keywords to search the product
+    UserFavorite:
+      type: object
+      required:
+        - user_id
+        - shop_id
+      properties:
+        user_id:
+          type: string
+          description: ID of the user
+        shop_id:
+          type: string
+          description: ID of the shop
+        created_at:
+          type: string
+          format: date-time
+          description: When the favorite was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the favorite was last updated
+    UtenteBase:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          description: Email of the user
+        password:
+          type: string
+          description: Password of the user
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: Validation error
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Success message
+          example: User registered successfully
+        user:
+          $ref: '#/components/schemas/UserResponse'
+  responses:
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: No token provided.
+    ForbiddenError:
+      description: Access denied - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Access denied
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: User not found
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Validation error
+    ConflictError:
+      description: Resource conflict (e.g., email already exists)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            message: Email already exists

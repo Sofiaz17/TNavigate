@@ -16,6 +16,7 @@
     "lint": "echo 'No linter configured'",
     "docs": "echo 'API docs available at http://localhost:3000/api-docs'"
   },
+
   "jest": {
     "verbose": true,
     "collectCoverage": true
@@ -44,4 +45,6 @@
     "supertest": "^6.3.4",
     "vite": "^2.9.5"
   }
+
+
 }
