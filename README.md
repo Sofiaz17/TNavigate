@@ -122,7 +122,7 @@ Authenticated requests expect either a session cookie (server-session) or an `Au
 
 
 ## Frontend
-TNavigateVue
+TNavigateVue: https://github.com/Sofiaz17/TNavigateVue.git
 
 ## Development Methodology
 
