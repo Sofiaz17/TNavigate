@@ -119,3 +119,20 @@ Authenticated requests expect either a session cookie (server-session) or an `Au
 - `scripts/` — convenience scripts for testing and development
 - `API_DOCUMENTATION.md` — higher-level API notes (link)
 - `TESTING.md` and `TESTING_DOCUMENTATION.md` — testing notes
+
+
+## Frontend
+TNavigateVue
+
+## Development Methodology
+
+This project was developed following Agile methodology, using iterative sprint-based planning to ensure continuous delivery and rapid feedback.
+Key Agile practices used during development:
+
+- Sprint planning & iteration cycles - Work was organized in short, incremental sprints to keep progress measurable and predictable.
+
+- User story–driven tasks - Features for shops, products, authentication, and testing were defined as user stories with clear acceptance criteria.
+
+- Frequent reviews & retrospectives - Each sprint concluded with review meetings to evaluate completed features and retrospectives to refine the workflow.
+
+- Continuous integration & automated testing - The Jest + Supertest suite provided automated verification for every sprint increment.
